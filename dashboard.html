@@ -1,264 +1,35 @@
-admin_dashboard_html = """<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Espace Direction | Kimou Travel</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #1e3d59;
-            --secondary: #ff6e40;
-            --bg-dark: #112233;
-            --sidebar-width: 260px;
-            --white: #ffffff;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-        body {
-            background-color: #f4f6f9;
-            display: flex;
-            min-height: 100vh;
-        }
-        
-        /* القائمة الجانبية */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--bg-dark);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100vh;
-            left: 0;
-            top: 0;
-        }
-        .sidebar-brand {
-            padding: 24px;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--secondary);
-            border-bottom: 1px solid #1f364d;
-            text-align: center;
-        }
-        .sidebar-menu {
-            list-style: none;
-            padding: 20px 0;
-            flex: 1;
-        }
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            padding: 14px 24px;
-            color: #b2c0cc;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .sidebar-menu li a i {
-            margin-right: 12px;
-            font-size: 18px;
-            width: 20px;
-        }
-        .sidebar-menu li a:hover, .sidebar-menu li.active a {
-            background-color: #1f364d;
-            color: var(--white);
-            border-left: 4px solid var(--secondary);
-        }
-        
-        /* المحتوى الرئيسي */
-        .main-content {
-            margin-left: var(--sidebar-width);
-            flex: 1;
-            padding: 40px;
-        }
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            background: var(--white);
-            padding: 15px 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .btn-logout {
-            background: #e74c3c;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-        }
+<div class="workspace-section" style="padding: 20px; background: #f9f9f9; border-radius: 8px; margin: 20px;">
+    <h3>Ajouter une nouvelle offre (إضافة عرض رحلة جديد)</h3>
+    <form id="tripForm" style="display: flex; flex-direction: column; gap: 10px; max-width: 500px;">
+        <input type="text" id="tripTitle" placeholder="Titre du voyage (عنوان الرحلة)" required style="padding: 10px;">
+        <input type="text" id="tripPrice" placeholder="Prix (السعر مثلاً: 45000 DA)" required style="padding: 10px;">
+        <input type="text" id="tripImage" placeholder="Lien de l'image (رابط صورة الرحلة)" required style="padding: 10px;">
+        <textarea id="tripDesc" placeholder="Description (وصف الرحلة ومميزاتها)" required style="padding: 10px; height: 100px;"></textarea>
+        <button type="submit" style="background: #28a745; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">Publier l'offre (نشر العرض)</button>
+    </form>
+</div>
 
-        /* حاوية الأدوات */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 30px;
-        }
-        @media (max-width: 992px) {
-            .dashboard-grid { grid-template-columns: 1fr; }
-        }
-        
-        .card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
-        .card-title {
-            font-size: 18px;
-            color: var(--primary);
-            margin-bottom: 25px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 2px solid #f4f6f9;
-            padding-bottom: 10px;
-        }
-        
-        /* الاستمارات */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #444;
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #ced4da;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-primary:hover { background-color: #122536; }
-        .btn-secondary {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .btn-secondary:hover { background-color: #e2582b; }
-    </style>
-</head>
-<body>
-
-    <!-- القائمة الجانبية -->
-    <div class="sidebar">
-        <div class="sidebar-brand">Kimou Travel</div>
-        <ul class="sidebar-menu">
-            <li class="active"><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-            <li><a href="#"><i class="fa-solid fa-plane-departure"></i> Circuits / Offres</a></li>
-            <li><a href="#"><i class="fa-solid fa-users"></i> Réservations</a></li>
-            <li><a href="#"><i class="fa-solid fa-gear"></i> Paramètres</a></li>
-        </ul>
-    </div>
-
-    <!-- المحتوى الرئيسي -->
-    <div class="main-content">
-        <div class="top-bar">
-            <div class="user-info">
-                <i class="fa-solid fa-circle-user" style="font-size: 24px; color: var(--secondary)"></i>
-                <span>Direction Kimou Travel</span>
-            </div>
-            <a href="admin.html" class="btn-logout"><i class="fa-solid fa-power-off"></i> Déconnexion</a>
-        </div>
-
-        <div class="dashboard-grid">
-            <!-- تغيير كلمة المرور -->
-            <div class="card">
-                <div class="card-title"><i class="fa-solid fa-key"></i> Changer le mot de passe</div>
-                <form>
-                    <div class="form-group">
-                        <label>Nouveau mot de passe</label>
-                        <input type="password" class="form-control" placeholder="Entrez le nouveau mot de passe">
-                    </div>
-                    <button type="button" class="btn-primary" style="width: 100%;">Changer le mot de passe</button>
-                </form>
-            </div>
-
-            <!-- نشر عرض جديد -->
-            <div class="card">
-                <div class="card-title"><i class="fa-solid fa-circle-plus"></i> Publier une Nouvelle Offre</div>
-                <p style="font-size: 13px; color: #777; margin-bottom: 20px;">Ajoutez un circuit qui s'affichera instantanément sur la page Destinations.</p>
-                
-                <form>
-                    <div class="form-group">
-                        <label>Nom du Circuit / Destination *</label>
-                        <input type="text" class="form-control" placeholder="Ex: Grand Sahara - Taghit" required>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Séjour de la sortie *</label>
-                            <input type="text" class="form-control" placeholder="Ex: Du 15 au 22 Juin" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Tarif par Personne (DZD) *</label>
-                            <input type="text" class="form-control" placeholder="Ex: 35 000 DA" required>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Date de départ *</label>
-                            <input type="date" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Date de retour *</label>
-                            <input type="date" class="form-control" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Images du Circuit (Sélectionnez plusieurs) *</label>
-                        <input type="file" class="form-control" multiple required>
-                    </div>
-
-                    <button type="submit" class="btn-secondary">Enregistrer et Publier l'offre</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-</body>
-</html>
+<script>
+document.getElementById('tripForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // جلب القيم من المدخلات
+    const title = document.getElementById('tripTitle').value;
+    const price = document.getElementById('tripPrice').value;
+    const image = document.getElementById('tripImage').value;
+    const desc = document.getElementById('tripDesc').value;
+    
+    // إنشاء كائن الرحلة
+    const newTrip = { title, price, image, desc };
+    
+    // جلب الرحلات القديمة أو إنشاء مصفوفة جديدة
+    let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+    trips.push(newTrip);
+    
+    // حفظ في LocalStorage
+    localStorage.setItem('kimou_trips', JSON.stringify(trips));
+    
+    alert('Offre ajoutée avec succès ! تم إضافة العرض بنجاح وسيظهر في الموقع الرئيسي');
+    document.getElementById('tripForm').reset();
+});
+</script>
