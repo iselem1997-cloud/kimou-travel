@@ -460,6 +460,98 @@
     <footer>
         <p>&copy; 2026 Kimou Travel. جميع الحقوق محفوظة.</p>
     </footer>
+    <script>
+        // دالة تحميل وعرض الرحلات من الذاكرة
+        function loadTrips() {
+            const container = document.getElementById('tripsContainer');
+            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+
+            // إذا لم تكن هناك رحلات منشورة بعد
+            if (trips.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; color: #777; font-size: 16px; padding: 40px 0;">✨ لا توجد عروض متوفرة حالياً، تابعونا لتصلكم رحلاتنا القادمة قريباً! ✨</p>`;
+                return;
+            }
+
+            container.innerHTML = ''; // تنظيف الحاوية قبل العرض
+
+            // المرور على كل رحلة وإنشاء الكارد الخاص بها للزبون
+            trips.forEach((trip, index) => {
+                // نختار الصورة الأولى المعروضة كصورة رئيسية للكارد
+                const mainImg = (trip.images && trip.images.length > 0) ? trip.images[0] : (trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80');
+
+                const card = document.createElement('div');
+                card.className = 'tour-card';
+                card.innerHTML = `
+                    <div class="tour-img" style="background-image: url('${mainImg}')"></div>
+                    <div class="tour-content">
+                        <h3 class="tour-title">${trip.title}</h3>
+                        <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> ${trip.duration}</p>
+                        <div class="tour-footer">
+                            <span class="price">${trip.price}</span>
+                            <a href="javascript:void(0)" class="book-btn" onclick="openTripModal(${index})"><i class="fa-solid fa-circle-info"></i> التفاصيل البرنامج</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة والألبوم
+        function openTripModal(index) {
+            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+            const trip = trips[index];
+            if (!trip) return;
+
+            document.getElementById('modalTripTitle').innerText = trip.title;
+            
+            // تعيين البرنامج التفصيلي أو إظهار رسالة عند عدم توفره
+            document.getElementById('modalTripDesc').innerText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
+
+            const mainImgElement = document.getElementById('modalMainImg');
+            const galleryContainer = document.getElementById('modalGallery');
+            galleryContainer.innerHTML = ''; // تنظيف الألبوم القديم
+
+            // معالجة الصور المتعددة
+            if (trip.images && trip.images.length > 0) {
+                // تعيين الصورة الأولى كصورة معاينة رئيسية
+                mainImgElement.src = trip.images[0];
+
+                // إنشاء مصغرات في الألبوم لجميع الصور المرفوعة
+                trip.images.forEach(imgSrc => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.className = 'gallery-img';
+                    // عند الضغط على أي صورة صغيرة تصبح هي الصورة الكبيرة المعروضة
+                    img.onclick = function() {
+                        mainImgElement.src = imgSrc;
+                    };
+                    galleryContainer.appendChild(img);
+                });
+            } else if (trip.image) {
+                // توافق مع النظام القديم إذا كانت صورة واحدة فقط
+                mainImgElement.src = trip.image;
+            }
+
+            // إظهار النافذة المنبثقة بحركة سلسة
+            document.getElementById('tripModal').classList.add('show');
+        }
+
+        // دالة إغلاق النافذة المنبثقة
+        function closeTripModal() {
+            document.getElementById('tripModal').classList.remove('show');
+        }
+
+        // إغلاق النافذة عند الضغط في أي مكان خارج محتواها
+        window.onclick = function(event) {
+            const modal = document.getElementById('tripModal');
+            if (event.target === modal) {
+                closeTripModal();
+            }
+        }
+
+        // تشغيل الدالة تلقائياً بمجرد فتح الزائر للصفحة
+        document.addEventListener('DOMContentLoaded', loadTrips);
+    </script>
 
 </body>
 </html>"""
