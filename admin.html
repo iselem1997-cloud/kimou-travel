@@ -157,12 +157,14 @@
             const pass = document.getElementById('password').value;
             
             // تحقق بسيط جداً محلي (لأغراض العرض والتجربة قبل ربطه بقاعدة البيانات)
-            if(user === 'admin_kimou' && pass === 'kimou2026') {
-                window.location.href = 'dashboard.html';
-            } else {
-                alert('الرجاء التحقق من اسم المستخدم أو كلمة المرور!');
-            }
-        });
+       const correctPassword = localStorage.getItem('kimou_admin_pass') || 'kimou2026';
+
+if (username === "admin_kimou" && password === correctPassword) {
+    alert('تم تسجيل الدخول بنجاح!');
+    window.location.href = 'dashboard.html';
+} else {
+    alert('⚠️ اسم المستخدم أو كلمة المرور غير صحيحة!');
+};
     </script>
 </body>
 </html>
