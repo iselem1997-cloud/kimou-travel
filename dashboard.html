@@ -242,12 +242,12 @@
                             <input type="date" id="endDate" class="form-control" required>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label>Images du Circuit *</label>
-                        <input type="file" id="tripImageFile" class="form-control" accept="image/*" required>
-                    </div>
-                    
+    <label>Images du Circuit (Sélectionnez plusieurs) *</label>
+    <input type="file" id="tripImageFile" class="form-control" accept="image/*" multiple required>
+</div>
+
+                     
                     <div class="form-group" style="text-align: right; margin-bottom: 15px;">
                         <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #444; text-align: left;">Programme détaillé (برنامج الرحلة بالتفصيل)</label>
                         <textarea id="tripDetailedDesc" class="form-control" rows="5" placeholder="اكتب برنامج الرحلة بالتفصيل هنا (مثال: اليوم الأول، الثاني...)" style="width: 100%; padding: 10px; text-align: right; direction: rtl;"></textarea>
@@ -278,51 +278,55 @@
     });
 
     // 2. كود سحب وحفظ الرحلات مع الوصف التفصيلي والصور
-    document.getElementById('tripForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+document.getElementById('tripForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        const title = document.getElementById('tripTitle').value;
-        const duration = document.getElementById('tripDuration').value;
-        const price = document.getElementById('tripPrice').value;
-        const start = document.getElementById('startDate').value;
-        const end = document.getElementById('endDate').value;
-        const detailedDesc = document.getElementById('tripDetailedDesc').value;
-        const imageFile = document.getElementById('tripImageFile').files[0];
+    const title = document.getElementById('tripTitle').value;
+    const duration = document.getElementById('tripDuration').value;
+    const price = document.getElementById('tripPrice').value;
+    const start = document.getElementById('startDate').value;
+    const end = document.getElementById('endDate').value;
+    const detailedDesc = document.getElementById('tripDetailedDesc').value;
+    const imageFiles = document.getElementById('tripImageFile').files;
 
-        if (!imageFile) {
-            alert('⚠️ Veuillez sélectionner une image!');
-            return;
-        }
+    if (imageFiles.length === 0) {
+        alert('⚠️ Veuillez sélectionner au moins une image!');
+        return;
+    }
 
-        // تحويل الصورة المرفوعة إلى رابط Base64 ليتم حفظها في الذاكرة المحلية
+    const base64Images = [];
+    let filesProcessed = 0;
+
+    // دالة لقراءة كل صورة على حدة وتحويلها
+    for (let i = 0; i < imageFiles.length; i++) {
         const reader = new FileReader();
         reader.onloadend = function() {
-            const base64Image = reader.result;
+            base64Images.push(reader.result); // إضافة الصورة المحولة للمصفوفة
+            filesProcessed++;
 
-            // إنشاء كائن الرحلة المتكامل
-            const newTrip = {
-                title: title,
-                duration: duration,
-                price: price,
-                startDate: start,
-                endDate: end,
-                detailedDesc: detailedDesc,
-                image: base64Image
-            };
+            // عند الانتهاء من تحويل جميع الصور المرفوعة
+            if (filesProcessed === imageFiles.length) {
+                const newTrip = {
+                    title: title,
+                    duration: duration,
+                    price: price,
+                    startDate: start,
+                    endDate: end,
+                    detailedDesc: detailedDesc,
+                    images: base64Images // حفظ مصفوفة الصور كاملة هنا
+                };
 
-            // سحب الرحلات الحالية وإضافة الرحلة الجديدة
-            let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-            trips.push(newTrip);
+                let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+                trips.push(newTrip);
+                localStorage.setItem('kimou_trips', JSON.stringify(trips));
 
-            // الحفظ في LocalStorage
-            localStorage.setItem('kimou_trips', JSON.stringify(trips));
-
-            alert('🎉 Offre enregistrée et publiée avec succès! (تم نشر العرض بنجاح)');
-            document.getElementById('tripForm').reset();
+                alert('🎉 Offre enregistrée avec succès! تم نشر العرض وحفظ الصور بنجاح');
+                document.getElementById('tripForm').reset();
+            }
         };
-
-        reader.readAsDataURL(imageFile);
-    });
+        reader.readAsDataURL(imageFiles[i]);
+    }
+});
     </script>
 </body>
 </html>
