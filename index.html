@@ -146,35 +146,29 @@
             gap: 30px;
         }
 
-        .tour-card {
-            background: var(--white);
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
+.tour-card {
+    max-width: 310px; /* تقليل الحد الأقصى لعرض الكارد (كان غالباً 350px أو أكثر) */
+    margin: 10px auto;
+    font-size: 14px; /* تصغير الخطوط قليلاً لتناسب الحجم الجديد */
+}
 
         .tour-card:hover {
             transform: translateY(-5px);
         }
 
-        .tour-img {
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-        }
+.tour-img img {
+    height: 180px; /* تقليل ارتفاع الصورة ليصبح متناسقاً */
+    object-fit: cover;
+}
 
-        .tour-content {
-            padding: 20px;
-            text-align: right;
-        }
+.tour-content {
+    padding: 15px;
+}
 
-        .tour-title {
-            font-size: 20px;
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
+.tour-title {
+    font-size: 16px; /* تصغير حجم عنوان الرحلة قليلاً */
+    margin-bottom: 8px;
+}
 
         .tour-desc {
             font-size: 14px;
