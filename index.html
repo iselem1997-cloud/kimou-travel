@@ -484,6 +484,10 @@
                     <div class="tour-content">
                         <h3 class="tour-title">${trip.title}</h3>
                         <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> ${trip.duration}</p>
+                        <div style="font-size: 13px; color: #555; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
+    <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 18px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || trip.dateDepart || 'غير محدد'}</span>
+    <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 18px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || trip.dateRetour || 'غير محدد'}</span>
+</div>
                         <div class="tour-footer">
                             <span class="price">Prix: ${trip.price} DZD</span>
                             <a href="javascript:void(0)" class="book-btn" onclick="openTripModal(${index})"><i class="fa-solid fa-circle-info"></i> التفاصيل البرنامج</a>
