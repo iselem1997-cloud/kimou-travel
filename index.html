@@ -270,12 +270,12 @@
             padding: 20px;
             font-size: 14px;
         }
-.tours-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* تجعل الكروت تبدأ وتصطف من اليسار تماماً */
-    direction: ltr;              /* (Left-to-Right) تحويل اتجاه الترتيب من اليسار إلى اليمين */
-    gap: 20px;                   /* مسافة متناسقة بين الكروت */
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
 
         /* نافذة تفاصيل الرحلة المنبثقة (Modal) */
         .modal {
