@@ -147,9 +147,13 @@
         }
 
 .tour-card {
-    max-width: 310px; /* تقليل الحد الأقصى لعرض الكارد (كان غالباً 350px أو أكثر) */
-    margin: 10px auto;
-    font-size: 14px; /* تصغير الخطوط قليلاً لتناسب الحجم الجديد */
+    max-width: 340px; /* تكبير العرض قليلاً ليعطي مساحة مريحة للنصوص والصورة */
+    width: 100%;
+    margin: 15px auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    background: #fff;
 }
 
         .tour-card:hover {
@@ -157,17 +161,20 @@
         }
 
 .tour-img img {
-    height: 180px; /* تقليل ارتفاع الصورة ليصبح متناسقاً */
-    object-fit: cover;
+    width: 100%;
+    height: 210px; /* زيادة ارتفاع الصورة قليلاً لتبرز معالم الرحلة للزبائن */
+    object-fit: cover; /* لضمان عدم تمدد الصورة أو تشوهها */
+    display: block;
 }
 
 .tour-content {
-    padding: 15px;
+    padding: 18px;
 }
 
 .tour-title {
-    font-size: 16px; /* تصغير حجم عنوان الرحلة قليلاً */
-    margin-bottom: 8px;
+    font-size: 18px; /* حجم خط ممتاز وواضح لعنوان الرحلة */
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
         .tour-desc {
