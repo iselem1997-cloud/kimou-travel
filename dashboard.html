@@ -202,15 +202,13 @@
 
         <div class="dashboard-grid">
             <!-- تغيير كلمة المرور -->
-       <div class="card">
+<div class="card">
     <div class="card-title"><i class="fa-solid fa-key"></i> Changer le mot de passe</div>
-    <form>
+    <form id="myPasswordForm">
         <div class="form-group">
             <label>Nouveau mot de passe</label>
-            <!-- حافظنا على class="form-control" وأضفنا id فقط -->
             <input type="password" id="newPassword" class="form-control" placeholder="Entrez le nouveau mot de passe">
         </div>
-        <!-- حافظنا على class="btn-primary" ونفس الستايل، وأضفنا id فقط -->
         <button type="button" id="changePasswordBtn" class="btn-primary" style="width: 100%;">Changer le mot de passe</button>
     </form>
 </div>
@@ -261,27 +259,30 @@
     </div>
 
 </body> 
-     <script>
-    document.getElementById('changePasswordBtn').addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const newInput = document.getElementById('newPassword').value;
-        
-        if (newInput.trim() === "") {
-            alert('⚠️ Veuillez entrer un mot de passe!');
-            return;
-        }
-        
-        if (newInput.length < 4) {
-            alert('⚠️ Le mot de passe doit contenir au moins 4 caractères!');
-            return;
-        }
-        
-        // حفظ في الذاكرة
-        localStorage.setItem('kimou_admin_pass', newInput);
-        
-        alert('🎉 Mot de passe changé avec succès!');
-        document.getElementById('newPassword').value = ""; // تفريغ الخانة
-    });
+<script>
+document.getElementById('changePasswordBtn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    const newInput = document.getElementById('newPassword').value;
+    
+    if (!newInput || newInput.trim() === "") {
+        alert('⚠️ Veuillez entrer un mot de passe!');
+        return;
+    }
+    
+    if (newInput.length < 4) {
+        alert('⚠️ Le mot de passe doit contenir au moins 4 caractères!');
+        return;
+    }
+    
+    // حفظ في الذاكرة
+    localStorage.setItem('kimou_admin_pass', newInput);
+    
+    // تأكيد الحفظ وعرض الكلمة المحفوظة فوراً للتأكد
+    const checkSave = localStorage.getItem('kimou_admin_pass');
+    alert('🎉 Success! Mot de passe changé: ' + checkSave);
+    
+    document.getElementById('newPassword').value = ""; // تفريغ الخانة
+});
 </script>
 </html>
