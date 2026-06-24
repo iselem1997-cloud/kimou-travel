@@ -645,30 +645,22 @@ function submitReservation(event) {
             </div>
 
             <div style="margin-bottom: 12px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">تاريخ الانطلاق المفضل:</label>
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">تاريخ الانطلاق :</label>
                 <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;">
             </div>
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
                 <div>
-                    <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">عدد الأفراد:</label>
-                    <input type="number" id="clientSeats" min="1" value="1" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
-                </div>
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">نوع الرحلة:</label>
+                    <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">الوجهة:</label>
                     <select id="clientTripType" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; height: 40px; background: white;">
-                        <option value="عادية">عادية (Standard)</option>
-                        <option value="VIP">VIP</option>
-                        <option value="عائلية">عائلية</option>
+
                     </select>
                 </div>
             </div>
 
             <div style="margin-bottom: 20px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">طريقة الدفع المفضلة:</label>
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">طريقة الدفع:</label>
                 <select id="clientPaymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; height: 40px; background: white;">
-                    <option value="Baridimob">بريدي موب (Baridimob)</option>
-                    <option value="CCP">عبر الحساب البريدي (CCP)</option>
+                    
                     <option value="الوكالة">نقداً في مقر الوكالة</option>
                 </select>
             </div>
