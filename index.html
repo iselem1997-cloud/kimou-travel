@@ -567,61 +567,159 @@ function submitReservation(event) {
     closeBookingModal();
 }
         
-        // دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة والألبوم بتنسيق مصغرات احترافي
-        function openTripModal(index) {
-            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-            const trip = trips[index];
-            if (!trip) return;
+// دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة بتنسيق ذكي وتلقائي للنصوص
+function openTripModal(index) {
+    const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+    const trip = trips[index];
+    if (!trip) return;
 
-            document.getElementById('modalTripTitle').innerText = trip.title;
-            
-            // تعيين البرنامج التفصيلي أو إظهار رسالة عند عدم توفره
-            document.getElementById('modalTripDesc').innerText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
+    document.getElementById('modalTripTitle').innerText = trip.title;
+    
+    // جلب النص العادي المكتوب في لوحة التحكم
+    let rawText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
+    
+    // نظام المعالجة الذكي لتقسيم النص وتنسيقه تلقائياً
+    if (trip.detailedDesc) {
+        // تنظيف النص وتحضيره للتقسيم الإبداعي
+        let formattedHTML = `<div style="direction: rtl; text-align: right; font-family: sans-serif; color: #333; line-height: 1.7; padding: 10px;">`;
+        
+        // تقسيم النص إلى أسطر
+        let lines = rawText.split('\n');
+        let inMainInfo = true;
+        let activeSection = "";
+        
+        let mainInfoList = "";
+        let priceIncludes = "";
+        let programSteps = "";
+        let luggageItems = "";
+        let introText = "";
+        let footerText = "";
 
-            const mainImgElement = document.getElementById('modalMainImg');
-            const galleryContainer = document.getElementById('modalGallery');
-            
-            // تنسيق الحاوية لتصفي الفراغات والـ Flex للصور المصغرة بشكل مريح
-            galleryContainer.innerHTML = ''; 
-            galleryContainer.style.display = 'flex';
-            galleryContainer.style.gap = '8px';
-            galleryContainer.style.flexWrap = 'wrap';
-            galleryContainer.style.marginTop = '12px';
-            galleryContainer.style.justifyContent = 'center';
+        lines.forEach(line => {
+            let trimmed = line.trim();
+            if (!trimmed) return;
 
-            // معالجة الصور المتعددة وتعديل أبعادها لتبدو مربعة ومطابقة للتحميل الأصلي
-            if (trip.images && trip.images.length > 0) {
-                // تعيين الصورة الأولى كصورة معاينة رئيسية
-                mainImgElement.src = trip.images[0];
-
-                // إنشاء مصغرات في الألبوم لجميع الصور المرفوعة
-                trip.images.forEach(imgSrc => {
-                    const img = document.createElement('img');
-                    img.src = imgSrc;
-                    img.className = 'gallery-img';
-                    
-                    // التنسيق المربع الفخم لحماية الصور المصغرة من التمدد
-                    img.style.width = '65px';
-                    img.style.height = '65px';
-                    img.style.objectFit = 'cover'; 
-                    img.style.borderRadius = '6px';
-                    img.style.cursor = 'pointer';
-                    img.style.border = '2px solid #ddd';
-                    img.style.transition = 'transform 0.2s';
-                    
-                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
-                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
-
-                    // عند الضغط على أي صورة صغيرة تصبح هي الصورة الكبيرة المعروضة
-                    img.onclick = function() {
-                        mainImgElement.src = imgSrc;
-                    };
-                    galleryContainer.appendChild(img);
-                });
-            } else if (trip.image) {
-                // توافق مع النظام القديم إذا كانت صورة واحدة فقط
-                mainImgElement.src = trip.image;
+            // كشف الأقسام الرئيسية بناءً على الكلمات المفتاحية
+            if (trimmed.includes("السعر يشمل") || trimmed.includes("Prix inclut")) {
+                activeSection = "includes";
+                inMainInfo = false;
+                return;
+            } else if (trimmed.includes("برنامج الرحلة") || trimmed.includes("Programme")) {
+                activeSection = "program";
+                inMainInfo = false;
+                return;
+            } else if (trimmed.includes("وش تجيب معاك") || trimmed.includes("حقيبة") || trimmed.includes("A emporter")) {
+                activeSection = "luggage";
+                inMainInfo = false;
+                return;
+            } else if (trimmed.includes("مهم:") || trimmed.includes("تنبيه:") || trimmed.includes("آخر أجل")) {
+                footerText += `<div style="margin-bottom: 6px;">${trimmed}</div>`;
+                return;
             }
+
+            // توزيع الأسطر على البطاقات المخصصة لها
+            if (inMainInfo) {
+                if (trimmed.startsWith("📢") || trimmed.startsWith("واش") || trimmed.includes("Travel")) {
+                    introText += `<p style="text-align: center; font-size: 14px; margin-bottom: 12px; font-weight: 500;">${trimmed}</p>`;
+                } else {
+                    mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${trimmed}</li>`;
+                }
+            } else if (activeSection === "includes") {
+                priceIncludes += `<li style="margin-bottom: 5px;">${trimmed}</li>`;
+            } else if (activeSection === "program") {
+                programSteps += `<div style="margin-bottom: 12px; position: relative;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${trimmed}</div>`;
+            } else if (activeSection === "luggage") {
+                luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${trimmed}</span>`;
+            }
+        });
+
+        // 1. تركيب المقدمة المشوقة
+        if (introText) formattedHTML += `<div style="color: #28a745; margin-bottom: 20px;">${introText}</div>`;
+
+        // 2. تركيب بطاقة المواعيد والمعلومات البيانية
+        if (mainInfoList) {
+            formattedHTML += `
+            <div style="background-color: #f8f9fa; border-right: 4px solid #ff9800; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="margin-top: 0; color: #ff9800; margin-bottom: 10px;"><i class="fa-regular fa-clock"></i> معلومات وتفاصيل التجمع:</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">${mainInfoList}</ul>
+            </div>`;
+        }
+
+        // 3. تركيب بطاقة شمولية السعر
+        if (priceIncludes) {
+            formattedHTML += `
+            <div style="background-color: #ebf7ed; border-right: 4px solid #28a745; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="margin-top: 0; color: #28a745; margin-bottom: 10px;"><i class="fa-solid fa-tags"></i> الخدمات المتضمنة في السعر:</h4>
+                <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">${priceIncludes}</ul>
+            </div>`;
+        }
+
+        // 4. تركيب جدول البرنامج الزمني العمودي
+        if (programSteps) {
+            formattedHTML += `
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa-solid fa-route"></i> مخطط ومحطات الرحلة:</h4>
+                <div style="position: relative; padding-right: 20px; border-right: 2px dashed #ccc; margin-right: 10px;">${programSteps}</div>
+            </div>`;
+        }
+
+        // 5. تركيب كبسولات الحقيبة والمستلزمات
+        if (luggageItems) {
+            formattedHTML += `
+            <div style="background-color: #fff9db; border: 1px dashed #f59f00; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                <h4 style="margin-top: 0; color: #f59f00; margin-bottom: 10px;"><i class="fa-solid fa-suitcase"></i>🎒 مستلزمات يُنصح بإحضارها:</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">${luggageItems}</div>
+            </div>`;
+        }
+
+        // 6. تركيب القوانين والملاحظات في الأسفل
+        if (footerText) {
+            formattedHTML += `<div style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px; line-height: 1.5;">${footerText}</div>`;
+        }
+
+        formattedHTML += `</div>`;
+        document.getElementById('modalTripDesc').innerHTML = formattedHTML;
+    } else {
+        document.getElementById('modalTripDesc').innerHTML = rawText;
+    }
+
+    // تنسيق وتوليد ألبوم الصور كما تم إصلاحه سابقاً لقفل الأبعاد المربعة المتقاطعة
+    const mainImgElement = document.getElementById('modalMainImg');
+    const galleryContainer = document.getElementById('modalGallery');
+    
+    galleryContainer.innerHTML = ''; 
+    galleryContainer.style.display = 'flex';
+    galleryContainer.style.gap = '8px';
+    galleryContainer.style.flexWrap = 'wrap';
+    galleryContainer.style.marginTop = '12px';
+    galleryContainer.style.justifyContent = 'center';
+
+    if (trip.images && trip.images.length > 0) {
+        mainImgElement.src = trip.images[0];
+        trip.images.forEach(imgSrc => {
+            const img = document.createElement('img');
+            img.src = imgSrc;
+            img.className = 'gallery-img';
+            img.style.width = '65px';
+            img.style.height = '65px';
+            img.style.objectFit = 'cover'; 
+            img.style.borderRadius = '6px';
+            img.style.cursor = 'pointer';
+            img.style.border = '2px solid #ddd';
+            img.style.transition = 'transform 0.2s';
+            
+            img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
+            img.onmouseout = function() { this.style.transform = 'scale(1)'; };
+
+            img.onclick = function() { mainImgElement.src = imgSrc; };
+            galleryContainer.appendChild(img);
+        });
+    } else if (trip.image) {
+        mainImgElement.src = trip.image;
+    }
+
+    document.getElementById('tripModal').classList.add('show');
+}
 
             // إظهار النافذة المنبثقة بحركة سلسة
             document.getElementById('tripModal').classList.add('show');
