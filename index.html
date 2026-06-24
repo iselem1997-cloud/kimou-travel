@@ -499,7 +499,7 @@
 <div class="tour-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 15px;">
     <span class="price" style="font-weight: bold; color: var(--primary); font-size: 16px;">Prix : ${trip.price} DZD</span>
     <div class="booking-buttons" style="display: flex; gap: 5px;">
-        <button type="button" class="btn-details" onclick="openPreviewModal(${index})" style="padding: 6px 10px; font-size: 13px; cursor: pointer;">تفاصيل البرنامج</button>
+       <button type="button" class="btn-details" onclick="openTripModal(${index})" style="padding: 6px 10px; font-size: 13px; cursor: pointer;">تفاصيل البرنامج</button>
         <button type="button" class="btn-reserve" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold;">Réserver</button>
     </div>
 </div>
