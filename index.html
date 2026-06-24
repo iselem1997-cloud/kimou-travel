@@ -549,7 +549,7 @@
             reservations.push(reservationData);
             localStorage.setItem('tripReservations', JSON.stringify(reservations));
             
-            alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterons bientôt.');
+            alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterون bientôt.');
             closeBookingModal();
         }
         
@@ -603,21 +603,27 @@
                             mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${trimmed}</li>`;
                         }
                     } else if (activeSection === "includes") {
-                        priceIncludes += `<li style="margin-bottom: 5px;">${trimmed}</li>`;
+                        // تنظيف الأيقونات القديمة إن وُجدت
+                        let cleanLine = trimmed.replace(/^[-•✅📍🌟]/g, "").trim();
+                        priceIncludes += `<li style="margin-bottom: 5px;">${cleanLine}</li>`;
                     } else if (activeSection === "program") {
-                        // نظام ذكي لإضافة أيقونة مناسبة بجانب خطوة البرنامج تلقائياً
-let stepIcon = "📍"; // الأيقونة الافتراضية
-if (trimmed.includes("الوصول") || trimmed.includes("Arrivée")) stepIcon = "🚍";
-else if (trimmed.includes("المركز") || trimmed.includes("مركز")) stepIcon = "🏢";
-else if (trimmed.includes("Kayak") || trimmed.includes("كاياك") || trimmed.includes("البحر")) stepIcon = "🚣‍♂️";
-else if (trimmed.includes("وقت حر") || trimmed.includes("شاطئ") || trimmed.includes("سباحة")) stepIcon = "🏖️";
-else if (trimmed.includes("تصوير") || trimmed.includes("📸")) stepIcon = "📸";
-else if (trimmed.includes("العودة") || trimmed.includes("Retour")) stepIcon = "↩️";
-else if (trimmed.includes("غداء") || trimmed.includes("أكل")) stepIcon = "🍽️";
+                        // تنظيف أي إيموجي قديم لعدم التكرار
+                        let cleanLine = trimmed.replace(/^[-•✅📍🔹🔸✨]/g, "").trim();
+                        
+                        // نظام ذكي لاختيار الأيقونة المناسبة للبرنامج
+                        let stepIcon = "📍"; 
+                        if (cleanLine.includes("الوصول") || cleanLine.includes("Arrivée")) stepIcon = "🚍";
+                        else if (cleanLine.includes("المركز") || cleanLine.includes("مركز")) stepIcon = "🏢";
+                        else if (cleanLine.includes("Kayak") || cleanLine.includes("كاياك") || cleanLine.includes("البحر")) stepIcon = "🚣‍♂️";
+                        else if (cleanLine.includes("وقت حر") || cleanLine.includes("شاطئ") || cleanLine.includes("سباحة")) stepIcon = "🏖️";
+                        else if (cleanLine.includes("تصوير") || cleanLine.includes("📸")) stepIcon = "📸";
+                        else if (cleanLine.includes("العودة") || cleanLine.includes("Retour")) stepIcon = "↩️";
+                        else if (cleanLine.includes("غداء") || cleanLine.includes("أكل")) stepIcon = "🍽️";
 
-programSteps += `<div style="margin-bottom: 12px; position: relative; padding-right: 5px;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${stepIcon} ${trimmed}</div>`;
+                        programSteps += `<div style="margin-bottom: 12px; position: relative; padding-right: 5px;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${stepIcon} ${cleanLine}</div>`;
                     } else if (activeSection === "luggage") {
-                        luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${trimmed}</span>`;
+                        let cleanLine = trimmed.replace(/^[-•🎒✅📍]/g, "").trim();
+                        luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${cleanLine}</span>`;
                     }
                 });
 
