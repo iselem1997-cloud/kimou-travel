@@ -466,7 +466,7 @@
     <footer>
         <p>&copy; 2026 Kimou Travel. جميع الحقوق محفوظة.</p>
     </footer>
-    <script>
+ <script>
         // دالة تحميل وعرض الرحلات من الذاكرة
         function loadTrips() {
             const container = document.getElementById('tripsContainer');
@@ -503,7 +503,7 @@
         <button type="button" class="btn-details" onclick="openTripModal(${index})" style="background-color: var(--secondary, #ff9800); color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.3s ease;">تفاصيل البرنامج</button>
         <button type="button" class="btn-reserve" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.3s ease;">Réserver</button>
     </div>
-</div>>
+</div>
                 `;
                 container.appendChild(card);
             });
@@ -512,9 +512,15 @@
 // دالات نموذج الحجز الجديد (Réserver)
 // ==========================================
 
-// 1. فتح نافذة الحجز وتحديد اسم الرحلة تلقائياً
+// 1. فتح نافذة الحجز وتحديد اسم الرحلة والوجهة تلقائياً
 function openBookingModal(tripTitle) {
     document.getElementById('bookedTripTitle').innerText = "الرحلة: " + tripTitle;
+    
+    // كتابة الوجهة تلقائياً داخل الخانة بناءً على اسم الرحلة المختار
+    if (document.getElementById('clientDestination')) {
+        document.getElementById('clientDestination').value = tripTitle;
+    }
+    
     document.getElementById('bookingModal').style.display = 'flex';
 }
 
@@ -534,7 +540,7 @@ function submitReservation(event) {
     const birthDate = document.getElementById('clientBirthDate').value;
     const departureDate = document.getElementById('clientDepartureDate').value;
     
-    // جلب قيمة الوجهة الجديدة التي كتبها الزبون تلقائياً
+    // جلب قيمة الوجهة الجديدة التي كتبت تلقائياً
     const destination = document.getElementById('clientDestination').value;
     const paymentMethod = document.getElementById('clientPaymentMethod').value;
     const seats = "1"; // قيمة افتراضية ثابتة بعد حذف الخانة
@@ -546,7 +552,7 @@ function submitReservation(event) {
         clientPhone: phone,
         clientBirthDate: birthDate,
         clientDepartureDate: departureDate,
-        clientDestination: destination, // حفظ الوجهة المكتوبة
+        clientDestination: destination, 
         clientPaymentMethod: paymentMethod,
         clientSeats: seats,
         date: new Date().toLocaleString('fr-FR')
@@ -557,11 +563,11 @@ function submitReservation(event) {
     
     localStorage.setItem('tripReservations', JSON.stringify(reservations));
     
-    alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterون bientôt.');
+    alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterons bientôt.');
     closeBookingModal();
 }
         
-        // دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة والألبوم
+        // دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة والألبوم بتنسيق مصغرات احترافي
         function openTripModal(index) {
             const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
             const trip = trips[index];
@@ -574,9 +580,16 @@ function submitReservation(event) {
 
             const mainImgElement = document.getElementById('modalMainImg');
             const galleryContainer = document.getElementById('modalGallery');
-            galleryContainer.innerHTML = ''; // تنظيف الألبوم القديم
+            
+            // تنسيق الحاوية لتصفي الفراغات والـ Flex للصور المصغرة بشكل مريح
+            galleryContainer.innerHTML = ''; 
+            galleryContainer.style.display = 'flex';
+            galleryContainer.style.gap = '8px';
+            galleryContainer.style.flexWrap = 'wrap';
+            galleryContainer.style.marginTop = '12px';
+            galleryContainer.style.justifyContent = 'center';
 
-            // معالجة الصور المتعددة
+            // معالجة الصور المتعددة وتعديل أبعادها لتبدو مربعة ومطابقة للتحميل الأصلي
             if (trip.images && trip.images.length > 0) {
                 // تعيين الصورة الأولى كصورة معاينة رئيسية
                 mainImgElement.src = trip.images[0];
@@ -586,6 +599,19 @@ function submitReservation(event) {
                     const img = document.createElement('img');
                     img.src = imgSrc;
                     img.className = 'gallery-img';
+                    
+                    // التنسيق المربع الفخم لحماية الصور المصغرة من التمدد
+                    img.style.width = '65px';
+                    img.style.height = '65px';
+                    img.style.objectFit = 'cover'; 
+                    img.style.borderRadius = '6px';
+                    img.style.cursor = 'pointer';
+                    img.style.border = '2px solid #ddd';
+                    img.style.transition = 'transform 0.2s';
+                    
+                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
+                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
+
                     // عند الضغط على أي صورة صغيرة تصبح هي الصورة الكبيرة المعروضة
                     img.onclick = function() {
                         mainImgElement.src = imgSrc;
