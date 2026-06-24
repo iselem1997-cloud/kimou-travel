@@ -549,11 +549,11 @@
             reservations.push(reservationData);
             localStorage.setItem('tripReservations', JSON.stringify(reservations));
             
-            alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterون bientôt.');
+            alert('Merci ! Votre demande de réservation a été reçue avec succès.');
             closeBookingModal();
         }
         
-        // 5. دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة والألبوم بتنسيق ذكي
+        // 5. دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة بالأيقونات الذكية المعدلة
         function openTripModal(index) {
             const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
             const trip = trips[index];
@@ -579,38 +579,39 @@
                     let trimmed = line.trim();
                     if (!trimmed) return;
 
-                    if (trimmed.includes("السعر يشمل") || trimmed.includes("Prix inclut")) {
+                    // فحص مرن وعام للتعرف على الأقسام حتى لو وُجدت رموز أو نقاط
+                    if (trimmed.includes("السعر يشمل") || trimmed.includes("Prix inclut") || trimmed.includes("التكلفة تشمل")) {
                         activeSection = "includes";
                         inMainInfo = false;
                         return;
-                    } else if (trimmed.includes("برنامج الرحلة") || trimmed.includes("Programme")) {
+                    } else if (trimmed.includes("برنامج الرحلة") || trimmed.includes("Programme") || trimmed.includes("مخطط ومحطات")) {
                         activeSection = "program";
                         inMainInfo = false;
                         return;
-                    } else if (trimmed.includes("وش تجيب معاك") || trimmed.includes("حقيبة") || trimmed.includes("A emporter")) {
+                    } else if (trimmed.includes("وش تجيب معاك") || trimmed.includes("حقيبة") || trimmed.includes("المستلزمات") || trimmed.includes("A emporter")) {
                         activeSection = "luggage";
                         inMainInfo = false;
                         return;
-                    } else if (trimmed.includes("مهم:") || trimmed.includes("تنبيه:") || trimmed.includes("آخر أجل")) {
+                    } else if (trimmed.includes("مهم:") || trimmed.includes("تنبيه:") || trimmed.includes("آخر أجل") || trimmed.includes("شروط")) {
                         footerText += `<div style="margin-bottom: 6px;">${trimmed}</div>`;
                         return;
                     }
 
                     if (inMainInfo) {
-                        if (trimmed.startsWith("📢") || trimmed.startsWith("واش") || trimmed.includes("Travel")) {
+                        if (trimmed.includes("ما تضيعوش") || trimmed.includes("واش رايكم") || trimmed.includes("Travel") || trimmed.includes("مغامرة")) {
                             introText += `<p style="text-align: center; font-size: 14px; margin-bottom: 12px; font-weight: 500;">${trimmed}</p>`;
                         } else {
-                            mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${trimmed}</li>`;
+                            // تنظيف أي نقاط أو رموز في معلومات التجمع العامة
+                            let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
+                            mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${cleanLine}</li>`;
                         }
                     } else if (activeSection === "includes") {
-                        // تنظيف الأيقونات القديمة إن وُجدت
-                        let cleanLine = trimmed.replace(/^[-•✅📍🌟]/g, "").trim();
+                        let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
                         priceIncludes += `<li style="margin-bottom: 5px;">${cleanLine}</li>`;
                     } else if (activeSection === "program") {
-                        // تنظيف أي إيموجي قديم لعدم التكرار
-                        let cleanLine = trimmed.replace(/^[-•✅📍🔹🔸✨]/g, "").trim();
+                        let cleanLine = trimmed.replace(/^[*•\-✅📍🔹🔸✨]/g, "").trim();
                         
-                        // نظام ذكي لاختيار الأيقونة المناسبة للبرنامج
+                        // اختيار الأيقونات المناسبة ديناميكياً بناءً على الكلمات المفتاحية بالسطر
                         let stepIcon = "📍"; 
                         if (cleanLine.includes("الوصول") || cleanLine.includes("Arrivée")) stepIcon = "🚍";
                         else if (cleanLine.includes("المركز") || cleanLine.includes("مركز")) stepIcon = "🏢";
@@ -622,7 +623,7 @@
 
                         programSteps += `<div style="margin-bottom: 12px; position: relative; padding-right: 5px;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${stepIcon} ${cleanLine}</div>`;
                     } else if (activeSection === "luggage") {
-                        let cleanLine = trimmed.replace(/^[-•🎒✅📍]/g, "").trim();
+                        let cleanLine = trimmed.replace(/^[*•\-🎒✅📍]/g, "").trim();
                         luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${cleanLine}</span>`;
                     }
                 });
@@ -652,7 +653,7 @@
                 if (luggageItems) {
                     formattedHTML += `
                     <div style="background-color: #fff9db; border: 1px dashed #f59f00; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-                        <h4 style="margin-top: 0; color: #f59f00; margin-bottom: 10px;"><i class="fa-solid fa-suitcase"></i>🎒 مستلزمات يُنصح بإحضارها:</h4>
+                        <h4 style="margin-top: 0; color: #f59f00; margin-bottom: 10px;"><i class="fa-solid fa-suitcase"></i> المستلزمات والمعدات المطلوبة:</h4>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">${luggageItems}</div>
                     </div>`;
                 }
@@ -702,12 +703,10 @@
             document.getElementById('tripModal').classList.add('show');
         }
 
-        // 6. دالة إغلاق النافذة المنبثقة
         function closeTripModal() {
             document.getElementById('tripModal').classList.remove('show');
         }
 
-        // 7. إغلاق النافذة عند الضغط خارجها
         window.onclick = function(event) {
             const modal = document.getElementById('tripModal');
             if (event.target === modal) {
@@ -715,7 +714,6 @@
             }
         }
 
-        // 8. تشغيل الدالة تلقائياً عند فتح الصفحة
         document.addEventListener('DOMContentLoaded', loadTrips);
     </script>
 <div id="bookingModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; direction: rtl; box-sizing: border-box;">
