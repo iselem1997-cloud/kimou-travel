@@ -524,43 +524,40 @@ function closeBookingModal() {
     document.getElementById('reservationForm').reset();
 }
 
-// 3. دالة استقبال بيانات الزبون المحدثة وحفظها بالكامل
+// 3. دالة استقبال وحفظ الحجز مع خانة الوجهة الجديدة
 function submitReservation(event) {
     event.preventDefault(); // منع الصفحة من التحديث عند الإرسال
     
     const tripTitle = document.getElementById('bookedTripTitle').innerText;
     const name = document.getElementById('clientName').value;
     const phone = document.getElementById('clientPhone').value;
-    const seats = document.getElementById('clientSeats').value;
-    
-    // جلب قيم الخانات الجديدة
     const birthDate = document.getElementById('clientBirthDate').value;
     const departureDate = document.getElementById('clientDepartureDate').value;
-    const tripType = document.getElementById('clientTripType').value;
-    const paymentMethod = document.getElementById('clientPaymentMethod').value;
     
-    // تجميع كل البيانات في كائن واحد شامل
+    // جلب قيمة الوجهة الجديدة التي كتبها الزبون تلقائياً
+    const destination = document.getElementById('clientDestination').value;
+    const paymentMethod = document.getElementById('clientPaymentMethod').value;
+    const seats = "1"; // قيمة افتراضية ثابتة بعد حذف الخانة
+    
+    // تجميع البيانات لحفظها
     const reservationData = {
         trip: tripTitle,
         clientName: name,
         clientPhone: phone,
-        clientSeats: seats,
         clientBirthDate: birthDate,
         clientDepartureDate: departureDate,
-        clientTripType: tripType,
+        clientDestination: destination, // حفظ الوجهة المكتوبة
         clientPaymentMethod: paymentMethod,
+        clientSeats: seats,
         date: new Date().toLocaleString('fr-FR')
     };
     
-    // جلب الحجوزات القديمة المخزنة أو إنشاء مصفوفة فارغة جديدة
     let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
     reservations.push(reservationData);
     
-    // حفظ التحديث في ذاكرة المتصفح
     localStorage.setItem('tripReservations', JSON.stringify(reservations));
     
-    // إشعار الزبون بنجاح العملية
-    alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterons bientôt.');
+    alert('Merci ! Votre demande de réservation a été reçue avec succès. Nous vous contacterون bientôt.');
     closeBookingModal();
 }
         
@@ -620,42 +617,51 @@ function submitReservation(event) {
         // تشغيل الدالة تلقائياً بمجرد فتح الزائر للصفحة
         document.addEventListener('DOMContentLoaded', loadTrips);
     </script>
-<div id="bookingModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; direction: rtl;">
-    <div style="background-color: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative;">
+<div id="bookingModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; direction: rtl; box-sizing: border-box;">
+    <div style="background-color: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; box-sizing: border-box;">
         <span onclick="closeBookingModal()" style="position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #aaa;">&times;</span>
         
-        <h3 style="margin-top: 0; color: #333; margin-bottom: 5px; text-align: center;">طلب حجز رحلة</h3>
-        <p id="bookedTripTitle" style="font-weight: bold; color: #28a745; margin-bottom: 20px; font-size: 15px; text-align: center;"></p>
+        <h3 style="margin-top: 0; color: #333; margin-bottom: 5px; text-align: center; font-family: inherit;">طلب حجز رحلة</h3>
+        <p id="bookedTripTitle" style="font-weight: bold; color: #28a745; margin-bottom: 20px; font-size: 15px; text-align: center; font-family: inherit;"></p>
         
-        <form id="reservationForm" onsubmit="submitReservation(event)">
+        <form id="reservationForm" onsubmit="submitReservation(event)" style="box-sizing: border-box; width: 100%;">
             
-            <div style="margin-bottom: 12px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">الاسم الكامل:</label>
-                <input type="text" id="clientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">الاسم الكامل:</label>
+                <input type="text" id="clientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; text-align: right;">
             </div>
             
-            <div style="margin-bottom: 12px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">رقم الهاتف:</label>
-                <input type="tel" id="clientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; text-align: right;">
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">رقم الهاتف:</label>
+                <input type="tel" id="clientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; text-align: right; direction: ltr;">
             </div>
 
-            <div style="margin-bottom: 12px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">تاريخ الميلاد:</label>
-                <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;">
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">تاريخ الميلاد:</label>
+                <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; text-align: right; direction: rtl;">
             </div>
 
-            <div style="margin-bottom: 12px;">
-                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">تاريخ الانطلاق :</label>
-                <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-family: inherit;">
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">تاريخ الانطلاق:</label>
+                <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; text-align: right; direction: rtl;">
             </div>
 
-                <div>
-                    <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">الوجهة:</label>
-                    <select id="clientTripType" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; height: 40px; background: white;">
-
-                    </select>
-                </div>
+            <div style="margin-bottom: 12px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">الوجهة:</label>
+                <input type="text" id="clientDestination" placeholder="مثال: بجاية، جيجل، تمنراست..." required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; text-align: right;">
             </div>
+
+            <div style="margin-bottom: 20px; text-align: right;">
+                <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold; color: #333;">طريقة الدفع:</label>
+                <select id="clientPaymentMethod" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 14px; height: 40px; background-color: white; text-align: right; direction: rtl;">
+                    <option value="الوكالة">نقداً في مقر الوكالة</option>
+                </select>
+            </div>
+
+            <button type="submit" style="width: 100%; background-color: #28a745; color: white; border: none; padding: 12px; border-radius: 4px; font-size: 16px; font-weight: bold; cursor: pointer; box-sizing: border-box; display: block; text-align: center;">تأكيد إرسال الطلب</button>
+        </form>
+    </div>
+</div>
 
             <div style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 5px; font-size: 14px; font-weight: bold;">طريقة الدفع:</label>
