@@ -524,7 +524,7 @@ function closeBookingModal() {
     document.getElementById('reservationForm').reset();
 }
 
-// 3. استقبال بيانات الزبون وحفظها
+// 3. دالة استقبال بيانات الزبون المحدثة وحفظها بالكامل
 function submitReservation(event) {
     event.preventDefault(); // منع الصفحة من التحديث عند الإرسال
     
@@ -533,12 +533,22 @@ function submitReservation(event) {
     const phone = document.getElementById('clientPhone').value;
     const seats = document.getElementById('clientSeats').value;
     
-    // تجميع البيانات في كائن واحد
+    // جلب قيم الخانات الجديدة
+    const birthDate = document.getElementById('clientBirthDate').value;
+    const departureDate = document.getElementById('clientDepartureDate').value;
+    const tripType = document.getElementById('clientTripType').value;
+    const paymentMethod = document.getElementById('clientPaymentMethod').value;
+    
+    // تجميع كل البيانات في كائن واحد شامل
     const reservationData = {
         trip: tripTitle,
         clientName: name,
         clientPhone: phone,
         clientSeats: seats,
+        clientBirthDate: birthDate,
+        clientDepartureDate: departureDate,
+        clientTripType: tripType,
+        clientPaymentMethod: paymentMethod,
         date: new Date().toLocaleString('fr-FR')
     };
     
