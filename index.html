@@ -140,11 +140,14 @@
             border-radius: 2px;
         }
 
-        .tours-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+        .tours-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* تجعل الكروت تبدأ من اليسار تماماً */
+    direction: ltr;              /* تحويل اتجاه ترتيب العناصر من اليسار لليمين */
+    gap: 20px;                   /* مسافة متناسقة بين البطاقات */
+}
+
 
 .tour-card {
     max-width: 340px; /* تكبير العرض قليلاً ليعطي مساحة مريحة للنصوص والصورة */
