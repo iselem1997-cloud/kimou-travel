@@ -508,12 +508,46 @@
 
         // 2. فتح نافذة الحجز وتحديد اسم الرحلة والوجهة تلقائياً
 function openBookingModal(tripTitle) {
-    // 1. تحديث اسم الرحلة والوجهة داخل الاستمارة المنبثقة
-    document.getElementById('bookedTripTitle').innerText = "الرحلة: " + tripTitle;
-    document.getElementById('clientDestination').value = tripTitle;
+    // وضع اسم الرحلة في العنوان المخفي داخل الاستمارة
+    document.getElementById('modalTripTitle').value = tripTitle;
+    document.getElementById('tripDisplayTitle').innerText = tripTitle;
     
-    // 2. إظهار النافذة المنبثقة الأنيقة المصممة بـ CSS
-    document.getElementById('bookingModal').style.display = 'flex';
+    // إظهار النافذة المنبثقة
+    document.getElementById('customBookingModal').style.display = 'flex';
+}
+
+function closeBookingModal() {
+    // إغلاق النافذة المنبثقة
+    document.getElementById('customBookingModal').style.display = 'none';
+}
+
+function submitBookingForm(event) {
+    event.preventDefault();
+    
+    // جلب البيانات من القائمة
+    const trip = document.getElementById('modalTripTitle').value;
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const birthDate = document.getElementById('clientBirthDate').value;
+    const departureDate = document.getElementById('clientDepartureDate').value;
+
+    const reservationData = {
+        trip: trip,
+        clientName: name,
+        clientPhone: phone,
+        clientBirthDate: birthDate,
+        clientDepartureDate: departureDate,
+        date: new Date().toLocaleString('fr-FR')
+    };
+
+    // حفظ البيانات في لوحة التحكم (LocalStorage)
+    let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
+    reservations.push(reservationData);
+    localStorage.setItem('tripReservations', JSON.stringify(reservations));
+
+    alert("تم تسجيل حجزك بنجاح وسيزهر في لوحة التحكم!");
+    closeBookingModal();
+    document.getElementById('reservationForm').reset(); // إعادة تهيئة الحقول
 }
 
         // 3. إغلاق نافذة الحجز وتنظيف الخانات
