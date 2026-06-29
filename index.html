@@ -762,5 +762,39 @@
     </div>
 </div>
 
+    <script>
+    // دالة إرسال الحجز لحفظه في الـ LocalStorage لتراه لوحة التحكم
+    function sendNewBooking(name, phone, tripName) {
+        let currentBookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+        
+        let newBooking = {
+            customerName: name,
+            customerPhone: phone,
+            tripTitle: tripName,
+            status: 'pending', 
+            date: new Date().toLocaleDateString('fr-FR')
+        };
+        
+        currentBookings.push(newBooking);
+        localStorage.setItem('kimou_bookings', JSON.stringify(currentBookings));
+        alert("🎉 تم إرسال حجزك بنجاح! ستتصل بك الوكالة لتأكيد الحجز.");
+    }
+
+    // دالة تفتح نافذة للزبون ليدخل معلوماته
+    function openBookingModal(tripTitle) {
+        const name = prompt("الرجاء إدخال اسمك الكامل (Nom & Prénom):");
+        if (!name || name.trim() === "") return;
+
+        const phone = prompt("الرجاء إدخال رقم هاتفك (Numéro de téléphone):");
+        if (!phone || phone.trim() === "") {
+            alert("⚠️ رقم الهاتف ضروري لإتمام الحجز!");
+            return;
+        }
+
+        sendNewBooking(name, phone, tripTitle);
+    }
+    </script>
+    <!-- ⬆️ نهاية كود الحجز ⬆️ -->
+
 </body>
 </html>"""
