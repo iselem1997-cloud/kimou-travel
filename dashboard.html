@@ -15,6 +15,7 @@
             --bg-dark: #112233;
             --sidebar-width: 260px;
             --white: #ffffff;
+            --success: #2ecc71;
         }
         * {
             box-sizing: border-box;
@@ -121,6 +122,7 @@
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
         .card-title {
             font-size: 18px;
@@ -179,6 +181,16 @@
             width: 100%;
         }
         .btn-secondary:hover { background-color: #e2582b; }
+        
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-pending { background-color: #f1c40f; }
+        .badge-confirmed { background-color: #2ecc71; }
     </style>
 </head>
 <body>
@@ -197,6 +209,27 @@
                 <span>Direction Kimou Travel</span>
             </div>
             <a href="admin.html" class="btn-logout"><i class="fa-solid fa-power-off"></i> Déconnexion</a>
+        </div>
+
+        <div class="card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: right; direction: rtl;">
+            <h3 style="color: #1e3d59; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+                <i class="fa-solid fa-bell font-secondary" style="color: var(--secondary);"></i> طلبات الحجوزات الحالية (قائمة الانتظار)
+            </h3>
+            <div class="table-responsive">
+                <table class="table" style="width: 100%; text-align: right; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #f8f9fa; color: #1e3d59;">
+                            <th style="padding: 12px;">اسم الزبون</th>
+                            <th style="padding: 12px;">رقم الهاتف</th>
+                            <th style="padding: 12px;">الرحلة المطلوبة</th>
+                            <th style="padding: 12px;">حالة الحجز</th>
+                            <th style="padding: 12px; text-align: center;">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="manageBookingsTable">
+                        </tbody>
+                </table>
+            </div>
         </div>
 
         <div class="dashboard-grid">
@@ -243,9 +276,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-    <label>Images du Circuit (Sélectionnez plusieurs) *</label>
-    <input type="file" id="tripImageFile" class="form-control" accept="image/*" multiple required>
-</div>
+                        <label>Images du Circuit (Sélectionnez plusieurs) *</label>
+                        <input type="file" id="tripImageFile" class="form-control" accept="image/*" multiple required>
+                    </div>
 
                      
                     <div class="form-group" style="text-align: right; margin-bottom: 15px;">
@@ -255,25 +288,26 @@
 
                     <button type="submit" class="btn-secondary">Enregistrer et Publier l'offre</button>
                 </form>
-                <div class="card mt-5" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 30px; text-align: right; direction: rtl;">
-    <h3 style="color: #1e3d59; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
-        <i class="fa-solid fa-list-check"></i> إدارة الرحلات المنشورة حالياً
-    </h3>
-    <div class="table-responsive">
-        <table class="table" style="width: 100%; text-align: right;">
-            <thead>
-                <tr style="background-color: #f8f9fa; color: #1e3d59;">
-                    <th style="padding: 12px;">اسم الرحلة</th>
-                    <th style="padding: 12px;">المدة</th>
-                    <th style="padding: 12px;">السعر</th>
-                    <th style="padding: 12px; text-align: center;">الإجراء</th>
-                </tr>
-            </thead>
-            <tbody id="manageTripsTable">
-                </tbody>
-        </table>
-    </div>
-</div>
+
+                <div class="card" style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 30px; text-align: right; direction: rtl;">
+                    <h3 style="color: #1e3d59; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;">
+                        <i class="fa-solid fa-list-check"></i> إدارة الرحلات المنشورة حالياً
+                    </h3>
+                    <div class="table-responsive">
+                        <table class="table" style="width: 100%; text-align: right;">
+                            <thead>
+                                <tr style="background-color: #f8f9fa; color: #1e3d59;">
+                                    <th style="padding: 12px;">اسم الرحلة</th>
+                                    <th style="padding: 12px;">المدة</th>
+                                    <th style="padding: 12px;">السعر</th>
+                                    <th style="padding: 12px; text-align: center;">الإجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody id="manageTripsTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -297,108 +331,165 @@
     });
 
     // 2. كود سحب وحفظ الرحلات مع الوصف التفصيلي والصور
-document.getElementById('tripForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    document.getElementById('tripForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-    const title = document.getElementById('tripTitle').value;
-    const duration = document.getElementById('tripDuration').value;
-    const price = document.getElementById('tripPrice').value;
-    const start = document.getElementById('startDate').value;
-    const end = document.getElementById('endDate').value;
-    const detailedDesc = document.getElementById('tripDetailedDesc').value;
-    const imageFiles = document.getElementById('tripImageFile').files;
+        const title = document.getElementById('tripTitle').value;
+        const duration = document.getElementById('tripDuration').value;
+        const price = document.getElementById('tripPrice').value;
+        const start = document.getElementById('startDate').value;
+        const end = document.getElementById('endDate').value;
+        const detailedDesc = document.getElementById('tripDetailedDesc').value;
+        const imageFiles = document.getElementById('tripImageFile').files;
 
-    if (imageFiles.length === 0) {
-        alert('⚠️ Veuillez sélectionner au moins une image!');
-        return;
-    }
+        if (imageFiles.length === 0) {
+            alert('⚠️ Veuillez sélectionner au moins une image!');
+            return;
+        }
 
-    const base64Images = [];
-    let filesProcessed = 0;
+        const base64Images = [];
+        let filesProcessed = 0;
 
-    // دالة لقراءة كل صورة على حدة وتحويلها
-    for (let i = 0; i < imageFiles.length; i++) {
-        const reader = new FileReader();
-        reader.onloadend = function() {
-            base64Images.push(reader.result); // إضافة الصورة المحولة للمصفوفة
-            filesProcessed++;
+        for (let i = 0; i < imageFiles.length; i++) {
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                base64Images.push(reader.result);
+                filesProcessed++;
 
-            // عند الانتهاء من تحويل جميع الصور المرفوعة
-            if (filesProcessed === imageFiles.length) {
-                const newTrip = {
-                    title: title,
-                    duration: duration,
-                    price: price,
-                    startDate: start,
-                    endDate: end,
-                    detailedDesc: detailedDesc,
-                    images: base64Images // حفظ مصفوفة الصور كاملة هنا
-                };
+                if (filesProcessed === imageFiles.length) {
+                    const newTrip = {
+                        title: title,
+                        duration: duration,
+                        price: price,
+                        startDate: start,
+                        endDate: end,
+                        detailedDesc: detailedDesc,
+                        images: base64Images
+                    };
 
-                let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-                trips.push(newTrip);
-                localStorage.setItem('kimou_trips', JSON.stringify(trips));
+                    let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+                    trips.push(newTrip);
+                    localStorage.setItem('kimou_trips', JSON.stringify(trips));
 
-                alert('🎉 Offre enregistrée avec succès! تم نشر العرض وحفظ الصور بنجاح');
-                document.getElementById('tripForm').reset();
-            }
-        };
-        reader.readAsDataURL(imageFiles[i]);
-    }
-});
-        // دالة لعرض الرحلات الحالية داخل جدول الإدارة مع زر الحذف
-function displayManageTrips() {
-    const tableBody = document.getElementById('manageTripsTable');
-    let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-
-    if (trips.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">⚠️ لا توجد أي رحلات منشورة حالياً لتعديلها أو حذفها.</td></tr>`;
-        return;
-    }
-
-    tableBody.innerHTML = ''; // تفريغ الجدول قبل إعادة البناء
-
-    trips.forEach((trip, index) => {
-        const row = document.createElement('tr');
-        row.style.borderBottom = '1px solid #eee';
-        row.innerHTML = `
-            <td style="padding: 12px; font-weight: bold; color: #333;">${trip.title}</td>
-            <td style="padding: 12px; color: #666;">${trip.duration}</td>
-            <td style="padding: 12px; color: var(--secondary); font-weight: bold;">${trip.price}</td>
-            <td style="padding: 12px; text-align: center;">
-                <button class="btn btn-danger btn-sm" onclick="deleteTrip(${index})" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                    <i class="fa-solid fa-trash-can"></i> Supprimer (حذف)
-                </button>
-            </td>
-        `;
-        tableBody.appendChild(row);
+                    alert('🎉 Offre enregistrée avec succès! تم نشر العرض وحفظ الصور بنجاح');
+                    document.getElementById('tripForm').reset();
+                    displayManageTrips(); // تحديث الجدول فوراً
+                }
+            };
+            reader.readAsDataURL(imageFiles[i]);
+        }
     });
-}
 
-// دالة حذف الرحلة بناءً على موقعها (Index) في المصفوفة
-function deleteTrip(index) {
-    if (confirm("⚠️ هل أنت متأكد تماماً من رغبتك في حذف هذه الرحلة نهائياً؟ (سيتم إزالتها من موقع الزبائن فوراً)")) {
+    // دالة لعرض الرحلات الحالية داخل جدول الإدارة مع زر الحذف
+    function displayManageTrips() {
+        const tableBody = document.getElementById('manageTripsTable');
         let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-        
-        // إزالة الرحلة المحددة من المصفوفة
-        trips.splice(index, 1);
-        
-        // حفظ المصفوفة الجديدة في الذاكرة بعد الحذف
-        localStorage.setItem('kimou_trips', JSON.stringify(trips));
-        
-        // تحديث جدول الإدارة أمامك لترى النتيجة فوراً
-        displayManageTrips();
-        
-        alert("🗑️ تم حذف العرض بنجاح واختفى من موقع الزبائن!");
+
+        if (trips.length === 0) {
+            tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #888; padding: 20px;">⚠️ لا توجد أي رحلات منشورة حالياً لتعديلها أو حذفها.</td></tr>`;
+            return;
+        }
+
+        tableBody.innerHTML = '';
+
+        trips.forEach((trip, index) => {
+            const row = document.createElement('tr');
+            row.style.borderBottom = '1px solid #eee';
+            row.innerHTML = `
+                <td style="padding: 12px; font-weight: bold; color: #333;">${trip.title}</td>
+                <td style="padding: 12px; color: #666;">${trip.duration}</td>
+                <td style="padding: 12px; color: var(--secondary); font-weight: bold;">${trip.price}</td>
+                <td style="padding: 12px; text-align: center;">
+                    <button class="btn btn-danger btn-sm" onclick="deleteTrip(${index})" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                        <i class="fa-solid fa-trash-can"></i> Supprimer
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
     }
-}
 
-// تشغيل دالة العرض تلقائياً عند فتح لوحة التحكم ليعمل الجدول فوراً
-document.addEventListener('DOMContentLoaded', displayManageTrips);
+    function deleteTrip(index) {
+        if (confirm("⚠️ هل أنت متأكد تماماً من رغبتك في حذف هذه الرحلة نهائياً؟")) {
+            let trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+            trips.splice(index, 1);
+            localStorage.setItem('kimou_trips', JSON.stringify(trips));
+            displayManageTrips();
+            alert("🗑️ تم حذف العرض بنجاح!");
+        }
+    }
 
-// تحديث بسيط على كود الحفظ القديم لديك: لكي يقوم الجدول بتحديث نفسه فوراً عند إضافة رحلة جديدة
-// ابحث عن السطر الذي يحتوي على (document.getElementById('tripForm').reset();) داخل كود السحب المطور وضع تحته هذا السطر المباشر:
-// displayManageTrips();
+    // ==========================================
+    // 3. كود إدارة وعرض الحجوزات الجديد (الربط الفوري)
+    // ==========================================
+    function displayBookings() {
+        const bookingTableBody = document.getElementById('manageBookingsTable');
+        // سحب الحجوزات المخزنة (التي يرسلها كود صفحة الزبون)
+        let bookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+
+        if (bookings.length === 0) {
+            bookingTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #888; padding: 25px;">📭 لا توجد طلبات حجز جديدة حتى الآن.</td></tr>`;
+            return;
+        }
+
+        bookingTableBody.innerHTML = '';
+
+        bookings.forEach((booking, index) => {
+            const statusBadge = booking.status === 'confirmed' 
+                ? `<span class="badge badge-confirmed">تم التأكيد</span>` 
+                : `<span class="badge badge-pending">قيد الانتظار</span>`;
+
+            const row = document.createElement('tr');
+            row.style.borderBottom = '1px solid #eee';
+            row.innerHTML = `
+                <td style="padding: 12px; font-weight: 600;">${booking.customerName}</td>
+                <td style="padding: 12px; direction: ltr; text-align: right;">${booking.customerPhone}</td>
+                <td style="padding: 12px; color: var(--primary); font-weight: bold;">${booking.tripTitle}</td>
+                <td style="padding: 12px;">${statusBadge}</td>
+                <td style="padding: 12px; text-align: center; gap: 5px; display: flex; justify-content: center;">
+                    ${booking.status !== 'confirmed' ? `
+                    <button onclick="confirmBooking(${index})" style="background-color: #2ecc71; color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                        <i class="fa-solid fa-check"></i> تأكيد
+                    </button>` : ''}
+                    <button onclick="deleteBooking(${index})" style="background-color: #e74c3c; color: white; border: none; padding: 6px 10px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                        <i class="fa-solid fa-trash"></i> حذف
+                    </button>
+                </td>
+            `;
+            bookingTableBody.appendChild(row);
+        });
+    }
+
+    // دالة لتأكيد الحجز وتغيير حالته
+    window.confirmBooking = function(index) {
+        let bookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+        bookings[index].status = 'confirmed';
+        localStorage.setItem('kimou_bookings', JSON.stringify(bookings));
+        displayBookings();
+    }
+
+    // دالة لحذف الحجز
+    window.deleteBooking = function(index) {
+        if(confirm("هل أنت متأكد من حذف طلب الحجز هذا؟")) {
+            let bookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+            bookings.splice(index, 1);
+            localStorage.setItem('kimou_bookings', JSON.stringify(bookings));
+            displayBookings();
+        }
+    }
+
+    // تشغيل الدوال بمجرد تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+        displayManageTrips();
+        displayBookings();
+        
+        // استماع للتغييرات في المساحة التخزينية (إذا تم الحجز من صفحة أخرى مفتوحة في المتصفح)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'kimou_bookings') {
+                displayBookings();
+            }
+        });
+    });
     </script>
 </body>
 </html>
