@@ -271,7 +271,7 @@
                         <tr style="background-color: #f8f9fa; color: #1e3d59;">
                             <th style="padding: 12px; border-bottom: 2px solid #ddd;">اسم الزبون</th>
                             <th style="padding: 12px; border-bottom: 2px solid #ddd;">رقم الهاتف</th>
-                            <th style="padding: 12px; border-bottom: 2px solid #ddd;">الرحلة المطلوبة</th>
+                            <th style="padding: 12px; border-bottom: 2px solid #ddd;">تاريخ الميلاد</th> <th style="padding: 12px; border-bottom: 2px solid #ddd;">الرحلة المطلوبة</th>
                             <th style="padding: 12px; border-bottom: 2px solid #ddd;">حالة الحجز</th>
                             <th style="padding: 12px; border-bottom: 2px solid #ddd; text-align: center;" class="no-print">الإجراءات</th>
                         </tr>
@@ -332,7 +332,7 @@
 
                      
                     <div class="form-group" style="text-align: right; margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #444; text-align: left;">Programme détaillé (برنامج الرحلة بالتفصيل)</label>
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold; color: #444; text-align: left;">Programme detailed (برنامج الرحلة بالتفصيل)</label>
                         <textarea id="tripDetailedDesc" class="form-control" rows="5" placeholder="اكتب برنامج الرحلة بالتفصيل هنا (مثال: اليوم الأول، الثاني...)" style="width: 100%; padding: 10px; text-align: right; direction: rtl;"></textarea>
                     </div>
 
@@ -346,13 +346,14 @@
                     <div class="table-responsive">
                         <table class="table" style="width: 100%; text-align: right;">
                             <thead>
-                                <tr style="background-color: #f8f9fa; color: #1e3d59;">
-                                    <th style="padding: 12px;">اسم الرحلة</th>
-                                    <th style="padding: 12px;">المدة</th>
-                                    <th style="padding: 12px;">السعر</th>
-                                    <th style="padding: 12px; text-align: center;">الإجراء</th>
+                                <tr>
+                                    <th>عنوان الرحلة</th>
+                                    <th>المدة</th>
+                                    <th>السعر</th>
+                                    <th style="text-align: center;">إجراءات</th>
                                 </tr>
                             </thead>
+    
                             <tbody id="manageTripsTable">
                             </tbody>
                         </table>
@@ -469,15 +470,16 @@
         }
     }
 
-    // ==========================================
-    // 3. كود إدارة وعرض الحجوزات وتحديثها فوراً
-    // ==========================================
+    // =======================================================
+    // 3. كود إدارة وعرض الحجوزات وتحديثها (تمت إضافة قراءة تاريخ الميلاد هنا)
+    // =======================================================
     function displayBookings() {
         const bookingTableBody = document.getElementById('manageBookingsTable');
         let bookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
 
         if (bookings.length === 0) {
-            bookingTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #888; padding: 25px;">📭 لا توجد طلبات حجز جديدة حتى الآن.</td></tr>`;
+            // تحديث colspan إلى 6 لأننا أضفنا عموداً جديداً
+            bookingTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #888; padding: 25px;">📭 لا توجد طلبات حجز جديدة حتى الآن.</td></tr>`;
             return;
         }
 
@@ -493,7 +495,7 @@
             row.innerHTML = `
                 <td style="padding: 12px; font-weight: 600;">${booking.customerName}</td>
                 <td style="padding: 12px; direction: ltr; text-align: right;">${booking.customerPhone}</td>
-                <td style="padding: 12px; color: var(--primary); font-weight: bold;">${booking.tripTitle}</td>
+                <td style="padding: 12px; color: #555;">${booking.clientBirthDate || 'غير محدد'}</td> <td style="padding: 12px; color: var(--primary); font-weight: bold;">${booking.tripTitle}</td>
                 <td style="padding: 12px;">${statusBadge}</td>
                 <td style="padding: 12px; text-align: center; gap: 5px; display: flex; justify-content: center;" class="no-print">
                     ${booking.status !== 'confirmed' ? `
