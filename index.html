@@ -441,20 +441,22 @@
                     <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                 </div>
 
-                <div class="form-group" style="margin-bottom: 15px; text-align: right; direction: rtl;">
-                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">الوجهة (Destination):</label>
-                    <input type="text"id="destination_display" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9; color: #555; box-sizing: border-box; font-family: inherit;"name="destination">
+                <!-- حقل الوجهة التلقائي الموحد مع الستايل -->
+                <div style="margin-bottom: 15px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #333;">الوجهة (Destination):</label>
+                    <input type="text" id="destination_display" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; background-color: #f9f9f9; color: #555; box-sizing: border-box; font-family: inherit; cursor: not-allowed;" name="destination">
                 </div>
      
+                <!-- تم تصحيح الـ id هنا ليصبح clientDepartureDate -->
                 <div style="margin-bottom: 20px; text-align: right;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
-                    <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                    <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                 </div>
 
-               <!-- حقل طريقة الدفع الجديد (يُوضع أسفل حقل تاريخ الانطلاق مباشرة) -->
-                <div style="margin-bottom: 15px; text-align: right; direction: rtl;">
-                    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">طريقة الدفع (Mode de Paiement):</label>
-                    <input type="text" value="نقداً في مقر الوكالة (Espèces au bureau)"readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9; color: #555; box-sizing: border-box; cursor: not-allowed;"name="payment_method">
+                <!-- حقل طريقة الدفع الموحد مع الستايل -->
+                <div style="margin-bottom: 15px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px; color: #333;">طريقة الدفع (Mode de Paiement):</label>
+                    <input type="text" value="نقداً في مقر الوكالة (Espèces au bureau)" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; background-color: #f9f9f9; color: #555; box-sizing: border-box; cursor: not-allowed;" name="payment_method">
                 </div>
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -519,10 +521,17 @@ function loadTrips() {
     });
 }
 
-        // 2. دالة فتح قائمة الحجز المنبثقة وتغذيتها باسم الرحلة
+        // 2. دالة فتح قائمة الحجز المنبثقة وتغذيتها باسم الرحلة تلقائياً في حقل الوجهة
         function openBookingModal(tripTitle) {
             document.getElementById('modalTripTitle').value = tripTitle;
             document.getElementById('tripDisplayTitle').innerText = tripTitle;
+            
+            // هنا يتم تحديث حقل الوجهة أوتوماتيكياً حسب نوع الرحلة المختارة
+            const destinationField = document.getElementById('destination_display');
+            if (destinationField) {
+                destinationField.value = tripTitle;
+            }
+            
             document.getElementById('bookingModal').style.display = 'flex';
         }
 
@@ -532,7 +541,7 @@ function loadTrips() {
             document.getElementById('reservationForm').reset();
         }
 
-        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (tripReservations)
+        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (آمنة تماماً الآن)
         function submitBookingForm(event) {
             event.preventDefault();
             
@@ -540,7 +549,7 @@ function loadTrips() {
             const name = document.getElementById('clientName').value;
             const phone = document.getElementById('clientPhone').value;
             const birthDate = document.getElementById('clientBirthDate').value;
-            const departureDate = document.getElementById('clientDepartureDate').value;
+            const departureDate = document.getElementById('clientDepartureDate').value; // تعمل الآن بنجاح!
 
             const reservationData = {
                 trip: trip,
@@ -549,7 +558,7 @@ function loadTrips() {
                 clientBirthDate: birthDate,
                 clientDepartureDate: departureDate,
                 clientDestination: trip, 
-                clientPaymentMethod: "الدفع عند الحضور",
+                clientPaymentMethod: "نقداً في مقر الوكالة (Espèces au bureau)",
                 clientSeats: "1",
                 date: new Date().toLocaleString('fr-FR')
             };
