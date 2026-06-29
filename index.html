@@ -814,6 +814,95 @@ function submitBookingForm(event) {
         localStorage.setItem('kimou_bookings', JSON.stringify(currentBookings));
         alert("🎉 تم إرسال حجزك بنجاح! ستتصل بك الوكالة لتأكيد الحجز.");
     }
+        <div id="customBookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; direction: rtl;">
+        <div style="background-color: white; padding: 25px; border-radius: 10px; width: 90%; max-width: 450px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); position: relative; font-family: sans-serif;">
+            
+            <h3 style="margin-top: 0; color: #333; border-bottom: 2px solid #28a745; padding-bottom: 10px;">استمارة حجز: <span id="tripDisplayTitle" style="color: #28a745;"></span></h3>
+            
+            <form id="reservationForm" onsubmit="submitBookingForm(event)">
+                <input type="hidden" id="modalTripTitle">
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">الاسم الكامل (Nom & Prénom):</label>
+                    <input type="text" id="clientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                </div>
 
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">رقم الهاتف (Téléphone):</label>
+                    <input type="tel" id="clientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الميلاد (Date de Naissance):</label>
+                    <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
+                    <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">تأكيد الحجز</button>
+                    <button type="button" onclick="closeBookingModal()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body> ```
+
+---
+
+### الخطوة 2: تحديث دالة التشغيل في ملف الـ JavaScript
+افتح ملف الـ **JavaScript** الخاص بموقعك (أو بداخل وسم `<script>` إذا كان الكود مدمجاً في نفس الصفحة). 
+
+ابحث عن دالة `openBookingModal` القديمة التي كانت تفتح النوافذ المتتالية، **واحذفها تماماً**، ثم ضع مكانها هذه الدوال الثلاثة الجديدة:
+
+```javascript
+function openBookingModal(tripTitle) {
+    // 1. تمرير اسم الرحلة وعرضه بالاستمارة
+    document.getElementById('modalTripTitle').value = tripTitle;
+    document.getElementById('tripDisplayTitle').innerText = tripTitle;
+    
+    // 2. إظهار القائمة
+    document.getElementById('customBookingModal').style.display = 'flex';
+}
+
+function closeBookingModal() {
+    // إخلاق القائمة
+    document.getElementById('customBookingModal').style.display = 'none';
+}
+
+function submitBookingForm(event) {
+    event.preventDefault(); // منع الصفحة من إعادة التحميل
+    
+    // جلب القيم التي أدخلها الزبون في القائمة
+    const trip = document.getElementById('modalTripTitle').value;
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const birthDate = document.getElementById('clientBirthDate').value;
+    const departureDate = document.getElementById('clientDepartureDate').value;
+
+    // تجهيز كائن الحجز
+    const reservationData = {
+        trip: trip,
+        clientName: name,
+        clientPhone: phone,
+        clientBirthDate: birthDate,
+        clientDepartureDate: departureDate,
+        date: new Date().toLocaleString('fr-FR')
+    };
+
+    // حفظ الحجز في لوحة التحكم (Local Storage)
+    let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
+    reservations.push(reservationData);
+    localStorage.setItem('tripReservations', JSON.stringify(reservations));
+
+    // إشعار نجاح وتنظيف الحقول
+    alert("تم تسجيل حجزك بنجاح وسيطهر في لوحة التحكم!");
+    closeBookingModal();
+    document.getElementById('reservationForm').reset();
+}
 </body>
 </html>"""
