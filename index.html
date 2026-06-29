@@ -507,13 +507,14 @@
         }
 
         // 2. فتح نافذة الحجز وتحديد اسم الرحلة والوجهة تلقائياً
-        function openBookingModal(tripTitle) {
-            document.getElementById('bookedTripTitle').innerText = "الرحلة: " + tripTitle;
-            if (document.getElementById('clientDestination')) {
-                document.getElementById('clientDestination').value = tripTitle;
-            }
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
+function openBookingModal(tripTitle) {
+    // 1. تحديث اسم الرحلة والوجهة داخل الاستمارة المنبثقة
+    document.getElementById('bookedTripTitle').innerText = "الرحلة: " + tripTitle;
+    document.getElementById('clientDestination').value = tripTitle;
+    
+    // 2. إظهار النافذة المنبثقة الأنيقة المصممة بـ CSS
+    document.getElementById('bookingModal').style.display = 'flex';
+}
 
         // 3. إغلاق نافذة الحجز وتنظيف الخانات
         function closeBookingModal() {
