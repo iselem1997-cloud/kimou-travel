@@ -443,13 +443,20 @@
 
                 <div style="margin-bottom: 20px; text-align: right;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
-                    <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                    <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
                 </div>
 
-                <div style="margin-bottom: 20px; text-align: right;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">طريقة الدفع (Mode de Paiement):</label>
-                    <input type="text" id="payment_method" name="payment_method" value="نقداً في مقر الوكالة (Espèce au bureau)" readonly class="form-control">
-                </div>
+               <!-- حقل طريقة الدفع الجديد (يُوضع أسفل حقل تاريخ الانطلاق مباشرة) -->
+<div style="margin-bottom: 15px; text-align: right; direction: rtl;">
+    <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #333;">
+        طريقة الدفع (Mode de Paiement):
+    </label>
+    <input type="text" 
+           value="نقداً في مقر الوكالة (Espèces au bureau)" 
+           readonly 
+           style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; background-color: #f9f9f9; color: #555; box-sizing: border-box; cursor: not-allowed;" 
+           name="payment_method">
+</div>
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">تأكيد الحجز</button>
