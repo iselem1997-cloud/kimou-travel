@@ -541,35 +541,40 @@ function loadTrips() {
             document.getElementById('reservationForm').reset();
         }
 
-        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (آمنة تماماً الآن)
-        function submitBookingForm(event) {
-            event.preventDefault();
-            
-            const trip = document.getElementById('modalTripTitle').value;
-            const name = document.getElementById('clientName').value;
-            const phone = document.getElementById('clientPhone').value;
-            const birthDate = document.getElementById('clientBirthDate').value;
-            const departureDate = document.getElementById('clientDepartureDate').value; // تعمل الآن بنجاح!
+        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (متوافقة 100%)
+function submitBookingForm(event) {
+    event.preventDefault();
+    
+    const trip = document.getElementById('modalTripTitle').value;
+    const name = document.getElementById('clientName').value;
+    const phone = document.getElementById('clientPhone').value;
+    const birthDate = document.getElementById('clientBirthDate').value;
+    const departureDate = document.getElementById('clientDepartureDate').value;
 
-            const reservationData = {
-                trip: trip,
-                clientName: name,
-                clientPhone: phone,
-                clientBirthDate: birthDate,
-                clientDepartureDate: departureDate,
-                clientDestination: trip, 
-                clientPaymentMethod: "نقداً في مقر الوكالة (Espèces au bureau)",
-                clientSeats: "1",
-                date: new Date().toLocaleString('fr-FR')
-            };
-            
-            let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
-            reservations.push(reservationData);
-            localStorage.setItem('tripReservations', JSON.stringify(reservations));
-            
-            alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيظهر في لوحة التحكم فوراً.');
-            closeBookingModal();
-        }
+    // بناء كائن الحجز بالمسميات المتوافقة تماماً مع لوحة تحكم Kimou Travel
+    const reservationData = {
+        tripTitle: trip,
+        customerName: name,
+        customerPhone: phone,
+        clientBirthDate: birthDate,
+        clientDepartureDate: departureDate,
+        clientDestination: trip, 
+        clientPaymentMethod: "نقداً في مقر الوكالة (Espèces au bureau)",
+        clientSeats: "1",
+        status: 'pending', // الحالة الافتراضية للحجز
+        date: new Date().toLocaleString('fr-FR')
+    };
+    
+    // جلب الحجوزات القديمة باستخدام المفتاح الصحيح المربوط مع لوحة التحكم
+    let reservations = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+    reservations.push(reservationData);
+    
+    // حفظ القائمة المحدثة في الـ LocalStorage
+    localStorage.setItem('kimou_bookings', JSON.stringify(reservations));
+    
+    alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيظهر في لوحة التحكم فوراً.');
+    closeBookingModal();
+}
         
         // 5. دالة فتح نافذة تفاصيل البرنامج الكاملة
         function openTripModal(index) {
