@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kimou Travel | وكالة السياحة والأسفار</title>
+    <!-- تضمين خط ك those لنفس الروح الاحترافية للوكالة -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
@@ -31,6 +32,7 @@
             line-height: 1.6;
         }
 
+        /* الهيدر وشريط التنقل */
         header {
             background-color: var(--primary);
             color: var(--white);
@@ -57,7 +59,7 @@
         }
 
         nav ul li {
-            margin-left: 20px;
+            margin-right: 20px;
         }
 
         nav ul li a {
@@ -72,6 +74,7 @@
             color: var(--accent);
         }
 
+        /* واجهة البانر الرئيسي */
         .hero {
             background: linear-gradient(rgba(30, 61, 89, 0.7), rgba(30, 61, 89, 0.8)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1353&q=80') no-repeat center center/cover;
             height: 70vh;
@@ -112,6 +115,7 @@
             transform: scale(1.05);
         }
 
+        /* قسم العروض والرحلات */
         .tours-section {
             padding: 60px 5%;
             background-color: var(--bg-light);
@@ -148,7 +152,8 @@
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.06);
             background: #fff;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease;
+            text-align: right;
         }
 
         .tour-card:hover {
@@ -164,13 +169,13 @@
 
         .tour-content {
             padding: 18px;
-            text-align: right;
         }
 
         .tour-title {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 10px;
+            color: var(--primary);
         }
 
         .tour-desc {
@@ -180,9 +185,6 @@
         }
 
         .tour-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             border-top: 1px solid #eee;
             padding-top: 15px;
         }
@@ -193,6 +195,7 @@
             font-weight: 700;
         }
 
+        /* قسم مميزات الوكالة */
         .features-section {
             padding: 60px 5%;
             text-align: center;
@@ -217,11 +220,16 @@
             margin-bottom: 15px;
         }
 
+        /* قسم تواصل معنا */
         .contact-section {
             padding: 60px 5%;
             background-color: var(--primary);
             color: var(--white);
             text-align: center;
+        }
+
+        .contact-section .section-title {
+            color: var(--white);
         }
 
         .contact-info {
@@ -242,6 +250,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
+        /* الفوتر */
         footer {
             background-color: #112233;
             color: #aaa;
@@ -250,6 +259,7 @@
             font-size: 14px;
         }
 
+        /* النوافذ المنبثقة (Modals) */
         .modal {
             display: none; 
             position: fixed;
@@ -264,10 +274,12 @@
             opacity: 0;
             transition: opacity 0.3s ease;
         }
+        
         .modal.show {
             display: flex;
             opacity: 1;
         }
+
         .modal-content {
             background-color: var(--white);
             width: 90%;
@@ -282,10 +294,12 @@
             display: flex;
             flex-direction: column;
         }
+
         @keyframes slideUp {
             from { transform: translateY(50px); }
             to { transform: translateY(0); }
         }
+
         .modal-header {
             padding: 20px;
             background: var(--primary);
@@ -294,7 +308,9 @@
             justify-content: space-between;
             align-items: center;
         }
+
         .modal-header h3 { font-weight: 700; font-size: 20px; }
+        
         .close-modal {
             color: var(--white);
             font-size: 24px;
@@ -302,6 +318,7 @@
             background: none;
             border: none;
         }
+
         .modal-body {
             padding: 20px;
             overflow-y: auto;
@@ -309,10 +326,20 @@
         }
         
         .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .main-preview-img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         
         .program-details {
@@ -323,6 +350,46 @@
             white-space: pre-line;
             font-size: 15px;
             color: #444;
+        }
+
+        /* تنسيقات حقول استمارة الحجز */
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: var(--font);
+            outline: none;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--secondary);
+        }
+        .btn-submit-form {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-submit-form:hover {
+            background-color: #218838;
         }
     </style>
 </head>
@@ -336,10 +403,10 @@
         </a>
         <nav>
             <ul>
-                <li><a href="#" class="cta-btn">Accueil</a></li>
-                <li><a href="#tours" class="cta-btn">Destination</a></li>
-                <li><a href="#features" class="cta-btn">Pourquoi Nous</a></li>
-                <li><a href="#contact" class="cta-btn">Contact</a></li>
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#tours">الرحلات</a></li>
+                <li><a href="#features">لماذا نحن</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
             </ul>
         </nav>
     </header>
@@ -348,15 +415,15 @@
     <section class="hero">
         <h1>وجهتك نحو الأفضل مع Kimou Travel</h1>
         <p>نصنع لك ذكريات لا تُنسى بأفضل الأسعار وأرقى الخدمات السياحية.</p>
-        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 20px;">
-            <a href="#tours" class="cta-btn">Découvrez les Offres</a>
+        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+            <a href="#tours" class="cta-btn">اكتشف العروض</a>
             <a href="https://www.instagram.com/kimou_travel/" target="_blank" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; padding: 12px 25px; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                 <i class="fab fa-instagram" style="font-size: 22px;"></i> Instagram
             </a>
         </div>
     </section>
 
-    <!-- لماذا تختارنا -->
+    <!-- مميزات الوكالة -->
     <section id="features" class="features-section">
         <h2 class="section-title">لماذا تختار Kimou Travel ؟</h2>
         <div class="features-grid">
@@ -378,21 +445,21 @@
         </div>
     </section>
 
-    <!-- العروض والرحلات -->
+    <!-- قسم الرحلات -->
     <section id="tours" class="tours-section">
         <h2 class="section-title">العروض و الرحلات</h2>
         <div class="tours-grid" id="tripsContainer"></div>
     </section>
 
-    <!-- نافذة تفاصيل البرنامج المنبثقة -->
+    <!-- نافذة تفاصيل الرحلة المنبثقة -->
     <div id="tripModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <button class="close-modal" onclick="closeTripModal()">&times;</button>
-                <h3 id="modalDisplayTripTitle">اسم الرحلة</h3>
+                <h3 id="modalTripTitle">اسم الرحلة</h3>
             </div>
             <div class="modal-body">
-                <img id="modalMainImg" src="" style="width: 100%; height: 350px; object-fit: contain; background-color: #f0f0f0; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <img id="modalMainImg" src="" class="main-preview-img" alt="معاينة الرحلة">
                 <div class="image-gallery" id="modalGallery"></div>
                 <h4 style="margin-bottom: 10px; color: var(--primary); font-weight: 700;"><i class="fa-solid fa-route"></i> برنامج الرحلة بالتفصيل:</h4>
                 <p id="modalTripDesc" class="program-details">تفاصيل البرنامج المكتوب...</p>
@@ -400,43 +467,54 @@
         </div>
     </div>
 
-    <!-- قائمة استمارة الحجز المنبثقة المحدثة والموحدة -->
-    <div id="bookingModal" style="display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; direction: rtl; padding: 15px;">
-        <div style="background-color: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); position: relative;">
-            <span onclick="closeBookingModal()" style="position: absolute; left: 20px; top: 15px; font-size: 26px; cursor: pointer; color: #aaa; font-weight: bold;">&times;</span>
-            
-            <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid #28a745; padding-bottom: 10px; font-size: 18px;">
-                استمارة حجز: <span id="tripDisplayTitle" style="color: #28a745;"></span>
-            </h3>
-            
-            <form id="reservationForm" onsubmit="submitBookingForm(event)">
-                <input type="hidden" id="modalTripTitle">
-                
-                <div style="margin-bottom: 15px; text-align: right;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">الاسم الكامل (Nom & Prénom):</label>
-                    <input type="text" id="clientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                </div>
+    <!-- نافذة استمارة الحجز التفاعلية الذكية -->
+    <div id="bookingModal" class="modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header" style="background: var(--primary);">
+                <button class="close-modal" onclick="closeBookingModal()">&times;</button>
+                <h3>حجز رحلة: <span id="bookedTripTitle" style="color: var(--accent);"></span></h3>
+            </div>
+            <div class="modal-body" style="padding: 25px;">
+                <form id="reservationForm" onsubmit="submitReservation(event)">
+                    <!-- حقل مخفي لحفظ اسم الرحلة ديناميكياً -->
+                    <input type="hidden" id="modalTripTitleInput">
+                    
+                    <div class="form-group">
+                        <label for="clientName">الاسم واللقب:</label>
+                        <input type="text" id="clientName" required placeholder="أدخل اسمك الكامل">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientPhone">رقم الهاتف:</label>
+                        <input type="tel" id="clientPhone" required placeholder="0XXXXXXXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientBirthDate">تاريخ الميلاد:</label>
+                        <input type="date" id="clientBirthDate" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clientDepartureDate">تاريخ الانطلاق المفضل:</label>
+                        <input type="date" id="clientDepartureDate" required>
+                    </div>
 
-                <div style="margin-bottom: 15px; text-align: right;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">رقم الهاتف (Téléphone):</label>
-                    <input type="tel" id="clientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                </div>
+                    <div class="form-group">
+                        <label for="clientDestination">الوجهة المحجوزة:</label>
+                        <input type="text" id="clientDestination" readonly style="background-color: #eee; font-weight: bold;">
+                    </div>
 
-                <div style="margin-bottom: 15px; text-align: right;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الميلاد (Date de Naissance):</label>
-                    <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                </div>
-
-                <div style="margin-bottom: 20px; text-align: right;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
-                    <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
-                </div>
-
-                <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">تأكيد الحجز</button>
-                    <button type="button" onclick="closeBookingModal()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">إلغاء</button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="clientPaymentMethod">طريقة الدفع الفضلة:</label>
+                        <select id="clientPaymentMethod">
+                            <option value="CCP / BaridiMob">CCP / BaridiMob</option>
+                            <option value="في الوكالة (سطيف)">نقداً في مقر الوكالة (سطيف)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit-form"><i class="fa-solid fa-check-circle"></i> تأكيد إرسال الطلب</button>
+                </form>
+            </div>
         </div>
     </div>
        
@@ -444,7 +522,7 @@
     <section id="contact" class="contact-section">
         <h2 class="section-title">هل أنت جاهز لبدء مغامرتك القادمة؟</h2>
         <p class="contact-info">تواصل معنا الآن مباشرة عبر الواتساب لتخصيص رحلتك أو الاستفسار عن تفاصيل الحجز</p>
-        <a href="https://wa.me/1234567890" class="whatsapp-link" target="_blank">💬 تواصل معنا عبر الواتساب</a>
+        <a href="https://wa.me/213XXXXXXXXX" class="whatsapp-link" target="_blank">💬 تواصل معنا عبر الواتساب</a>
     </section>
 
     <!-- الفوتر -->
@@ -453,7 +531,7 @@
     </footer>
 
     <script>
-        // 1. دالة تحميل وعرض الرحلات من الذاكرة
+        // 1. تحميل وعرض الرحلات من الـ LocalStorage ديناميكياً
         function loadTrips() {
             const container = document.getElementById('tripsContainer');
             const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
@@ -474,16 +552,16 @@
                     <div class="tour-img" style="background-image: url('${mainImg}')"></div>
                     <div class="tour-content">
                         <h3 class="tour-title">${trip.title}</h3>
-                        <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> ${trip.duration}</p>
+                        <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> المدة: ${trip.duration || 'غير محددة'}</p>
                         <div style="font-size: 13px; color: #555; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
-                            <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 18px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || trip.dateDepart || 'غير محدد'}</span>
-                            <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 18px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || trip.dateRetour || 'غير محدد'}</span>
+                            <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 18px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || 'غير محدد'}</span>
+                            <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 18px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || 'غير محدد'}</span>
                         </div>
                         <div class="tour-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 15px;">
-                            <span class="price" style="font-weight: 700; color: var(--primary); font-size: 16px;">Prix : ${trip.price} DZD</span>
-                            <div class="booking-buttons" style="display: flex; gap: 8px; align-items: center;">
-                                <button type="button" class="btn-details" onclick="openTripModal(${index})" style="background-color: var(--secondary, #ff9800); color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.3s ease;">تفاصيل البرنامج</button>
-                                <button type="button" class="btn-reserve" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.3s ease;">Réserver</button>
+                            <span class="price">Prix: ${trip.price} DZD</span>
+                            <div style="display: flex; gap: 8px;">
+                                <button type="button" onclick="openTripModal(${index})" style="background-color: var(--secondary); color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">التفاصيل</button>
+                                <button type="button" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700;">Réserver</button>
                             </div>
                         </div>
                     </div>
@@ -492,38 +570,48 @@
             });
         }
 
-        // 2. دالة فتح قائمة الحجز المنبثقة وتغذيتها باسم الرحلة
+        // 2. فتح نافذة استمارة الحجز وتمرير البيانات تلقائياً
         function openBookingModal(tripTitle) {
-            document.getElementById('modalTripTitle').value = tripTitle;
-            document.getElementById('tripDisplayTitle').innerText = tripTitle;
-            document.getElementById('bookingModal').style.display = 'flex';
-        }
-
-        // 3. إغلاق نافذة الحجز وتنظيف الخانات
-        function closeBookingModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-            document.getElementById('reservationForm').reset();
-        }
-
-        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (tripReservations)
-        function submitBookingForm(event) {
-            event.preventDefault();
+            document.getElementById('bookedTripTitle').innerText = tripTitle;
+            document.getElementById('modalTripTitleInput').value = tripTitle;
+            document.getElementById('clientDestination').value = tripTitle;
             
-            const trip = document.getElementById('modalTripTitle').value;
+            const modal = document.getElementById('bookingModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+
+        // 3. إغلاق نافذة الحجز وتنظيف الاستمارة
+        function closeBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('reservationForm').reset();
+            }, 300);
+        }
+
+        // 4. معالجة وحفظ الحجز في لوحة التحكم LocalStorage
+        function submitReservation(event) {
+            event.preventDefault();
+            const tripTitle = document.getElementById('modalTripTitleInput').value;
             const name = document.getElementById('clientName').value;
             const phone = document.getElementById('clientPhone').value;
             const birthDate = document.getElementById('clientBirthDate').value;
             const departureDate = document.getElementById('clientDepartureDate').value;
-
+            const destination = document.getElementById('clientDestination').value;
+            const paymentMethod = document.getElementById('clientPaymentMethod').value;
+            const seats = "1"; // الافتراضي مقعد واحد، يمكنك ترقيته لاحقاً لحقل إدخال عدد الأفراد إذا رغبت
+            
             const reservationData = {
-                trip: trip,
+                trip: tripTitle,
                 clientName: name,
                 clientPhone: phone,
                 clientBirthDate: birthDate,
                 clientDepartureDate: departureDate,
-                clientDestination: trip, 
-                clientPaymentMethod: "الدفع عند الحضور",
-                clientSeats: "1",
+                clientDestination: destination, 
+                clientPaymentMethod: paymentMethod,
+                clientSeats: seats,
                 date: new Date().toLocaleString('fr-FR')
             };
             
@@ -531,17 +619,17 @@
             reservations.push(reservationData);
             localStorage.setItem('tripReservations', JSON.stringify(reservations));
             
-            alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيظهر في لوحة التحكم فوراً.');
+            alert('تم تسجيل طلب حجزك بنجاح وسوف يظهر فوراً في لوحة التحكم الخاصة بك!');
             closeBookingModal();
         }
         
-        // 5. دالة فتح نافذة تفاصيل البرنامج الكاملة
+        // 5. فتح نافذة عرض برنامج تفاصيل الرحلة
         function openTripModal(index) {
             const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
             const trip = trips[index];
             if (!trip) return;
 
-            document.getElementById('modalDisplayTripTitle').innerText = trip.title;
+            document.getElementById('modalTripTitle').innerText = trip.title;
             let rawText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
             
             if (trip.detailedDesc) {
@@ -645,15 +733,10 @@
                 document.getElementById('modalTripDesc').innerHTML = rawText;
             }
 
+            // إعداد ألبوم الصور التفاعلي
             const mainImgElement = document.getElementById('modalMainImg');
             const galleryContainer = document.getElementById('modalGallery');
-            
             galleryContainer.innerHTML = ''; 
-            galleryContainer.style.display = 'flex';
-            galleryContainer.style.gap = '8px';
-            galleryContainer.style.flexWrap = 'wrap';
-            galleryContainer.style.marginTop = '12px';
-            galleryContainer.style.justifyContent = 'center';
 
             if (trip.images && trip.images.length > 0) {
                 mainImgElement.src = trip.images[0];
@@ -666,10 +749,6 @@
                     img.style.borderRadius = '6px';
                     img.style.cursor = 'pointer';
                     img.style.border = '2px solid #ddd';
-                    img.style.transition = 'transform 0.2s';
-                    
-                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
-                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
                     img.onclick = function() { mainImgElement.src = imgSrc; };
                     galleryContainer.appendChild(img);
                 });
@@ -677,22 +756,23 @@
                 mainImgElement.src = trip.image;
             }
 
-            document.getElementById('tripModal').classList.add('show');
+            const modal = document.getElementById('tripModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
         }
 
         function closeTripModal() {
-            document.getElementById('tripModal').classList.remove('show');
+            const modal = document.getElementById('tripModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.style.display = 'none', 300);
         }
 
+        // إغلاق النوافذ عند الضغط خارجها
         window.onclick = function(event) {
             const tripModal = document.getElementById('tripModal');
             const bookingModal = document.getElementById('bookingModal');
-            if (event.target === tripModal) {
-                closeTripModal();
-            }
-            if (event.target === bookingModal) {
-                closeBookingModal();
-            }
+            if (event.target === tripModal) closeTripModal();
+            if (event.target === bookingModal) closeBookingModal();
         }
 
         document.addEventListener('DOMContentLoaded', loadTrips);
