@@ -1,756 +1,701 @@
 <html lang="ar" dir="ltr">
 <head>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kimou Travel | وكالة السياحة والأسفار</title>
-    <!-- تضمين خط أميري وخط جيرون للاحترافية والعروبة -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #1e3d59;
-            --secondary: #ff6e40;
-            --accent: #ffc13b;
-            --bg-light: #f5f5f5;
-            --text-dark: #17b978;
-            --white: #ffffff;
-            --font: 'Cairo', sans-serif;
-        }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kimou Travel | وكالة السياحة والأسفار</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3d59;
+            --secondary: #ff6e40;
+            --accent: #ffc13b;
+            --bg-light: #f5f5f5;
+            --text-dark: #17b978;
+            --white: #ffffff;
+            --font: 'Cairo', sans-serif;
+        }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font);
-        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font);
+        }
 
-        body {
-            background-color: var(--white);
-            color: #333;
-            line-height: 1.6;
-        }
+        body {
+            background-color: var(--white);
+            color: #333;
+            line-height: 1.6;
+        }
 
-        /* الهيدر وشريط التنقل */
-        header {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--accent);
-            text-transform: uppercase;
-        }
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
 
-        nav ul li {
-            margin-left: 20px;
-        }
+        nav ul li {
+            margin-left: 20px;
+        }
 
-        nav ul li a {
-            color: var(--white);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 16px;
-            transition: color 0.3s;
-        }
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
 
-        nav ul li a:hover {
-            color: var(--accent);
-        }
+        nav ul li a:hover {
+            color: var(--accent);
+        }
 
-        /* واجهة البانر الرئيسي */
-        .hero {
-            background: linear-gradient(rgba(30, 61, 89, 0.7), rgba(30, 61, 89, 0.8)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1353&q=80') no-repeat center center/cover;
-            height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-            padding: 0 20px;
-        }
+        .hero {
+            background: linear-gradient(rgba(30, 61, 89, 0.7), rgba(30, 61, 89, 0.8)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1353&q=80') no-repeat center center/cover;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+            padding: 0 20px;
+        }
 
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            font-weight: 900;
-        }
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
 
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
 
-        .cta-btn {
-            background-color: var(--secondary);
-            color: var(--white);
-            padding: 12px 30px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 30px;
-            transition: background-color 0.3s, transform 0.2s;
-        }
+        .cta-btn {
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-        .cta-btn:hover {
-            background-color: #e2582b;
-            transform: scale(1.05);
-        }
+        .cta-btn:hover {
+            background-color: #e2582b;
+            transform: scale(1.05);
+        }
 
-        /* قسم العروض والرحلات */
-        .tours-section {
-            padding: 60px 5%;
-            background-color: var(--bg-light);
-            text-align: center;
-        }
+        .tours-section {
+            padding: 60px 5%;
+            background-color: var(--bg-light);
+            text-align: center;
+        }
 
-        .section-title {
-            font-size: 32px;
-            color: var(--primary);
-            margin-bottom: 40px;
-            position: relative;
-            font-weight: 700;
-        }
+        .section-title {
+            font-size: 32px;
+            color: var(--primary);
+            margin-bottom: 40px;
+            position: relative;
+            font-weight: 700;
+        }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background-color: var(--secondary);
-            margin: 10px auto 0;
-            border-radius: 2px;
-        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--secondary);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
 
-        .tours-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start; /* تجعل الكروت تبدأ من اليسار تماماً */
-    direction: ltr;              /* تحويل اتجاه ترتيب العناصر من اليسار لليمين */
-    gap: 20px;                   /* مسافة متناسقة بين البطاقات */
-}
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
 
+        .tour-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            background: #fff;
+            transition: transform 0.2s;
+        }
 
-.tour-card {
-    max-width: 340px; /* تكبير العرض قليلاً ليعطي مساحة مريحة للنصوص والصورة */
-    width: 100%;
-    margin: 15px auto;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-    background: #fff;
-}
+        .tour-card:hover {
+            transform: translateY(-5px);
+        }
 
-        .tour-card:hover {
-            transform: translateY(-5px);
-        }
+        .tour-img {
+            width: 100%;
+            height: 210px;
+            background-size: cover;
+            background-position: center;
+        }
 
-.tour-img img {
-    width: 100%;
-    height: 210px; /* زيادة ارتفاع الصورة قليلاً لتبرز معالم الرحلة للزبائن */
-    object-fit: cover; /* لضمان عدم تمدد الصورة أو تشوهها */
-    display: block;
-}
+        .tour-content {
+            padding: 18px;
+            text-align: right;
+        }
 
-.tour-content {
-    padding: 18px;
-}
+        .tour-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
 
-.tour-title {
-    font-size: 18px; /* حجم خط ممتاز وواضح لعنوان الرحلة */
-    font-weight: 700;
-    margin-bottom: 10px;
-}
+        .tour-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
 
-        .tour-desc {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 15px;
-        }
+        .tour-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
 
-        .tour-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
+        .price {
+            font-size: 18px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
 
-        .price {
-            font-size: 18px;
-            color: var(--secondary);
-            font-weight: 700;
-        }
+        .features-section {
+            padding: 60px 5%;
+            text-align: center;
+        }
 
-        .book-btn {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            font-weight: 700;
-        }
+        .features-grid {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
 
-        /* قسم مميزات الوكالة */
-        .features-section {
-            padding: 60px 5%;
-            text-align: center;
-        }
+        .feature-item {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+        }
 
-        .features-grid {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
+        .feature-icon {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
 
-        .feature-item {
-            flex: 1;
-            min-width: 250px;
-            padding: 20px;
-        }
+        .contact-section {
+            padding: 60px 5%;
+            background-color: var(--primary);
+            color: var(--white);
+            text-align: center;
+        }
 
-        .feature-icon {
-            font-size: 40px;
-            color: var(--accent);
-            margin-bottom: 15px;
-        }
+        .contact-info {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
 
-        /* قسم تواصل معنا */
-        .contact-section {
-            padding: 60px 5%;
-            background-color: var(--primary);
-            color: var(--white);
-            text-align: center;
-        }
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #25d366;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
 
-        .contact-section .section-title {
-            color: var(--white);
-        }
+        footer {
+            background-color: #112233;
+            color: #aaa;
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
 
-        .contact-info {
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .whatsapp-link {
-            display: inline-flex;
-            align-items: center;
-            background-color: #25d366;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-
-        /* الفوتر */
-        footer {
-            background-color: #112233;
-            color: #aaa;
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-        }
-        .tours-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 20px;
-        }
-
-        /* نافذة تفاصيل الرحلة المنبثقة (Modal) */
-        .modal {
-            display: none; 
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .modal.show {
-            display: flex;
-            opacity: 1;
-        }
-        .modal-content {
-            background-color: var(--white);
-            width: 90%;
-            max-width: 650px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
-            animation: slideUp 0.4s ease;
-            text-align: right;
-            direction: rtl;
-            max-height: 85vh;
-            display: flex;
-            flex-direction: column;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(50px); }
-            to { transform: translateY(0); }
-        }
-        .modal-header {
-            padding: 20px;
-            background: var(--primary);
-            color: var(--white);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .modal-header h3 { font-weight: 700; font-size: 20px; }
-        .close-modal {
-            color: var(--white);
-            font-size: 24px;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-        
-        /* ألبوم الصور التفاعلي داخل النافذة */
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .gallery-img {
-            width: 100%;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .gallery-img:hover { transform: scale(1.05); }
-        .main-preview-img {
-.main-preview-img {
-    width: 100%;
-    height: 350px;       /* ارتفاع محدد ومثالي ليعطي مظهراً مربعاً ومتناسقاً */
-    object-fit: cover;   /* ملء المربع بالكامل بالصورة مع قص الزوائد ذكياً دون تشويه الأبعاد */
-    border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* ظل خفيف لإبراز الصورة */
-}
-        
-        /* تفاصيل البرنامج */
-        .program-details {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            border-right: 4px solid var(--secondary);
-            white-space: pre-line;
-            font-size: 15px;
-            color: #444;
-        }
-    </style>
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--white);
+            width: 90%;
+            max-width: 650px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+            animation: slideUp 0.4s ease;
+            text-align: right;
+            direction: rtl;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); }
+            to { transform: translateY(0); }
+        }
+        .modal-header {
+            padding: 20px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 { font-weight: 700; font-size: 20px; }
+        .close-modal {
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .program-details {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            border-right: 4px solid var(--secondary);
+            white-space: pre-line;
+            font-size: 15px;
+            color: #444;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- الهيدر -->
-    <header>
-        <a href="#" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
-    <!-- استدعاء شعار الوكالة mizou.png بجانب الاسم -->
-    <img src="mizou.png" alt="Kimou Travel Logo" style="height: 45px; width: 45px; object-fit: contain; border-radius: 50%;">
-    <span>Kimou Travel</span>
-</a>
-        <nav>
-            <ul>
-                <li><a href="#" class="cta-btn">Aceuill</a></li>
-                <li><a href="#tours" class="cta-btn">Déstination</a></li>
-                <li><a href="#features" class="cta-btn"> Pourquoi Nous</a></li>
-                <li><a href="#contact" class="cta-btn"> Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- الهيدر -->
+    <header>
+        <a href="#" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+            <img src="mizou.png" alt="Kimou Travel Logo" style="height: 45px; width: 45px; object-fit: contain; border-radius: 50%;">
+            <span>Kimou Travel</span>
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#" class="cta-btn">Accueil</a></li>
+                <li><a href="#tours" class="cta-btn">Destination</a></li>
+                <li><a href="#features" class="cta-btn">Pourquoi Nous</a></li>
+                <li><a href="#contact" class="cta-btn">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- البانر الرئيسي -->
-    <section class="hero">
-        <h1> Kimou Travel وجهتك نحو الافضل مع</h1>
-        <p>نصنع لك ذكريات لا تُنسى بأفضل الأسعار وأرقى الخدمات السياحية.</p>
-        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap;"></div>
-        <a href="#tours" class="cta-btn">Découvrez les Offre</a>
-          <a href="https://www.instagram.com/kimou_travel/" target="_blank" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; padding: 12px 25px; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
-            <i class="fab fa-instagram" style="font-size: 22px;"></i> Instagram
-        </a>
-    </div>
-    </section>
+    <!-- البانر الرئيسي -->
+    <section class="hero">
+        <h1>وجهتك نحو الأفضل مع Kimou Travel</h1>
+        <p>نصنع لك ذكريات لا تُنسى بأفضل الأسعار وأرقى الخدمات السياحية.</p>
+        <div style="display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; margin-top: 20px;">
+            <a href="#tours" class="cta-btn">Découvrez les Offres</a>
+            <a href="https://www.instagram.com/kimou_travel/" target="_blank" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; padding: 12px 25px; text-decoration: none; font-size: 18px; font-weight: 700; border-radius: 30px; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                <i class="fab fa-instagram" style="font-size: 22px;"></i> Instagram
+            </a>
+        </div>
+    </section>
 
-    <!-- مميزات الوكالة -->
-    <section id="features" class="features-section">
-        <h2 class="section-title">؟Kimou Travel لماذا تختار </h2>
-        <div class="features-grid">
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-plane"></i></div>
-                <h3>حجوزات ميسرة</h3>
-                <p>نضمن لك السلاسة التامة في حجز الطيران والفنادق بأعلى معايير الجودة.</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-dollar-sign"></i></div>
-                <h3>أفضل الأسعار</h3>
-                <p>عروض حصرية وباقات اقتصادية وعائلية تناسب ميزانيتك تماماً.</p>
-            </div>
-            <div class="feature-item">
-                <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
-                <h3>دعم متواصل</h3>
-                <p>فريقنا معك طوال فترة رحلتك لتقديم المساعدة والإجابة عن استفساراتك.</p>
-            </div>
-        </div>
-    </section>
+    <!-- لماذا تختارنا -->
+    <section id="features" class="features-section">
+        <h2 class="section-title">لماذا تختار Kimou Travel ؟</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-plane"></i></div>
+                <h3>حجوزات ميسرة</h3>
+                <p>نضمن لك السلاسة التامة في حجز الطيران والفنادق بأعلى معايير الجودة.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-dollar-sign"></i></div>
+                <h3>أفضل الأسعار</h3>
+                <p>عروض حصرية وباقات اقتصادية وعائلية تناسب ميزانيتك تماماً.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fa-solid fa-comments"></i></div>
+                <h3>دعم متواصل</h3>
+                <p>فريقنا معك طوال فترة رحلتك لتقديم المساعدة والإجابة عن استفساراتك.</p>
+            </div>
+        </div>
+    </section>
 
-    <!-- قسم الرحلات -->
-<section id="tours" class="tours-section">
-        <h2 class="section-title">العروض و الرحلات</h2>
-        
-        <div class="tours-grid" id="tripsContainer"></div>
-    </section>
+    <!-- العروض والرحلات -->
+    <section id="tours" class="tours-section">
+        <h2 class="section-title">العروض و الرحلات</h2>
+        <div class="tours-grid" id="tripsContainer"></div>
+    </section>
 
-    <div id="tripModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button class="close-modal" onclick="closeTripModal()">&times;</button>
-                <h3 id="modalTripTitle">اسم الرحلة</h3>
-            </div>
-            <div class="modal-body">
-            <img id="modalMainImg" src="" style="width: 100%; height: 350px; object-fit: contain; background-color: #f0f0f0; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-                
-                <div class="image-gallery" id="modalGallery"></div>
-                
-                <h4 style="margin-bottom: 10px; color: var(--primary); font-weight: 700;"><i class="fa-solid fa-route"></i> برنامج الرحلة بالتفصيل:</h4>
-                <p id="modalTripDesc" class="program-details">تفاصيل البرنامج المكتوب...</p>
-            </div>
-        </div>
-    </div>
-       
-    <!-- قسم التواصل -->
-    <section id="contact" class="contact-section">
-        <h2 class="section-title">هل أنت جاهز لبدء مغامرتك القادمة؟</h2>
-        <p class="contact-info">تواصل معنا الآن مباشرة عبر الواتساب لتخصيص رحلتك أو الاستفسار عن تفاصيل الحجز</p>
-        <!-- قم باستبدال الرقم 1234567890 برقم الواتساب الخاص بالوكالة مع رمز الدول بدون أصفار أو زائد -->
-        <a href="https://wa.me/1234567890" class="whatsapp-link" target="_blank">💬 تواصل معنا عبر الواتساب</a>
-    </section>
+    <!-- نافذة تفاصيل البرنامج المنبثقة -->
+    <div id="tripModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-modal" onclick="closeTripModal()">&times;</button>
+                <h3 id="modalDisplayTripTitle">اسم الرحلة</h3>
+            </div>
+            <div class="modal-body">
+                <img id="modalMainImg" src="" style="width: 100%; height: 350px; object-fit: contain; background-color: #f0f0f0; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <div class="image-gallery" id="modalGallery"></div>
+                <h4 style="margin-bottom: 10px; color: var(--primary); font-weight: 700;"><i class="fa-solid fa-route"></i> برنامج الرحلة بالتفصيل:</h4>
+                <p id="modalTripDesc" class="program-details">تفاصيل البرنامج المكتوب...</p>
+            </div>
+        </div>
+    </div>
 
-    <!-- الفوتر -->
-    <footer>
-        <p>&copy; 2026 Kimou Travel. جميع الحقوق محفوظة.</p>
-    </footer>
-<script>
-        // 1. دالة تحميل وعرض الرحلات من الذاكرة
-        function loadTrips() {
-            const container = document.getElementById('tripsContainer');
-            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+    <!-- قائمة استمارة الحجز المنبثقة المحدثة والموحدة -->
+    <div id="bookingModal" style="display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; direction: rtl; padding: 15px;">
+        <div style="background-color: white; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 4px 20px rgba(0,0,0,0.25); position: relative;">
+            <span onclick="closeBookingModal()" style="position: absolute; left: 20px; top: 15px; font-size: 26px; cursor: pointer; color: #aaa; font-weight: bold;">&times;</span>
+            
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--primary); border-bottom: 2px solid #28a745; padding-bottom: 10px; font-size: 18px;">
+                استمارة حجز: <span id="tripDisplayTitle" style="color: #28a745;"></span>
+            </h3>
+            
+            <form id="reservationForm" onsubmit="submitBookingForm(event)">
+                <input type="hidden" id="modalTripTitle">
+                
+                <div style="margin-bottom: 15px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">الاسم الكامل (Nom & Prénom):</label>
+                    <input type="text" id="clientName" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                </div>
 
-            if (trips.length === 0) {
-                container.innerHTML = `<p style="grid-column: 1/-1; color: #777; font-size: 16px; padding: 40px 0;">✨ لا توجد عروض متوفرة حالياً، تابعونا لتصلكم رحلاتنا القادمة قريباً! ✨</p>`;
-                return;
-            }
+                <div style="margin-bottom: 15px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">رقم الهاتف (Téléphone):</label>
+                    <input type="tel" id="clientPhone" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                </div>
 
-            container.innerHTML = ''; 
+                <div style="margin-bottom: 15px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الميلاد (Date de Naissance):</label>
+                    <input type="date" id="clientBirthDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                </div>
 
-            trips.forEach((trip, index) => {
-                const mainImg = (trip.images && trip.images.length > 0) ? trip.images[0] : (trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80');
+                <div style="margin-bottom: 20px; text-align: right;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
+                    <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                </div>
 
-                const card = document.createElement('div');
-                card.className = 'tour-card';
-                card.innerHTML = `
-                    <div class="tour-img" style="background-image: url('${mainImg}')"></div>
-                    <div class="tour-content">
-                        <h3 class="tour-title">${trip.title}</h3>
-                        <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> ${trip.duration}</p>
-                        <div style="font-size: 13px; color: #555; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
-                            <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 18px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || trip.dateDepart || 'غير محدد'}</span>
-                            <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 18px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || trip.dateRetour || 'غير محدد'}</span>
-                        </div>
-                        <div class="tour-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 15px;">
-                            <span class="price" style="font-weight: 700; color: var(--primary); font-size: 16px;">Prix : ${trip.price} DZD</span>
-                            <div class="booking-buttons" style="display: flex; gap: 8px; align-items: center;">
-                                <button type="button" class="btn-details" onclick="openTripModal(${index})" style="background-color: var(--secondary, #ff9800); color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.3s ease;">تفاصيل البرنامج</button>
-                               <<button type="button" class="btn-reserve" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.3s ease;">Réserver</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">تأكيد الحجز</button>
+                    <button type="button" onclick="closeBookingModal()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+       
+    <!-- قسم التواصل -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">هل أنت جاهز لبدء مغامرتك القادمة؟</h2>
+        <p class="contact-info">تواصل معنا الآن مباشرة عبر الواتساب لتخصيص رحلتك أو الاستفسار عن تفاصيل الحجز</p>
+        <a href="https://wa.me/1234567890" class="whatsapp-link" target="_blank">💬 تواصل معنا عبر الواتساب</a>
+    </section>
 
-        // 2. فتح نافذة الحجز وتحديد اسم الرحلة والوجهة تلقائياً
-function openBookingModal(tripTitle) {
-    // وضع اسم الرحلة في العنوان المخفي داخل الاستمارة
-    document.getElementById('modalTripTitle').value = tripTitle;
-    document.getElementById('tripDisplayTitle').innerText = tripTitle;
-    
-    // إظهار النافذة المنبثقة
-    document.getElementById('customBookingModal').style.display = 'flex';
-}
+    <!-- الفوتر -->
+    <footer>
+        <p>&copy; 2026 Kimou Travel. جميع الحقوق محفوظة.</p>
+    </footer>
 
-function closeBookingModal() {
-    // إغلاق النافذة المنبثقة
-    document.getElementById('customBookingModal').style.display = 'none';
-}
+    <script>
+        // 1. دالة تحميل وعرض الرحلات من الذاكرة
+        function loadTrips() {
+            const container = document.getElementById('tripsContainer');
+            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
 
-function submitBookingForm(event) {
-    event.preventDefault();
-    
-    // جلب البيانات من القائمة
-    const trip = document.getElementById('modalTripTitle').value;
-    const name = document.getElementById('clientName').value;
-    const phone = document.getElementById('clientPhone').value;
-    const birthDate = document.getElementById('clientBirthDate').value;
-    const departureDate = document.getElementById('clientDepartureDate').value;
+            if (trips.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; color: #777; font-size: 16px; padding: 40px 0;">✨ لا توجد عروض متوفرة حالياً، تابعونا لتصلكم رحلاتنا القادمة قريباً! ✨</p>`;
+                return;
+            }
 
-    const reservationData = {
-        trip: trip,
-        clientName: name,
-        clientPhone: phone,
-        clientBirthDate: birthDate,
-        clientDepartureDate: departureDate,
-        date: new Date().toLocaleString('fr-FR')
-    };
+            container.innerHTML = ''; 
 
-    // حفظ البيانات في لوحة التحكم (LocalStorage)
-    let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
-    reservations.push(reservationData);
-    localStorage.setItem('tripReservations', JSON.stringify(reservations));
+            trips.forEach((trip, index) => {
+                const mainImg = (trip.images && trip.images.length > 0) ? trip.images[0] : (trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80');
 
-    alert("تم تسجيل حجزك بنجاح وسيزهر في لوحة التحكم!");
-    closeBookingModal();
-    document.getElementById('reservationForm').reset(); // إعادة تهيئة الحقول
-}
+                const card = document.createElement('div');
+                card.className = 'tour-card';
+                card.innerHTML = `
+                    <div class="tour-img" style="background-image: url('${mainImg}')"></div>
+                    <div class="tour-content">
+                        <h3 class="tour-title">${trip.title}</h3>
+                        <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> ${trip.duration}</p>
+                        <div style="font-size: 13px; color: #555; margin-bottom: 15px; display: flex; flex-direction: column; gap: 4px;">
+                            <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 18px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || trip.dateDepart || 'غير محدد'}</span>
+                            <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 18px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || trip.dateRetour || 'غير محدد'}</span>
+                        </div>
+                        <div class="tour-footer" style="display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 15px;">
+                            <span class="price" style="font-weight: 700; color: var(--primary); font-size: 16px;">Prix : ${trip.price} DZD</span>
+                            <div class="booking-buttons" style="display: flex; gap: 8px; align-items: center;">
+                                <button type="button" class="btn-details" onclick="openTripModal(${index})" style="background-color: var(--secondary, #ff9800); color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.3s ease;">تفاصيل البرنامج</button>
+                                <button type="button" class="btn-reserve" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="background-color: #28a745; color: white; border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 700; transition: background 0.3s ease;">Réserver</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
 
-        // 3. إغلاق نافذة الحجز وتنظيف الخانات
-        function closeBookingModal() {
-            document.getElementById('bookingModal').style.display = 'none';
-            document.getElementById('reservationForm').reset();
-        }
+        // 2. دالة فتح قائمة الحجز المنبثقة وتغذيتها باسم الرحلة
+        function openBookingModal(tripTitle) {
+            document.getElementById('modalTripTitle').value = tripTitle;
+            document.getElementById('tripDisplayTitle').innerText = tripTitle;
+            document.getElementById('bookingModal').style.display = 'flex';
+        }
 
-        // 4. دالة استقبال وحفظ الحجز
-        function submitReservation(event) {
-            event.preventDefault();
-            const tripTitle = document.getElementById('bookedTripTitle').innerText;
-            const name = document.getElementById('clientName').value;
-            const phone = document.getElementById('clientPhone').value;
-            const birthDate = document.getElementById('clientBirthDate').value;
-            const departureDate = document.getElementById('clientDepartureDate').value;
-            const destination = document.getElementById('clientDestination').value;
-            const paymentMethod = document.getElementById('clientPaymentMethod').value;
-            const seats = "1";
-            
-            const reservationData = {
-                trip: tripTitle,
-                clientName: name,
-                clientPhone: phone,
-                clientBirthDate: birthDate,
-                clientDepartureDate: departureDate,
-                clientDestination: destination, 
-                clientPaymentMethod: paymentMethod,
-                clientSeats: seats,
-                date: new Date().toLocaleString('fr-FR')
-            };
-            
-            let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
-            reservations.push(reservationData);
-            localStorage.setItem('tripReservations', JSON.stringify(reservations));
-            
-            alert('Merci ! Votre demande de réservation a été reçue avec succès.');
-            closeBookingModal();
-        }
-        
-        // 5. دالة فتح النافذة المنبثقة وعرض التفاصيل الكاملة بالأيقونات الذكية المعدلة
-        function openTripModal(index) {
-            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
-            const trip = trips[index];
-            if (!trip) return;
+        // 3. إغلاق نافذة الحجز وتنظيف الخانات
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+            document.getElementById('reservationForm').reset();
+        }
 
-            document.getElementById('modalTripTitle').innerText = trip.title;
-            let rawText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
-            
-            if (trip.detailedDesc) {
-                let formattedHTML = `<div style="direction: rtl; text-align: right; font-family: sans-serif; color: #333; line-height: 1.7; padding: 10px;">`;
-                let lines = rawText.split('\n');
-                let inMainInfo = true;
-                let activeSection = "";
-                
-                let mainInfoList = "";
-                let priceIncludes = "";
-                let programSteps = "";
-                let luggageItems = "";
-                let introText = "";
-                let footerText = "";
+        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (tripReservations)
+        function submitBookingForm(event) {
+            event.preventDefault();
+            
+            const trip = document.getElementById('modalTripTitle').value;
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const birthDate = document.getElementById('clientBirthDate').value;
+            const departureDate = document.getElementById('clientDepartureDate').value;
 
-                lines.forEach(line => {
-                    let trimmed = line.trim();
-                    if (!trimmed) return;
+            const reservationData = {
+                trip: trip,
+                clientName: name,
+                clientPhone: phone,
+                clientBirthDate: birthDate,
+                clientDepartureDate: departureDate,
+                clientDestination: trip, 
+                clientPaymentMethod: "الدفع عند الحضور",
+                clientSeats: "1",
+                date: new Date().toLocaleString('fr-FR')
+            };
+            
+            let reservations = JSON.parse(localStorage.getItem('tripReservations')) || [];
+            reservations.push(reservationData);
+            localStorage.setItem('tripReservations', JSON.stringify(reservations));
+            
+            alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيظهر في لوحة التحكم فوراً.');
+            closeBookingModal();
+        }
+        
+        // 5. دالة فتح نافذة تفاصيل البرنامج الكاملة
+        function openTripModal(index) {
+            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+            const trip = trips[index];
+            if (!trip) return;
 
-                    // فحص مرن وعام للتعرف على الأقسام حتى لو وُجدت رموز أو نقاط
-                    if (trimmed.includes("السعر يشمل") || trimmed.includes("Prix inclut") || trimmed.includes("التكلفة تشمل")) {
-                        activeSection = "includes";
-                        inMainInfo = false;
-                        return;
-                    } else if (trimmed.includes("برنامج الرحلة") || trimmed.includes("Programme") || trimmed.includes("مخطط ومحطات")) {
-                        activeSection = "program";
-                        inMainInfo = false;
-                        return;
-                    } else if (trimmed.includes("وش تجيب معاك") || trimmed.includes("حقيبة") || trimmed.includes("المستلزمات") || trimmed.includes("A emporter")) {
-                        activeSection = "luggage";
-                        inMainInfo = false;
-                        return;
-                    } else if (trimmed.includes("مهم:") || trimmed.includes("تنبيه:") || trimmed.includes("آخر أجل") || trimmed.includes("شروط")) {
-                        footerText += `<div style="margin-bottom: 6px;">${trimmed}</div>`;
-                        return;
-                    }
+            document.getElementById('modalDisplayTripTitle').innerText = trip.title;
+            let rawText = trip.detailedDesc || "لم يتم إضافة برنامج تفصيلي لهذه الرحلة.";
+            
+            if (trip.detailedDesc) {
+                let formattedHTML = `<div style="direction: rtl; text-align: right; font-family: sans-serif; color: #333; line-height: 1.7; padding: 10px;">`;
+                let lines = rawText.split('\n');
+                let inMainInfo = true;
+                let activeSection = "";
+                
+                let mainInfoList = "";
+                let priceIncludes = "";
+                let programSteps = "";
+                let luggageItems = "";
+                let introText = "";
+                let footerText = "";
 
-                    if (inMainInfo) {
-                        if (trimmed.includes("ما تضيعوش") || trimmed.includes("واش رايكم") || trimmed.includes("Travel") || trimmed.includes("مغامرة")) {
-                            introText += `<p style="text-align: center; font-size: 14px; margin-bottom: 12px; font-weight: 500;">${trimmed}</p>`;
-                        } else {
-                            // تنظيف أي نقاط أو رموز في معلومات التجمع العامة
-                            let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
-                            mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${cleanLine}</li>`;
-                        }
-                    } else if (activeSection === "includes") {
-                        let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
-                        priceIncludes += `<li style="margin-bottom: 5px;">${cleanLine}</li>`;
-                    } else if (activeSection === "program") {
-                        let cleanLine = trimmed.replace(/^[*•\-✅📍🔹🔸✨]/g, "").trim();
-                        
-                        // اختيار الأيقونات المناسبة ديناميكياً بناءً على الكلمات المفتاحية بالسطر
-                        let stepIcon = "📍"; 
-                        if (cleanLine.includes("الوصول") || cleanLine.includes("Arrivée")) stepIcon = "🚍";
-                        else if (cleanLine.includes("المركز") || cleanLine.includes("مركز")) stepIcon = "🏢";
-                        else if (cleanLine.includes("Kayak") || cleanLine.includes("كاياك") || cleanLine.includes("البحر")) stepIcon = "🚣‍♂️";
-                        else if (cleanLine.includes("وقت حر") || cleanLine.includes("شاطئ") || cleanLine.includes("سباحة")) stepIcon = "🏖️";
-                        else if (cleanLine.includes("تصوير") || cleanLine.includes("📸")) stepIcon = "📸";
-                        else if (cleanLine.includes("العودة") || cleanLine.includes("Retour")) stepIcon = "↩️";
-                        else if (cleanLine.includes("غداء") || cleanLine.includes("أكل")) stepIcon = "🍽️";
+                lines.forEach(line => {
+                    let trimmed = line.trim();
+                    if (!trimmed) return;
 
-                        programSteps += `<div style="margin-bottom: 12px; position: relative; padding-right: 5px;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${stepIcon} ${cleanLine}</div>`;
-                    } else if (activeSection === "luggage") {
-                        let cleanLine = trimmed.replace(/^[*•\-🎒✅📍]/g, "").trim();
-                        luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${cleanLine}</span>`;
-                    }
-                });
+                    if (trimmed.includes("السعر يشمل") || trimmed.includes("Prix inclut") || trimmed.includes("التكلفة تشمل")) {
+                        activeSection = "includes";
+                        inMainInfo = false;
+                        return;
+                    } else if (trimmed.includes("برنامج الرحلة") || trimmed.includes("Programme") || trimmed.includes("مخطط ومحطات")) {
+                        activeSection = "program";
+                        inMainInfo = false;
+                        return;
+                    } else if (trimmed.includes("وش تجيب معاك") || trimmed.includes("حقيبة") || trimmed.includes("المستلزمات") || trimmed.includes("A emporter")) {
+                        activeSection = "luggage";
+                        inMainInfo = false;
+                        return;
+                    } else if (trimmed.includes("مهم:") || trimmed.includes("تنبيه:") || trimmed.includes("آخر أجل") || trimmed.includes("شروط")) {
+                        footerText += `<div style="margin-bottom: 6px;">${trimmed}</div>`;
+                        return;
+                    }
 
-                if (introText) formattedHTML += `<div style="color: #28a745; margin-bottom: 20px;">${introText}</div>`;
-                if (mainInfoList) {
-                    formattedHTML += `
-                    <div style="background-color: #f8f9fa; border-right: 4px solid #ff9800; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-                        <h4 style="margin-top: 0; color: #ff9800; margin-bottom: 10px;"><i class="fa-regular fa-clock"></i> معلومات وتفاصيل التجمع:</h4>
-                        <ul style="list-style: none; padding: 0; margin: 0;">${mainInfoList}</ul>
-                    </div>`;
-                }
-                if (priceIncludes) {
-                    formattedHTML += `
-                    <div style="background-color: #ebf7ed; border-right: 4px solid #28a745; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-                        <h4 style="margin-top: 0; color: #28a745; margin-bottom: 10px;"><i class="fa-solid fa-tags"></i> الخدمات المتضمنة في السعر:</h4>
-                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">${priceIncludes}</ul>
-                    </div>`;
-                }
-                if (programSteps) {
-                    formattedHTML += `
-                    <div style="margin-bottom: 20px;">
-                        <h4 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa-solid fa-route"></i> مخطط ومحطات الرحلة:</h4>
-                        <div style="position: relative; padding-right: 20px; border-right: 2px dashed #ccc; margin-right: 10px;">${programSteps}</div>
-                    </div>`;
-                }
-                if (luggageItems) {
-                    formattedHTML += `
-                    <div style="background-color: #fff9db; border: 1px dashed #f59f00; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
-                        <h4 style="margin-top: 0; color: #f59f00; margin-bottom: 10px;"><i class="fa-solid fa-suitcase"></i> المستلزمات والمعدات المطلوبة:</h4>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">${luggageItems}</div>
-                    </div>`;
-                }
-                if (footerText) {
-                    formattedHTML += `<div style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px; line-height: 1.5;">${footerText}</div>`;
-                }
-                formattedHTML += `</div>`;
-                document.getElementById('modalTripDesc').innerHTML = formattedHTML;
-            } else {
-                document.getElementById('modalTripDesc').innerHTML = rawText;
-            }
+                    if (inMainInfo) {
+                        if (trimmed.includes("ما تضيعوش") || trimmed.includes("واش رايكم") || trimmed.includes("Travel") || trimmed.includes("مغامرة")) {
+                            introText += `<p style="text-align: center; font-size: 14px; margin-bottom: 12px; font-weight: 500;">${trimmed}</p>`;
+                        } else {
+                            let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
+                            mainInfoList += `<li style="margin-bottom: 6px; font-size: 14px;">${cleanLine}</li>`;
+                        }
+                    } else if (activeSection === "includes") {
+                        let cleanLine = trimmed.replace(/^[*•\-✅📍]/g, "").trim();
+                        priceIncludes += `<li style="margin-bottom: 5px;">${cleanLine}</li>`;
+                    } else if (activeSection === "program") {
+                        let cleanLine = trimmed.replace(/^[*•\-✅📍🔹🔸✨]/g, "").trim();
+                        
+                        let stepIcon = "📍"; 
+                        if (cleanLine.includes("الوصول") || cleanLine.includes("Arrivée")) stepIcon = "🚍";
+                        else if (cleanLine.includes("المركز") || cleanLine.includes("مركز")) stepIcon = "🏢";
+                        else if (cleanLine.includes("Kayak") || cleanLine.includes("كاياك") || cleanLine.includes("البحر")) stepIcon = "🚣‍♂️";
+                        else if (cleanLine.includes("وقت حر") || cleanLine.includes("شاطئ") || cleanLine.includes("سباحة")) stepIcon = "🏖️";
+                        else if (cleanLine.includes("تصوير") || cleanLine.includes("📸")) stepIcon = "📸";
+                        else if (cleanLine.includes("العودة") || cleanLine.includes("Retour")) stepIcon = "↩️";
+                        else if (cleanLine.includes("غداء") || cleanLine.includes("أكل")) stepIcon = "🍽️";
 
-            // إعداد صور الألبوم
-            const mainImgElement = document.getElementById('modalMainImg');
-            const galleryContainer = document.getElementById('modalGallery');
-            
-            galleryContainer.innerHTML = ''; 
-            galleryContainer.style.display = 'flex';
-            galleryContainer.style.gap = '8px';
-            galleryContainer.style.flexWrap = 'wrap';
-            galleryContainer.style.marginTop = '12px';
-            galleryContainer.style.justifyContent = 'center';
+                        programSteps += `<div style="margin-bottom: 12px; position: relative; padding-right: 5px;"><span style="position: absolute; right: -26px; top: 5px; background: #28a745; color: white; border-radius: 50%; width: 10px; height: 10px; display: inline-block;"></span>${stepIcon} ${cleanLine}</div>`;
+                    } else if (activeSection === "luggage") {
+                        let cleanLine = trimmed.replace(/^[*•\-🎒✅📍]/g, "").trim();
+                        luggageItems += `<span style="background: white; padding: 5px 12px; border-radius: 20px; border: 1px solid #ffe066; font-size: 13px; display: inline-block;">${cleanLine}</span>`;
+                    }
+                });
 
-            if (trip.images && trip.images.length > 0) {
-                mainImgElement.src = trip.images[0];
-                trip.images.forEach(imgSrc => {
-                    const img = document.createElement('img');
-                    img.src = imgSrc;
-                    img.className = 'gallery-img';
-                    img.style.width = '65px';
-                    img.style.height = '65px';
-                    img.style.objectFit = 'cover'; 
-                    img.style.borderRadius = '6px';
-                    img.style.cursor = 'pointer';
-                    img.style.border = '2px solid #ddd';
-                    img.style.transition = 'transform 0.2s';
-                    
-                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
-                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
-                    img.onclick = function() { mainImgElement.src = imgSrc; };
-                    galleryContainer.appendChild(img);
-                });
-            } else if (trip.image) {
-                mainImgElement.src = trip.image;
-            }
+                if (introText) formattedHTML += `<div style="color: #28a745; margin-bottom: 20px;">${introText}</div>`;
+                if (mainInfoList) {
+                    formattedHTML += `
+                    <div style="background-color: #f8f9fa; border-right: 4px solid #ff9800; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                        <h4 style="margin-top: 0; color: #ff9800; margin-bottom: 10px;"><i class="fa-regular fa-clock"></i> معلومات وتفاصيل التجمع:</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">${mainInfoList}</ul>
+                    </div>`;
+                }
+                if (priceIncludes) {
+                    formattedHTML += `
+                    <div style="background-color: #ebf7ed; border-right: 4px solid #28a745; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                        <h4 style="margin-top: 0; color: #28a745; margin-bottom: 10px;"><i class="fa-solid fa-tags"></i> الخدمات المتضمنة في السعر:</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">${priceIncludes}</ul>
+                    </div>`;
+                }
+                if (programSteps) {
+                    formattedHTML += `
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="color: #333; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-bottom: 15px;"><i class="fa-solid fa-route"></i> مخطط ومحطات الرحلة:</h4>
+                        <div style="position: relative; padding-right: 20px; border-right: 2px dashed #ccc; margin-right: 10px;">${programSteps}</div>
+                    </div>`;
+                }
+                if (luggageItems) {
+                    formattedHTML += `
+                    <div style="background-color: #fff9db; border: 1px dashed #f59f00; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                        <h4 style="margin-top: 0; color: #f59f00; margin-bottom: 10px;"><i class="fa-solid fa-suitcase"></i> المستلزمات والمعدات المطلوبة:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">${luggageItems}</div>
+                    </div>`;
+                }
+                if (footerText) {
+                    formattedHTML += `<div style="font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px; line-height: 1.5;">${footerText}</div>`;
+                }
+                formattedHTML += `</div>`;
+                document.getElementById('modalTripDesc').innerHTML = formattedHTML;
+            } else {
+                document.getElementById('modalTripDesc').innerHTML = rawText;
+            }
 
-            document.getElementById('tripModal').classList.add('show');
-        }
+            const mainImgElement = document.getElementById('modalMainImg');
+            const galleryContainer = document.getElementById('modalGallery');
+            
+            galleryContainer.innerHTML = ''; 
+            galleryContainer.style.display = 'flex';
+            galleryContainer.style.gap = '8px';
+            galleryContainer.style.flexWrap = 'wrap';
+            galleryContainer.style.marginTop = '12px';
+            galleryContainer.style.justifyContent = 'center';
 
-        function closeTripModal() {
-            document.getElementById('tripModal').classList.remove('show');
-        }
+            if (trip.images && trip.images.length > 0) {
+                mainImgElement.src = trip.images[0];
+                trip.images.forEach(imgSrc => {
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.style.width = '65px';
+                    img.style.height = '65px';
+                    img.style.objectFit = 'cover'; 
+                    img.style.borderRadius = '6px';
+                    img.style.cursor = 'pointer';
+                    img.style.border = '2px solid #ddd';
+                    img.style.transition = 'transform 0.2s';
+                    
+                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
+                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
+                    img.onclick = function() { mainImgElement.src = imgSrc; };
+                    galleryContainer.appendChild(img);
+                });
+            } else if (trip.image) {
+                mainImgElement.src = trip.image;
+            }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('tripModal');
-            if (event.target === modal) {
-                closeTripModal();
-            }
-        }
+            document.getElementById('tripModal').classList.add('show');
+        }
 
-        document.addEventListener('DOMContentLoaded', loadTrips);
-    </script>
-<div id="bookingModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; direction: rtl; box-sizing: border-box;">
-    <div style="background-color: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 450px; max-height: 85vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.2); position: relative; box-sizing: border-box;">
-        <span onclick="closeBookingModal()" style="position: absolute; left: 15px; top: 10px; font-size: 24px; cursor: pointer; color: #aaa;"
+        function closeTripModal() {
+            document.getElementById('tripModal').classList.remove('show');
+        }
+
+        window.onclick = function(event) {
+            const tripModal = document.getElementById('tripModal');
+            const bookingModal = document.getElementById('bookingModal');
+            if (event.target === tripModal) {
+                closeTripModal();
+            }
+            if (event.target === bookingModal) {
+                closeBookingModal();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadTrips);
+    </script>
+</body>
+</html>
