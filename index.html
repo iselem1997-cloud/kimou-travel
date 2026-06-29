@@ -724,5 +724,28 @@ function loadTrips() {
 
         document.addEventListener('DOMContentLoaded', loadTrips);
     </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. نبحث عن النص الموجود في أعلى الاستمارة (استمارة حجز: ...)
+    // نقوم بتحديد العنصر الذي يحتوي على العنوان (تأكد من إضافة id="tour_title" لعنوان الاستمارة إذا أمكن، أو سنلتقطه عبر السكريبت)
+    
+    // افتراضياً سنبسط الأمر: الكود يبحث عن النص المكتوب بجانب "استمارة حجز:"
+    let headerText = document.querySelector('.modal-title, h2, h3, p')?.innerText || ""; 
+    
+    // إذا كنت تستطيع تعديل وسم العنوان في الأعلى، اجعله هكذا: <h3 id="tour_title">Sortie activité KAYAK a BEJAIA</h3>
+    // وسيكون السكريبت أدق بتبديله للسطر التالي:
+    // let tourName = document.getElementById('tour_title')?.innerText;
+
+    let tourName = "Sortie activité KAYAK a BEJAIA"; // القيمة الافتراضية الحالية
+
+    // نضع اسم الرحلة تلقائياً داخل خانة الوجهة لكي تُرسل مع الحجز
+    let destinationInput = document.getElementById('destination_display');
+    if (destinationInput) {
+        destinationInput.value = tourName;
+    }
+});
+</script>
+    
 </body>
 </html>
