@@ -796,5 +796,40 @@
     </script>
     <!-- ⬆️ نهاية كود الحجز ⬆️ -->
 
+    <script>
+// 1. الدالة التي تفتح النافذة وتطلب معلومات الزبون (التي يستدعيها زرك الحالي)
+function openBookingModal(tripTitle) {
+    const name = prompt("الرجاء إدخال اسمك الكامل (Nom & Prénom):");
+    if (!name || name.trim() === "") return; // إلغاء إذا لم يدخل اسم
+
+    const phone = prompt("الرجاء إدخال رقم هاتفك (Numéro de téléphone):");
+    if (!phone || phone.trim() === "") {
+        alert("⚠️ رقم الهاتف ضروري لإتمام الحجز!");
+        return;
+    }
+
+    // إرسال البيانات للدالة الثانية لحفظها
+    sendNewBooking(name, phone, tripTitle);
+}
+
+// 2. الدالة التي تقوم بحفظ الحجز لكي يظهر في لوحة التحكم فوراً
+function sendNewBooking(name, phone, tripName) {
+    let currentBookings = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
+    
+    let newBooking = {
+        customerName: name,
+        customerPhone: phone,
+        tripTitle: tripName,
+        status: 'pending', // حالة الحجز الافتراضية لقائمة الانتظار
+        date: new Date().toLocaleDateString('fr-FR')
+    };
+    
+    currentBookings.push(newBooking);
+    localStorage.setItem('kimou_bookings', JSON.stringify(currentBookings));
+    
+    alert("🎉 تم إرسال حجزك بنجاح! ستتصل بك الوكالة لتأكيد الحجز.");
+}
+</script>
+
 </body>
 </html>"""
