@@ -136,76 +136,72 @@
             border-radius: 2px;
         }
 
-        /* تنسيق شبكة العرض لتكون متجاوبة وبحجم مصغر */
-.tours-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 320px)); /* تحديد عرض الكرت ليكون صغيراً ومناسباً */
-    gap: 25px;
-    justify-content: center; /* تجميع الكروت في المنتصف */
-    margin-top: 20px;
-}
+        .tours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+            gap: 25px;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-/* تصميم كرت العرض المصغر */
-.tour-card {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    background: #fff;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    height: 100%; /* لتوحيد ارتفاع الكروت */
-}
+        .tour-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            background: #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
 
-.tour-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-}
+        .tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
 
-/* تصغير مساحة الصورة داخل الكرت */
-.tour-img {
-    width: 100%;
-    height: 180px; /* ارتفاع مصغر ومرتب للصورة */
-    background-size: cover;
-    background-position: center;
-}
+        .tour-img {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
 
-.tour-content {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-}
+        .tour-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
 
-.tour-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--primary);
-    line-height: 1.4;
-}
+        .tour-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--primary);
+            line-height: 1.4;
+        }
 
-.tour-desc {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 10px;
-}
+        .tour-desc {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 10px;
+        }
 
-.tour-footer {
-    border-top: 1px solid #eee;
-    padding-top: 12px;
-    margin-top: auto; /* دفع الأزرار والسعر لأسفل الكرت دائماً */
-}
+        .tour-footer {
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+            margin-top: auto;
+        }
 
-.price {
-    font-size: 16px;
-    color: var(--secondary);
-    font-weight: 700;
-    display: block;
-    margin-bottom: 10px;
-}
-
+        .price {
+            font-size: 16px;
+            color: var(--secondary);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 10px;
+        }
 
         .features-section {
             padding: 60px 5%;
@@ -447,7 +443,6 @@
                     <input type="text" id="destination_display" readonly style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; background-color: #f9f9f9; color: #555; box-sizing: border-box; font-family: inherit; cursor: not-allowed;" name="destination">
                 </div>
      
-                <!-- تم تصحيح الـ id هنا ليصبح clientDepartureDate -->
                 <div style="margin-bottom: 20px; text-align: right;">
                     <label style="display: block; margin-bottom: 5px; font-weight: bold; font-size: 14px;">تاريخ الانطلاق (Date de Départ):</label>
                     <input type="date" id="clientDepartureDate" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
@@ -460,83 +455,113 @@
                 </div>
 
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                    <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">تأكيد الحجز</button>
+                    <button type="submit" id="submitBtn" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">تأكيد الحجز</button>
                     <button type="button" onclick="closeBookingModal()" style="background-color: #dc3545; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px;">إلغاء</button>
                 </div>
             </form>
         </div>
     </div>
-       
-   <!-- قسم التواصل -->
-<section id="contact" class="contact-section" style="text-align: center; padding: 60px 20px; background-color: #1e3d59; color: white;">
-    
-    <h2 class="section-title" style="font-size: 28px; font-weight: 700; margin-bottom: 15px; color: #ffffff;">
-        هل أنت جاهز لبدء مغامرتك القادمة؟
-    </h2>
-    
-    <p style="font-size: 16px; margin-bottom: 25px; color: #e0e0e0;">
-        اتصل بنا الآن مباشرة لتخصيص رحلتك أو الاستفسار عن تفاصيل الحجز
-    </p>
-    
-    <a href="tel:+213549055155" style="display: inline-flex; align-items: center; gap: 8px; background-color: #ff6e40; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(255, 110, 64, 0.3); transition: transform 0.2s;">
-        <i class="fa-solid fa-phone"></i> Appeler
-    </a>
-
-</section>
+        
+    <!-- قسم التواصل -->
+    <section id="contact" class="contact-section" style="text-align: center; padding: 60px 20px; background-color: #1e3d59; color: white;">
+        <h2 class="section-title" style="font-size: 28px; font-weight: 700; margin-bottom: 15px; color: #ffffff;">هل أنت جاهز لبدء مغامرتك القادمة؟</h2>
+        <p style="font-size: 16px; margin-bottom: 25px; color: #e0e0e0;">اتصل بنا الآن مباشرة لتخصيص رحلتك أو الاستفسار عن تفاصيل الحجز</p>
+        <a href="tel:+213549055155" style="display: inline-flex; align-items: center; gap: 8px; background-color: #ff6e40; color: white; padding: 12px 30px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 18px; box-shadow: 0 4px 15px rgba(255, 110, 64, 0.3); transition: transform 0.2s;">
+            <i class="fa-solid fa-phone"></i> Appeler
+        </a>
+    </section>
 
     <!-- الفوتر -->
     <footer>
         <p>&copy; 2026 Kimou Travel. جميع الحقوق محفوظة.</p>
     </footer>
 
+    <!-- ========================================== -->
+    <!--          ربط نظام FIREBASE السحابي          -->
+    <!-- ========================================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
     <script>
-        // 1. دالة تحميل وعرض الرحلات من الذاكرة
-function loadTrips() {
-    const container = document.getElementById('tripsContainer');
-    const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+        // 1. إعدادات الـ Firebase الخاصة بـ Kimou Travel
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPKgvNf2V34Z3Vlm6mTHRLAefr_Sg7J7s",
+            authDomain: "kimou-travel-6c970.firebaseapp.com",
+            projectId: "kimou-travel-6c970",
+            storageBucket: "kimou-travel-6c970.firebasestorage.app",
+            messagingSenderId: "92868787861",
+            appId: "1:92868787861:web:190d3543ecddff7b1c259c",
+            measurementId: "G-S7QNNFJ948"
+        };
 
-    if (trips.length === 0) {
-        container.innerHTML = `<p style="grid-column: 1/-1; color: #777; font-size: 16px; padding: 40px 0;">✨ لا توجد عروض متوفرة حالياً، تابعونا لتصلكم رحلاتنا القادمة قريباً! ✨</p>`;
-        return;
-    }
+        // تهيئة فايربيز وقاعدة البيانات السحابية Firestore
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    container.innerHTML = ''; 
+        // دالة إغلاق مودال تفاصيل الرحلة
+        function closeTripModal() {
+            document.getElementById('tripModal').classList.remove('show');
+        }
 
-    trips.forEach((trip, index) => {
-        const mainImg = (trip.images && trip.images.length > 0) ? trip.images[0] : (trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80');
+        // دالة لمراقبة وجلب الرحلات المضافة من السحاب وعرضها تلقائياً للزبائن
+        function listenToTrips() {
+            const container = document.getElementById('tripsContainer');
+            
+            db.collection('trips').onSnapshot((snapshot) => {
+                if (snapshot.empty) {
+                    container.innerHTML = `<p style="grid-column: 1/-1; color: #777; font-size: 16px; padding: 40px 0;">✨ لا توجد عروض متوفرة حالياً، تابعونا لتصلكم رحلاتنا القادمة قريباً! ✨</p>`;
+                    return;
+                }
 
-        const card = document.createElement('div');
-        card.className = 'tour-card';
-        card.innerHTML = `
-            <div class="tour-img" style="background-image: url('${mainImg}')"></div>
-            <div class="tour-content">
-                <h3 class="tour-title">${trip.title}</h3>
-                <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> المدة: ${trip.duration || 'غير محددة'}</p>
-                
-                <div style="font-size: 12px; color: #555; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; background: #f9f9f9; padding: 8px; border-radius: 6px;">
-                    <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 15px; font-size: 11px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || 'غير محدد'}</span>
-                    <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 15px; font-size: 11px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || 'غير محدد'}</span>
-                </div>
-                
-                <div class="tour-footer">
-                    <span class="price">${trip.price} DZD</span>
-                    <div style="display: flex; gap: 6px;">
-                        <button type="button" onclick="openTripModal(${index})" style="flex: 1; background-color: var(--secondary); color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">التفاصيل</button>
-                        <button type="button" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="flex: 1; background-color: #28a745; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">Réserver</button>
-                    </div>
-                </div>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-}
+                container.innerHTML = ''; 
+                window.loadedTripsData = []; // حفظ البيانات مؤقتاً لتفاصيل المودال
 
-        // 2. دالة فتح قائمة الحجز المنبثقة وتغذيتها باسم الرحلة تلقائياً في حقل الوجهة
+                snapshot.forEach((doc) => {
+                    const trip = doc.data();
+                    window.loadedTripsData.push(trip);
+                    const index = window.loadedTripsData.length - 1;
+
+                    const mainImg = (trip.images && trip.images.length > 0) ? trip.images[0] : (trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80');
+
+                    const card = document.createElement('div');
+                    card.className = 'tour-card';
+                    card.innerHTML = `
+                        <div class="tour-img" style="background-image: url('${mainImg}')"></div>
+                        <div class="tour-content">
+                            <h3 class="tour-title">${trip.title}</h3>
+                            <p class="tour-desc"><i class="fa-regular fa-calendar-days" style="color: var(--secondary)"></i> المدة: ${trip.duration || 'غير محددة'}</p>
+                            
+                            <div style="font-size: 12px; color: #555; margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; background: #f9f9f9; padding: 8px; border-radius: 6px;">
+                                <span><i class="fa-solid fa-plane-departure" style="color: #28a745; width: 15px; font-size: 11px;"></i> <b>Départ:</b> ${trip.departureDate || trip.startDate || 'غير محدد'}</span>
+                                <span><i class="fa-solid fa-plane-arrival" style="color: #dc3545; width: 15px; font-size: 11px;"></i> <b>Retour:</b> ${trip.returnDate || trip.endDate || 'غير محدد'}</span>
+                            </div>
+                            
+                            <div class="tour-footer">
+                                <span class="price">${trip.price} DZD</span>
+                                <div style="display: flex; gap: 6px;">
+                                    <button type="button" onclick="openTripModal(${index})" style="flex: 1; background-color: var(--secondary); color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600;">التفاصيل</button>
+                                    <button type="button" onclick="openBookingModal('${trip.title.replace(/'/g, "\\'")}')" style="flex: 1; background-color: #28a745; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 700;">Réserver</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }, (error) => {
+                console.error("خطأ في جلب الرحلات: ", error);
+            });
+        }
+
+        // تشغيل مراقبة وجلب البيانات فور تحميل الصفحة
+        window.onload = function() {
+            listenToTrips();
+        };
+
+        // دالة فتح نافذة الحجز
         function openBookingModal(tripTitle) {
             document.getElementById('modalTripTitle').value = tripTitle;
             document.getElementById('tripDisplayTitle').innerText = tripTitle;
             
-            // هنا يتم تحديث حقل الوجهة أوتوماتيكياً حسب نوع الرحلة المختارة
             const destinationField = document.getElementById('destination_display');
             if (destinationField) {
                 destinationField.value = tripTitle;
@@ -545,50 +570,60 @@ function loadTrips() {
             document.getElementById('bookingModal').style.display = 'flex';
         }
 
-        // 3. إغلاق نافذة الحجز وتنظيف الخانات
+        // إغلاق نافذة الحجز ونفض الخانات
         function closeBookingModal() {
             document.getElementById('bookingModal').style.display = 'none';
             document.getElementById('reservationForm').reset();
         }
 
-        // 4. دالة استقبال وحفظ الحجز في لوحة التحكم (متوافقة 100%)
-function submitBookingForm(event) {
-    event.preventDefault();
-    
-    const trip = document.getElementById('modalTripTitle').value;
-    const name = document.getElementById('clientName').value;
-    const phone = document.getElementById('clientPhone').value;
-    const birthDate = document.getElementById('clientBirthDate').value;
-    const departureDate = document.getElementById('clientDepartureDate').value;
+        // دالة إرسال الحجز السحابي لـ Firebase Firestore
+        function submitBookingForm(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "جاري إرسال طلبك...";
 
-    // بناء كائن الحجز بالمسميات المتوافقة تماماً مع لوحة تحكم Kimou Travel
-    const reservationData = {
-        tripTitle: trip,
-        customerName: name,
-        customerPhone: phone,
-        clientBirthDate: birthDate,
-        clientDepartureDate: departureDate,
-        clientDestination: trip, 
-        clientPaymentMethod: "نقداً في مقر الوكالة (Espèces au bureau)",
-        clientSeats: "1",
-        status: 'pending', // الحالة الافتراضية للحجز
-        date: new Date().toLocaleString('fr-FR')
-    };
-    
-    // جلب الحجوزات القديمة باستخدام المفتاح الصحيح المربوط مع لوحة التحكم
-    let reservations = JSON.parse(localStorage.getItem('kimou_bookings')) || [];
-    reservations.push(reservationData);
-    
-    // حفظ القائمة المحدثة في الـ LocalStorage
-    localStorage.setItem('kimou_bookings', JSON.stringify(reservations));
-    
-    alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيظهر في لوحة التحكم فوراً.');
-    closeBookingModal();
-}
+            const trip = document.getElementById('modalTripTitle').value;
+            const name = document.getElementById('clientName').value;
+            const phone = document.getElementById('clientPhone').value;
+            const birthDate = document.getElementById('clientBirthDate').value;
+            const departureDate = document.getElementById('clientDepartureDate').value;
+
+            // بناء كائن الحجز المتوافق تماماً مع لوحة تحكم الوكالة المحدثة
+            const reservationData = {
+                tripTitle: trip,
+                customerName: name,
+                customerPhone: phone,
+                clientBirthDate: birthDate,
+                clientDepartureDate: departureDate,
+                clientDestination: trip, 
+                clientPaymentMethod: "نقداً في مقر الوكالة (Espèces au bureau)",
+                clientSeats: "1",
+                status: 'pending', // حالة الانتظار الافتراضية
+                date: new Date().toLocaleString('fr-FR'),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp() // للترتيب الزمني الصحيح باللوحة
+            };
+            
+            // إرسال البيانات سحابياً لـ الكوليكشن 'bookings'
+            db.collection('bookings').add(reservationData)
+            .then(() => {
+                alert('شكراً لك! تم استقبال طلب حجزك بنجاح وسيتواصل معك فريق Kimou Travel قريباً.');
+                closeBookingModal();
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert('عذراً، حدث مشكل أثناء الاتصال بالسيرفر. يرجى إعادة المحاولة.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerText = "تأكيد الحجز";
+            });
+        }
         
-        // 5. دالة فتح نافذة تفاصيل البرنامج الكاملة
+        // دالة فتح تفاصيل البرنامج الكاملة للرحلة وإصلاح الكود المقطوع
         function openTripModal(index) {
-            const trips = JSON.parse(localStorage.getItem('kimou_trips')) || [];
+            const trips = window.loadedTripsData || [];
             const trip = trips[index];
             if (!trip) return;
 
@@ -719,57 +754,17 @@ function submitBookingForm(event) {
                     img.style.border = '2px solid #ddd';
                     img.style.transition = 'transform 0.2s';
                     
-                    img.onmouseover = function() { this.style.transform = 'scale(1.05)'; };
-                    img.onmouseout = function() { this.style.transform = 'scale(1)'; };
-                    img.onclick = function() { mainImgElement.src = imgSrc; };
+                    img.onclick = function() {
+                        mainImgElement.src = this.src;
+                    };
                     galleryContainer.appendChild(img);
                 });
-            } else if (trip.image) {
-                mainImgElement.src = trip.image;
+            } else {
+                mainImgElement.src = trip.image || 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=500&q=80';
             }
 
             document.getElementById('tripModal').classList.add('show');
         }
-
-        function closeTripModal() {
-            document.getElementById('tripModal').classList.remove('show');
-        }
-
-        window.onclick = function(event) {
-            const tripModal = document.getElementById('tripModal');
-            const bookingModal = document.getElementById('bookingModal');
-            if (event.target === tripModal) {
-                closeTripModal();
-            }
-            if (event.target === bookingModal) {
-                closeBookingModal();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', loadTrips);
     </script>
-
-    <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. نبحث عن النص الموجود في أعلى الاستمارة (استمارة حجز: ...)
-    // نقوم بتحديد العنصر الذي يحتوي على العنوان (تأكد من إضافة id="tour_title" لعنوان الاستمارة إذا أمكن، أو سنلتقطه عبر السكريبت)
-    
-    // افتراضياً سنبسط الأمر: الكود يبحث عن النص المكتوب بجانب "استمارة حجز:"
-    let headerText = document.querySelector('.modal-title, h2, h3, p')?.innerText || ""; 
-    
-    // إذا كنت تستطيع تعديل وسم العنوان في الأعلى، اجعله هكذا: <h3 id="tour_title">Sortie activité KAYAK a BEJAIA</h3>
-    // وسيكون السكريبت أدق بتبديله للسطر التالي:
-    // let tourName = document.getElementById('tour_title')?.innerText;
-
-    let tourName = "Sortie activité KAYAK a BEJAIA"; // القيمة الافتراضية الحالية
-
-    // نضع اسم الرحلة تلقائياً داخل خانة الوجهة لكي تُرسل مع الحجز
-    let destinationInput = document.getElementById('destination_display');
-    if (destinationInput) {
-        destinationInput.value = tourName;
-    }
-});
-</script>
-    
 </body>
 </html>
