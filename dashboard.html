@@ -290,10 +290,32 @@
             border-radius: 6px;
             font-size: 14px;
         }
+        
+        /* شكل مخصص لمعاينة الصور المرفوعة */
+        .images-preview-zone {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .preview-img-wrapper {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .preview-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
 
+    <!-- القائمة الجانبية للموقع -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-plane-departure"></i> Kimou Travel
@@ -304,6 +326,7 @@
         </ul>
     </div>
 
+    <!-- المحتوى الرئيسي للمدير -->
     <div class="main-content">
         <header>
             <div class="page-title">
@@ -312,6 +335,7 @@
             <div style="font-weight: 700; color: var(--primary);">مرحباً، المسؤول الأدمن 👋</div>
         </header>
 
+        <!-- كروت الإحصائيات السريعة -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-info">
@@ -329,8 +353,10 @@
             </div>
         </div>
 
+        <!-- 1. قسم قائمة الحجوزات الآلي -->
         <div id="section-bookings" class="dashboard-section active">
             
+            <!-- أداة الفلترة حسب الرحلة -->
             <div class="filter-container">
                 <label for="tripFilterSelect"><i class="fa-solid fa-filter"></i> اختر الرحلة لعرض قوائم الحجز الخاصة بها:</label>
                 <select id="tripFilterSelect" class="filter-select" onchange="filterBookingsByTrip()">
@@ -338,6 +364,7 @@
                 </select>
             </div>
 
+            <!-- أ: جدول الحجوزات في الانتظار للرحلة المحددة -->
             <div style="margin-bottom: 40px;">
                 <div class="section-header">
                     <h2>⏳ طلبات الحجوزات (قيد الانتظار)</h2>
@@ -367,6 +394,7 @@
 
             <hr style="border: 1px dashed #ddd; margin: 30px 0;">
 
+            <!-- ب: جدول الحجوزات المؤكدة والنهائية للرحلة المحددة -->
             <div>
                 <div class="section-header">
                     <h2>✅ قائمة الحجوزات النهائية (المؤكدة)</h2>
@@ -396,6 +424,7 @@
 
         </div>
 
+        <!-- 2. قسم إدارة الرحلات والعروض المتاحة للزبائن -->
         <div id="section-trips" class="dashboard-section">
             <div class="section-header">
                 <h2>الرحلات المعروضة على الموقع حالياً</h2>
@@ -423,6 +452,7 @@
         </div>
     </div>
 
+    <!-- نافذة إضافة وتعديل رحلة المحدثة -->
     <div id="tripModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTripTitle" style="margin-bottom: 20px; color: var(--primary);">إضافة رحلة جديدة للوكالة</h3>
@@ -453,28 +483,33 @@
                     </div>
                 </div>
 
+                <!-- حقل اختيار الصور الذكي الجديد (Sélectionner) -->
                 <div class="form-group">
-                    <label>روابط الصور للرحلة (يمكن وضع روابط متعددة مفصولة بفاصلة):</label>
-                    <input type="text" id="inputImages" class="form-control" placeholder="رابط الصورة 1, رابط الصورة 2">
+                    <label style="font-weight: bold; color: var(--primary);"><i class="fa-solid fa-images"></i> اختيار صور الرحلة من جهازك (Sélectionner):</label>
+                    <input type="file" id="inputImagesFile" class="form-control" accept="image/*" multiple onchange="handleFileSelection(event)">
+                    <div id="imagesPreviewZone" class="images-preview-zone"></div>
                 </div>
+
                 <div class="form-group">
                     <label>البرنامج والمخطط التفصيلي للرحلة:</label>
                     <textarea id="inputDetailedDesc" rows="6" class="form-control" placeholder="اكتب التفاصيل هنا..." required></textarea>
                 </div>
                 
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
-                    <button type="submit" class="btn btn-success">حفظ ونشر العرض السحابي</button>
+                    <button type="submit" id="submitBtn" class="btn btn-success">حفظ ونشر العرض السحابي</button>
                     <button type="button" class="btn btn-danger" onclick="closeTripModal()">إلغاء</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!--          ربط السيرفر السحابي FIREBASE        -->
+    <!-- ========================================== -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // إعدادات الـ Firebase المزامنة لـ Kimou Travel
         const firebaseConfig = {
             apiKey: "AIzaSyAPKgvNf2V34Z3Vlm6mTHRLAefr_Sg7J7s",
             authDomain: "kimou-travel-6c970.firebaseapp.com",
@@ -488,11 +523,10 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // مصفوفة محلية لتخزين الحجوزات وكاش الرحلات ليسهل الفلترة الفورية
         let allBookingsArray = [];
         let localTripsCache = {};
+        let temporaryUploadedBase64Images = []; // مصفوفة لحفظ الملفات المرفوعة مؤقتاً
 
-        // التبديل بين التبويبات بالـ Dashboard
         function switchTab(tabName) {
             document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
@@ -507,7 +541,6 @@
             }
         }
 
-        // الاستماع الفوري لجدول الحجوزات وحفظها محلياً للفلترة
         function listenToBookings() {
             db.collection('bookings').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
                 allBookingsArray = [];
@@ -520,14 +553,12 @@
                     });
                 });
 
-                // إعادة عرض البيانات فوراً بناءً على الفلتر الحالي المحدد
                 filterBookingsByTrip();
             }, error => {
                 console.error("خطأ في جلب الحجوزات: ", error);
             });
         }
 
-        // دالة الفلترة الذكية وعرض الجداول بناءً على اختيار الرحلة
         function filterBookingsByTrip() {
             const selectedTripTitle = document.getElementById('tripFilterSelect').value;
             const pendingTbody = document.getElementById('pendingTableBody');
@@ -540,7 +571,6 @@
             let confirmedCount = 0;
 
             allBookingsArray.forEach(data => {
-                // فلترة: إذا تم اختيار رحلة معينة ولم تكن تطابق رحلة الزبون، تخطاها
                 if (selectedTripTitle !== 'all' && data.tripTitle !== selectedTripTitle) {
                     return;
                 }
@@ -580,12 +610,10 @@
             }
         }
 
-        // تحديث القائمة المنسدلة للفلترة تلقائياً عند إضافة أو تعديل رحلات
         function updateTripFilterDropdown() {
             const selectDropdown = document.getElementById('tripFilterSelect');
-            const currentSelected = selectDropdown.value; // الاحتفاظ بالاختيار الحالي أثناء التحديث
+            const currentSelected = selectDropdown.value;
 
-            // مسح الخيارات القديمة ما عدا الخيار الأول (الكل)
             selectDropdown.innerHTML = '<option value="all">عرض حجوزات كل الرحلات معاً</option>';
 
             Object.values(localTripsCache).forEach(trip => {
@@ -597,13 +625,11 @@
                 }
             });
 
-            // إرجاع القيمة المحددة السابقة إذا كانت لا تزال موجودة
             if (localTripsCache[currentSelected] || currentSelected === 'all') {
                 selectDropdown.value = currentSelected;
             }
         }
 
-        // دالة الطباعة الاحترافية المحدثة للرحلة المحددة
         function printTable(tbodyId, titleText) {
             const originTbody = document.getElementById(tbodyId);
             const selectedTripTitle = document.getElementById('tripFilterSelect').value;
@@ -617,7 +643,7 @@
             const rows = tbodyCopy.querySelectorAll('tr');
             rows.forEach(row => {
                 if (row.cells.length > 0) {
-                    row.deleteCell(-1); // حذف عمود الإجراءات أثناء الطباعة
+                    row.deleteCell(-1);
                 }
             });
 
@@ -654,7 +680,6 @@
             }, 500);
         }
 
-        // مراقبة حية لجدول الرحلات وتحديث الفلاتر بناءً عليها
         function listenToTrips() {
             db.collection('trips').onSnapshot(snapshot => {
                 const tbody = document.getElementById('tripsTableBody');
@@ -693,16 +718,46 @@
                     tbody.appendChild(tr);
                 });
 
-                // تحديث القائمة المنسدلة فوراً
                 updateTripFilterDropdown();
             }, error => {
                 console.error("خطأ في جلب الرحلات: ", error);
             });
         }
 
+        // دالة معالجة وتحويل الصور المحددة إلى Base64 لعرضها وحفظها بسلاسة
+        function handleFileSelection(event) {
+            const files = event.target.files;
+            const previewZone = document.getElementById('imagesPreviewZone');
+            
+            // عدم مسح الصور القديمة في حالة التعديل، بل الإضافة عليها
+            if(!document.getElementById('tripId').value) {
+                previewZone.innerHTML = '';
+                temporaryUploadedBase64Images = [];
+            }
+
+            if (files) {
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const base64Url = e.target.result;
+                        temporaryUploadedBase64Images.push(base64Url);
+
+                        // رسم مصغرة للصورة في الواجهة للتأكيد
+                        const wrapper = document.createElement('div');
+                        wrapper.className = 'preview-img-wrapper';
+                        wrapper.innerHTML = `<img src="${base64Url}">`;
+                        previewZone.appendChild(wrapper);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
         function openTripModal() {
             document.getElementById('tripId').value = '';
             document.getElementById('tripForm').reset();
+            document.getElementById('imagesPreviewZone').innerHTML = '';
+            temporaryUploadedBase64Images = [];
             document.getElementById('modalTripTitle').innerText = "إضافة رحلة جديدة للوكالة";
             document.getElementById('tripModal').style.display = 'flex';
         }
@@ -720,13 +775,11 @@
             const duration = document.getElementById('inputDuration').value;
             const departureDate = document.getElementById('inputDepartureDate').value;
             const returnDate = document.getElementById('inputReturnDate').value;
-            const imagesInput = document.getElementById('inputImages').value;
             const detailedDesc = document.getElementById('inputDetailedDesc').value;
 
-            let imagesArray = [];
-            if (imagesInput.trim() !== '') {
-                imagesArray = imagesInput.split(',').map(img => img.trim());
-            }
+            const btnSubmit = document.getElementById('submitBtn');
+            btnSubmit.innerText = "جاري رفع البيانات والصور...";
+            btnSubmit.disabled = true;
 
             const tripData = {
                 title: title,
@@ -734,7 +787,7 @@
                 duration: duration,
                 departureDate: departureDate,
                 returnDate: returnDate,
-                images: imagesArray,
+                images: temporaryUploadedBase64Images, // حفظ مصفوفة الصور هنا تلقائياً
                 detailedDesc: detailedDesc,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -742,11 +795,15 @@
             if (id) {
                 db.collection('trips').doc(id).update(tripData).then(() => {
                     alert('تم تحديث الرحلة بنجاح!');
+                    btnSubmit.innerText = "حفظ ونشر العرض السحابي";
+                    btnSubmit.disabled = false;
                     closeTripModal();
                 });
             } else {
                 db.collection('trips').add(tripData).then(() => {
-                    alert('تم نشر العرض الجديد بنجاح!');
+                    alert('تم نشر العرض الجديد بالصور بنجاح!');
+                    btnSubmit.innerText = "حفظ ونشر العرض السحابي";
+                    btnSubmit.disabled = false;
                     closeTripModal();
                 });
             }
@@ -762,8 +819,19 @@
             document.getElementById('inputDuration').value = trip.duration || '';
             document.getElementById('inputDepartureDate').value = trip.departureDate || trip.startDate || '';
             document.getElementById('inputReturnDate').value = trip.returnDate || trip.endDate || '';
-            document.getElementById('inputImages').value = trip.images ? trip.images.join(', ') : '';
             document.getElementById('inputDetailedDesc').value = trip.detailedDesc || '';
+
+            // عرض الصور المخزنة مسبقاً في منطقة المعاينة
+            const previewZone = document.getElementById('imagesPreviewZone');
+            previewZone.innerHTML = '';
+            temporaryUploadedBase64Images = trip.images || [];
+
+            temporaryUploadedBase64Images.forEach(imgUrl => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'preview-img-wrapper';
+                wrapper.innerHTML = `<img src="${imgUrl}">`;
+                previewZone.appendChild(wrapper);
+            });
 
             document.getElementById('modalTripTitle').innerText = "تعديل تفاصيل وتواريخ الرحلة";
             document.getElementById('tripModal').style.display = 'flex';
