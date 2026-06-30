@@ -143,6 +143,32 @@
             opacity: 0.8;
         }
 
+        /* الفلترة */
+        .filter-container {
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .filter-container label {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .filter-select {
+            padding: 8px 15px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 2px solid #ddd;
+            font-weight: bold;
+            color: #333;
+            outline: none;
+            min-width: 250px;
+        }
+
         /* الأقسام والمداول */
         .dashboard-section {
             display: none;
@@ -268,7 +294,6 @@
 </head>
 <body>
 
-    <!-- القائمة الجانبية للموقع -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-plane-departure"></i> Kimou Travel
@@ -279,7 +304,6 @@
         </ul>
     </div>
 
-    <!-- المحتوى الرئيسي للمدير -->
     <div class="main-content">
         <header>
             <div class="page-title">
@@ -288,7 +312,6 @@
             <div style="font-weight: 700; color: var(--primary);">مرحباً، المسؤول الأدمن 👋</div>
         </header>
 
-        <!-- كروت الإحصائيات السريعة -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-info">
@@ -306,10 +329,15 @@
             </div>
         </div>
 
-        <!-- 1. قسم قائمة الحجوزات الآلي (مقسم إلى انتظار ومؤكد) -->
         <div id="section-bookings" class="dashboard-section active">
             
-            <!-- أ: جدول الحجوزات في الانتظار -->
+            <div class="filter-container">
+                <label for="tripFilterSelect"><i class="fa-solid fa-filter"></i> اختر الرحلة لعرض قوائم الحجز الخاصة بها:</label>
+                <select id="tripFilterSelect" class="filter-select" onchange="filterBookingsByTrip()">
+                    <option value="all">عرض حجوزات كل الرحلات معاً</option>
+                </select>
+            </div>
+
             <div style="margin-bottom: 40px;">
                 <div class="section-header">
                     <h2>⏳ طلبات الحجوزات (قيد الانتظار)</h2>
@@ -339,7 +367,6 @@
 
             <hr style="border: 1px dashed #ddd; margin: 30px 0;">
 
-            <!-- ب: جدول الحجوزات المؤكدة والنهائية -->
             <div>
                 <div class="section-header">
                     <h2>✅ قائمة الحجوزات النهائية (المؤكدة)</h2>
@@ -369,7 +396,6 @@
 
         </div>
 
-        <!-- 2. قسم إدارة الرحلات والعروض المتاحة للزبائن -->
         <div id="section-trips" class="dashboard-section">
             <div class="section-header">
                 <h2>الرحلات المعروضة على الموقع حالياً</h2>
@@ -397,7 +423,6 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة وتعديل رحلة -->
     <div id="tripModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTripTitle" style="margin-bottom: 20px; color: var(--primary);">إضافة رحلة جديدة للوكالة</h3>
@@ -445,9 +470,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!--          ربط السيرفر السحابي FIREBASE        -->
-    <!-- ========================================== -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -466,7 +488,8 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // حفظ كاش محلي للرحلات لتسهيل عملية التعديل دون أخطاء نصوص
+        // مصفوفة محلية لتخزين الحجوزات وكاش الرحلات ليسهل الفلترة الفورية
+        let allBookingsArray = [];
         let localTripsCache = {};
 
         // التبديل بين التبويبات بالـ Dashboard
@@ -484,64 +507,107 @@
             }
         }
 
-        // المراقبة التلقائية والفصل الذكي للحجوزات
+        // الاستماع الفوري لجدول الحجوزات وحفظها محلياً للفلترة
         function listenToBookings() {
             db.collection('bookings').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
-                const pendingTbody = document.getElementById('pendingTableBody');
-                const confirmedTbody = document.getElementById('confirmedTableBody');
-                
+                allBookingsArray = [];
                 document.getElementById('stat-total-bookings').innerText = snapshot.size;
 
-                pendingTbody.innerHTML = '';
-                confirmedTbody.innerHTML = '';
-
-                let pendingCount = 0;
-                let confirmedCount = 0;
-
                 snapshot.forEach(doc => {
-                    const data = doc.data();
-                    const tr = document.createElement('tr');
-                    
-                    const isConfirmed = data.status === 'confirmed';
-                    const statusTxt = isConfirmed ? 'مؤكد ومقبول' : 'قيد الانتظار';
-                    const statusClass = isConfirmed ? 'status-confirmed' : 'status-pending';
-
-                    tr.innerHTML = `
-                        <td><b>${data.customerName || 'غير مسجل'}</b></td>
-                        <td><a href="tel:${data.customerPhone}" style="color: var(--secondary); font-weight: bold; text-decoration: none;"><i class="fa-solid fa-phone"></i> ${data.customerPhone || 'بدون هاتف'}</a></td>
-                        <td><span style="background: #eef1f6; padding: 4px 8px; border-radius: 4px; font-size: 13px;">${data.tripTitle || 'رحلة عامة'}</span></td>
-                        <td>${data.clientBirthDate || 'غير مسجل'}</td>
-                        <td><span style="font-size: 12px; color: #666;">${data.date || 'تاريخ غير متوفر'}</span></td>
-                        <td><span class="status-badge ${statusClass}">${statusTxt}</span></td>
-                        <td>
-                            ${!isConfirmed ? `<button class="btn btn-success" style="padding: 4px 8px; font-size: 11px;" onclick="confirmBooking('${doc.id}')"><i class="fa-solid fa-check"></i> تأكيد الحجز</button>` : ''}
-                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteBooking('${doc.id}')"><i class="fa-solid fa-trash-can"></i> حذف</button>
-                        </td>
-                    `;
-
-                    if (isConfirmed) {
-                        confirmedTbody.appendChild(tr);
-                        confirmedCount++;
-                    } else {
-                        pendingTbody.appendChild(tr);
-                        pendingCount++;
-                    }
+                    allBookingsArray.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
                 });
 
-                if (pendingCount === 0) {
-                    pendingTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #999; padding: 15px;">لا توجد طلبات معلقة حالياً في الانتظار.</td></tr>`;
-                }
-                if (confirmedCount === 0) {
-                    confirmedTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #999; padding: 15px;">لا توجد حجوزات مؤكدة في القائمة النهائية بعد.</td></tr>`;
-                }
+                // إعادة عرض البيانات فوراً بناءً على الفلتر الحالي المحدد
+                filterBookingsByTrip();
             }, error => {
                 console.error("خطأ في جلب الحجوزات: ", error);
             });
         }
 
-        // دالة الطباعة الاحترافية
+        // دالة الفلترة الذكية وعرض الجداول بناءً على اختيار الرحلة
+        function filterBookingsByTrip() {
+            const selectedTripTitle = document.getElementById('tripFilterSelect').value;
+            const pendingTbody = document.getElementById('pendingTableBody');
+            const confirmedTbody = document.getElementById('confirmedTableBody');
+
+            pendingTbody.innerHTML = '';
+            confirmedTbody.innerHTML = '';
+
+            let pendingCount = 0;
+            let confirmedCount = 0;
+
+            allBookingsArray.forEach(data => {
+                // فلترة: إذا تم اختيار رحلة معينة ولم تكن تطابق رحلة الزبون، تخطاها
+                if (selectedTripTitle !== 'all' && data.tripTitle !== selectedTripTitle) {
+                    return;
+                }
+
+                const tr = document.createElement('tr');
+                const isConfirmed = data.status === 'confirmed';
+                const statusTxt = isConfirmed ? 'مؤكد ومقبول' : 'قيد الانتظار';
+                const statusClass = isConfirmed ? 'status-confirmed' : 'status-pending';
+
+                tr.innerHTML = `
+                    <td><b>${data.customerName || 'غير مسجل'}</b></td>
+                    <td><a href="tel:${data.customerPhone}" style="color: var(--secondary); font-weight: bold; text-decoration: none;"><i class="fa-solid fa-phone"></i> ${data.customerPhone || 'بدون هاتف'}</a></td>
+                    <td><span style="background: #eef1f6; padding: 4px 8px; border-radius: 4px; font-size: 13px;">${data.tripTitle || 'رحلة عامة'}</span></td>
+                    <td>${data.clientBirthDate || 'غير مسجل'}</td>
+                    <td><span style="font-size: 12px; color: #666;">${data.date || 'تاريخ غير متوفر'}</span></td>
+                    <td><span class="status-badge ${statusClass}">${statusTxt}</span></td>
+                    <td>
+                        ${!isConfirmed ? `<button class="btn btn-success" style="padding: 4px 8px; font-size: 11px;" onclick="confirmBooking('${data.id}')"><i class="fa-solid fa-check"></i> تأكيد الحجز</button>` : ''}
+                        <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteBooking('${data.id}')"><i class="fa-solid fa-trash-can"></i> حذف</button>
+                    </td>
+                `;
+
+                if (isConfirmed) {
+                    confirmedTbody.appendChild(tr);
+                    confirmedCount++;
+                } else {
+                    pendingTbody.appendChild(tr);
+                    pendingCount++;
+                }
+            });
+
+            if (pendingCount === 0) {
+                pendingTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #999; padding: 15px;">لا توجد طلبات معلقة لهذه الرحلة حالياً.</td></tr>`;
+            }
+            if (confirmedCount === 0) {
+                confirmedTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #999; padding: 15px;">لا توجد حجوزات مؤكدة لهذه الرحلة بعد.</td></tr>`;
+            }
+        }
+
+        // تحديث القائمة المنسدلة للفلترة تلقائياً عند إضافة أو تعديل رحلات
+        function updateTripFilterDropdown() {
+            const selectDropdown = document.getElementById('tripFilterSelect');
+            const currentSelected = selectDropdown.value; // الاحتفاظ بالاختيار الحالي أثناء التحديث
+
+            // مسح الخيارات القديمة ما عدا الخيار الأول (الكل)
+            selectDropdown.innerHTML = '<option value="all">عرض حجوزات كل الرحلات معاً</option>';
+
+            Object.values(localTripsCache).forEach(trip => {
+                if (trip.title) {
+                    const opt = document.createElement('option');
+                    opt.value = trip.title;
+                    opt.innerText = trip.title;
+                    selectDropdown.appendChild(opt);
+                }
+            });
+
+            // إرجاع القيمة المحددة السابقة إذا كانت لا تزال موجودة
+            if (localTripsCache[currentSelected] || currentSelected === 'all') {
+                selectDropdown.value = currentSelected;
+            }
+        }
+
+        // دالة الطباعة الاحترافية المحدثة للرحلة المحددة
         function printTable(tbodyId, titleText) {
             const originTbody = document.getElementById(tbodyId);
+            const selectedTripTitle = document.getElementById('tripFilterSelect').value;
+            
             if (!originTbody || originTbody.rows.length === 0 || (originTbody.rows.length === 1 && originTbody.rows[0].cells.length === 1)) {
                 alert("لا توجد بيانات صالحة للطباعة حالياً!");
                 return;
@@ -551,9 +617,16 @@
             const rows = tbodyCopy.querySelectorAll('tr');
             rows.forEach(row => {
                 if (row.cells.length > 0) {
-                    row.deleteCell(-1); 
+                    row.deleteCell(-1); // حذف عمود الإجراءات أثناء الطباعة
                 }
             });
+
+            let displayTitle = titleText;
+            if(selectedTripTitle !== 'all') {
+                displayTitle += ` - رحلة: (${selectedTripTitle})`;
+            } else {
+                displayTitle += ` - (كل رحلات الوكالة)`;
+            }
 
             const printWindow = window.open('', '', 'height=700,width=900');
             printWindow.document.write('<html dir="rtl" lang="ar"><head><title>Kimou Travel - طباعة القائمة</title>');
@@ -566,7 +639,7 @@
             printWindow.document.write('th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: right; font-size: 14px; }');
             printWindow.document.write('th { background-color: #f4f6f9; color: #1e3d59; font-weight: bold; }');
             printWindow.document.write('</style></head><body>');
-            printWindow.document.write('<h2>' + titleText + '</h2>');
+            printWindow.document.write('<h2>' + displayTitle + '</h2>');
             printWindow.document.write('<div class="date-print">وكالة كيمو ترافيل - تم استخراج القائمة في تاريخ: ' + new Date().toLocaleString('ar-DZ') + '</div>');
             
             printWindow.document.write('<table>');
@@ -581,7 +654,7 @@
             }, 500);
         }
 
-        // مراقبة حية لجدول الرحلات
+        // مراقبة حية لجدول الرحلات وتحديث الفلاتر بناءً عليها
         function listenToTrips() {
             db.collection('trips').onSnapshot(snapshot => {
                 const tbody = document.getElementById('tripsTableBody');
@@ -589,16 +662,18 @@
 
                 if (snapshot.empty) {
                     tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #999; padding: 20px;">لا توجد رحلات مضافة.</td></tr>`;
+                    localTripsCache = {};
+                    updateTripFilterDropdown();
                     return;
                 }
 
                 tbody.innerHTML = '';
-                localTripsCache = {}; // تصغير وتفريغ الكاش القديم
+                localTripsCache = {}; 
 
                 snapshot.forEach(doc => {
                     const trip = doc.data();
                     const id = doc.id;
-                    localTripsCache[id] = trip; // تسجيل الرحلة في الكاش المحلي بأمان
+                    localTripsCache[id] = trip; 
 
                     const dDate = trip.departureDate || trip.startDate || '—';
                     const rDate = trip.returnDate || trip.endDate || '—';
@@ -617,6 +692,9 @@
                     `;
                     tbody.appendChild(tr);
                 });
+
+                // تحديث القائمة المنسدلة فوراً
+                updateTripFilterDropdown();
             }, error => {
                 console.error("خطأ في جلب الرحلات: ", error);
             });
@@ -674,7 +752,6 @@
             }
         }
 
-        // استدعاء التعديل الآمن عبر معرف الكاش بدون كود مكسور
         function editTrip(id) {
             const trip = localTripsCache[id];
             if(!trip) return;
