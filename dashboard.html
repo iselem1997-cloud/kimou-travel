@@ -291,7 +291,6 @@
             font-size: 14px;
         }
         
-        /* شكل مخصص لمعاينة الصور المرفوعة */
         .images-preview-zone {
             display: flex;
             gap: 10px;
@@ -315,7 +314,6 @@
 </head>
 <body>
 
-    <!-- القائمة الجانبية للموقع -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-plane-departure"></i> Kimou Travel
@@ -326,7 +324,6 @@
         </ul>
     </div>
 
-    <!-- المحتوى الرئيسي للمدير -->
     <div class="main-content">
         <header>
             <div class="page-title">
@@ -335,7 +332,6 @@
             <div style="font-weight: 700; color: var(--primary);">مرحباً، المسؤول الأدمن 👋</div>
         </header>
 
-        <!-- كروت الإحصائيات السريعة -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-info">
@@ -353,10 +349,8 @@
             </div>
         </div>
 
-        <!-- 1. قسم قائمة الحجوزات الآلي -->
         <div id="section-bookings" class="dashboard-section active">
             
-            <!-- أداة الفلترة حسب الرحلة -->
             <div class="filter-container">
                 <label for="tripFilterSelect"><i class="fa-solid fa-filter"></i> اختر الرحلة لعرض قوائم الحجز الخاصة بها:</label>
                 <select id="tripFilterSelect" class="filter-select" onchange="filterBookingsByTrip()">
@@ -364,7 +358,6 @@
                 </select>
             </div>
 
-            <!-- أ: جدول الحجوزات في الانتظار للرحلة المحددة -->
             <div style="margin-bottom: 40px;">
                 <div class="section-header">
                     <h2>⏳ طلبات الحجوزات (قيد الانتظار)</h2>
@@ -394,7 +387,6 @@
 
             <hr style="border: 1px dashed #ddd; margin: 30px 0;">
 
-            <!-- ب: جدول الحجوزات المؤكدة والنهائية للرحلة المحددة -->
             <div>
                 <div class="section-header">
                     <h2>✅ قائمة الحجوزات النهائية (المؤكدة)</h2>
@@ -424,7 +416,6 @@
 
         </div>
 
-        <!-- 2. قسم إدارة الرحلات والعروض المتاحة للزبائن -->
         <div id="section-trips" class="dashboard-section">
             <div class="section-header">
                 <h2>الرحلات المعروضة على الموقع حالياً</h2>
@@ -452,7 +443,6 @@
         </div>
     </div>
 
-    <!-- نافذة إضافة وتعديل رحلة المحدثة -->
     <div id="tripModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTripTitle" style="margin-bottom: 20px; color: var(--primary);">إضافة رحلة جديدة للوكالة</h3>
@@ -483,7 +473,6 @@
                     </div>
                 </div>
 
-                <!-- حقل اختيار الصور الذكي الجديد (Sélectionner) -->
                 <div class="form-group">
                     <label style="font-weight: bold; color: var(--primary);"><i class="fa-solid fa-images"></i> اختيار صور الرحلة من جهازك (Sélectionner):</label>
                     <input type="file" id="inputImagesFile" class="form-control" accept="image/*" multiple onchange="handleFileSelection(event)">
@@ -503,9 +492,6 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!--          ربط السيرفر السحابي FIREBASE        -->
-    <!-- ========================================== -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
@@ -525,7 +511,7 @@
 
         let allBookingsArray = [];
         let localTripsCache = {};
-        let temporaryUploadedBase64Images = []; // مصفوفة لحفظ الملفات المرفوعة مؤقتاً
+        let temporaryUploadedBase64Images = [];
 
         function switchTab(tabName) {
             document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
@@ -724,12 +710,11 @@
             });
         }
 
-        // دالة معالجة وتحويل الصور المحددة إلى Base64 لعرضها وحفظها بسلاسة
+        // دالة ذكية جديدة لضغط الصور تلقائياً قبل الحفظ لتسريع الرفع
         function handleFileSelection(event) {
             const files = event.target.files;
             const previewZone = document.getElementById('imagesPreviewZone');
             
-            // عدم مسح الصور القديمة في حالة التعديل، بل الإضافة عليها
             if(!document.getElementById('tripId').value) {
                 previewZone.innerHTML = '';
                 temporaryUploadedBase64Images = [];
@@ -739,14 +724,34 @@
                 Array.from(files).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function(e) {
-                        const base64Url = e.target.result;
-                        temporaryUploadedBase64Images.push(base64Url);
+                        const img = new Image();
+                        img.onload = function() {
+                            // إنشاء Canvas لتصغير وتخفيض حجم الصورة تلقائياً
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800; // أقصى عرض للصورة لتبقى ممتازة للموقع وخفيفة جداً
+                            let width = img.width;
+                            let height = img.height;
 
-                        // رسم مصغرة للصورة في الواجهة للتأكيد
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'preview-img-wrapper';
-                        wrapper.innerHTML = `<img src="${base64Url}">`;
-                        previewZone.appendChild(wrapper);
+                            if (width > MAX_WIDTH) {
+                                height *= MAX_WIDTH / width;
+                                width = MAX_WIDTH;
+                            }
+
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            // ضغط جودة الصورة إلى 60% وهي كافية جداً للمتصفح وسريعة الرفع
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                            temporaryUploadedBase64Images.push(compressedBase64);
+
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'preview-img-wrapper';
+                            wrapper.innerHTML = `<img src="${compressedBase64}">`;
+                            previewZone.appendChild(wrapper);
+                        };
+                        img.src = e.target.result;
                     };
                     reader.readAsDataURL(file);
                 });
@@ -787,7 +792,7 @@
                 duration: duration,
                 departureDate: departureDate,
                 returnDate: returnDate,
-                images: temporaryUploadedBase64Images, // حفظ مصفوفة الصور هنا تلقائياً
+                images: temporaryUploadedBase64Images,
                 detailedDesc: detailedDesc,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -821,7 +826,6 @@
             document.getElementById('inputReturnDate').value = trip.returnDate || trip.endDate || '';
             document.getElementById('inputDetailedDesc').value = trip.detailedDesc || '';
 
-            // عرض الصور المخزنة مسبقاً في منطقة المعاينة
             const previewZone = document.getElementById('imagesPreviewZone');
             previewZone.innerHTML = '';
             temporaryUploadedBase64Images = trip.images || [];
