@@ -190,6 +190,13 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--bg);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
         }
 
         .btn {
@@ -209,6 +216,7 @@
         .btn-primary:hover { background-color: #e2582b; }
         .btn-success { background-color: var(--success); color: var(--white); }
         .btn-danger { background-color: var(--danger); color: var(--white); }
+        .btn-danger:hover { background-color: #bd2130; }
         .btn-info { background-color: var(--info); color: var(--white); }
 
         .table-responsive {
@@ -361,7 +369,10 @@
             <div style="margin-bottom: 40px;">
                 <div class="section-header">
                     <h2>⏳ طلبات الحجوزات (قيد الانتظار)</h2>
-                    <button class="btn btn-primary" onclick="printTable('pendingTableBody', '⏳ قائمة الحجوزات قيد الانتظار')"><i class="fa-solid fa-print"></i> طباعة قائمة الانتظار</button>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" onclick="printTable('pendingTableBody', '⏳ قائمة الحجوزات قيد الانتظار')"><i class="fa-solid fa-print"></i> طباعة قائمة الانتظار</button>
+                        <button class="btn btn-danger" onclick="clearAllBookings('pending')"><i class="fa-solid fa-trash-sweep"></i> حذف كل طلبات الانتظار</button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table id="pendingTable">
@@ -390,7 +401,10 @@
             <div>
                 <div class="section-header">
                     <h2>✅ قائمة الحجوزات النهائية (المؤكدة)</h2>
-                    <button class="btn btn-info" onclick="printTable('confirmedTableBody', '✅ القائمة النهائية للحجوزات المؤكدة')"><i class="fa-solid fa-print"></i> طباعة القائمة المؤكدة</button>
+                    <div class="header-actions">
+                        <button class="btn btn-info" onclick="printTable('confirmedTableBody', '✅ القائمة النهائية للحجوزات المؤكدة')"><i class="fa-solid fa-print"></i> طباعة القائمة المؤكدة</button>
+                        <button class="btn btn-danger" onclick="clearAllBookings('confirmed')"><i class="fa-solid fa-user-slash"></i> حذف كل المؤكدة</button>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <table id="confirmedTable">
@@ -419,7 +433,10 @@
         <div id="section-trips" class="dashboard-section">
             <div class="section-header">
                 <h2>الرحلات المعروضة على الموقع حالياً</h2>
-                <button class="btn btn-primary" onclick="openTripModal()"><i class="fa-solid fa-plus"></i> إضافة رحلة جديدة</button>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="openTripModal()"><i class="fa-solid fa-plus"></i> إضافة رحلة جديدة</button>
+                    <button class="btn btn-danger" onclick="clearAllTrips()"><i class="fa-solid fa-dumpster-fire"></i> حذف كل الرحلات</button>
+                </div>
             </div>
             <div class="table-responsive">
                 <table>
@@ -710,7 +727,6 @@
             });
         }
 
-        // دالة ذكية جديدة لضغط الصور تلقائياً قبل الحفظ لتسريع الرفع
         function handleFileSelection(event) {
             const files = event.target.files;
             const previewZone = document.getElementById('imagesPreviewZone');
@@ -726,9 +742,8 @@
                     reader.onload = function(e) {
                         const img = new Image();
                         img.onload = function() {
-                            // إنشاء Canvas لتصغير وتخفيض حجم الصورة تلقائياً
                             const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 800; // أقصى عرض للصورة لتبقى ممتازة للموقع وخفيفة جداً
+                            const MAX_WIDTH = 800;
                             let width = img.width;
                             let height = img.height;
 
@@ -742,7 +757,6 @@
                             const ctx = canvas.getContext('2d');
                             ctx.drawImage(img, 0, 0, width, height);
 
-                            // ضغط جودة الصورة إلى 60% وهي كافية جداً للمتصفح وسريعة الرفع
                             const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
                             temporaryUploadedBase64Images.push(compressedBase64);
 
@@ -856,6 +870,66 @@
         function deleteTrip(id) {
             if(confirm('هل أنت متأكد من حذف هذه الرحلة نهائياً؟')) {
                 db.collection('trips').doc(id).delete();
+            }
+        }
+
+        // دالة حذف الكل للحجوزات (حسب الرحلة المحددة في الفلتر أو للكل)
+        function clearAllBookings(statusType) {
+            const selectedTripTitle = document.getElementById('tripFilterSelect').value;
+            let targetBookings = allBookingsArray.filter(b => b.status === statusType);
+            
+            if (selectedTripTitle !== 'all') {
+                targetBookings = targetBookings.filter(b => b.tripTitle === selectedTripTitle);
+            }
+
+            if (targetBookings.length === 0) {
+                alert("القائمة فارغة بالفعل ولا توجد بيانات لحذفها!");
+                return;
+            }
+
+            const msg = selectedTripTitle === 'all' 
+                ? `⚠️ تحذير: هل أنت متأكد تماماً من حذف جميع الحجوزات (${statusType === 'confirmed' ? 'المؤكدة' : 'قيد الانتظار'}) لكل رحلات الوكالة؟`
+                : `⚠️ تحذير: هل أنت متأكد من حذف جميع الحجوزات (${statusType === 'confirmed' ? 'المؤكدة' : 'قيد الانتظار'}) الخاصة برحلة "${selectedTripTitle}" فقط؟`;
+
+            if (confirm(msg)) {
+                if (confirm("🔄 تأكيد أخير: لن تتمكن من استرجاع هذه البيانات بعد الحذف السحابي. هل تود المتابعة؟")) {
+                    const batch = db.batch();
+                    targetBookings.forEach(booking => {
+                        const ref = db.collection('bookings').doc(booking.id);
+                        batch.delete(ref);
+                    });
+                    
+                    batch.commit().then(() => {
+                        alert("تم مسح القائمة المحددة بنجاح!");
+                    }).catch(err => {
+                        console.error("خطأ أثناء مسح القائمة: ", err);
+                    });
+                }
+            }
+        }
+
+        // دالة حذف الكل للرحلات
+        function clearAllTrips() {
+            const tripIds = Object.keys(localTripsCache);
+            if (tripIds.length === 0) {
+                alert("لا توجد رحلات معروضة لحذفها!");
+                return;
+            }
+
+            if (confirm("⚠️ تحذير خطير: هل تريد حذف جميع الرحلات المعروضة في الموقع نهائياً؟")) {
+                if (confirm("🔄 تأكيد أخير: سيتم مسح كافة العروض البرمجية والصور المرفقة بها من السيرفر. هل تريد المتابعة؟")) {
+                    const batch = db.batch();
+                    tripIds.forEach(id => {
+                        const ref = db.collection('trips').doc(id);
+                        batch.delete(ref);
+                    });
+
+                    batch.commit().then(() => {
+                        alert("تم حذف جميع عروض الرحلات بنجاح!");
+                    }).catch(err => {
+                        console.error("خطأ أثناء حذف الرحلات: ", err);
+                    });
+                }
             }
         }
 
