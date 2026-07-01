@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
@@ -373,11 +374,20 @@
             height: 100%;
             object-fit: cover;
         }
+
+        /* ستايل مخصص لرسائل تغيير كلمة المرور */
+        .password-msg {
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 15px;
+            display: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- أولاً: شاشة تسجيل الدخول -->
     <div id="loginSection" class="login-container">
         <div class="login-card">
             <div class="login-logo"><i class="fa-solid fa-lock"></i> Kimou Travel</div>
@@ -401,9 +411,7 @@
         </div>
     </div>
 
-    <!-- ثانياً: لوحة التحكم الرئيسية (تظهر بعد نجاح الدخول) -->
     <div id="dashboardWrapper" class="dashboard-wrapper">
-        <!-- القائمة الجانبية للموقع -->
         <div class="sidebar">
             <div class="sidebar-brand">
                 <i class="fa-solid fa-plane-departure"></i> Kimou Travel
@@ -411,11 +419,11 @@
             <ul class="sidebar-menu">
                 <li class="active" id="menu-bookings"><a onclick="switchTab('bookings')"><i class="fa-solid fa-clipboard-list"></i> قائمة الحجوزات</a></li>
                 <li id="menu-trips"><a onclick="switchTab('trips')"><i class="fa-solid fa-map-location-dot"></i> إدارة الرحلات</a></li>
+                <li id="menu-settings"><a onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i> إعدادات الأمان</a></li>
                 <li style="margin-top: 30px;"><a onclick="handleLogout()" style="background-color: rgba(220, 53, 69, 0.2); color: #ff8080;"><i class="fa-solid fa-power-off"></i> تسجيل الخروج</a></li>
             </ul>
         </div>
 
-        <!-- المحتوى الرئيسي للمدير -->
         <div class="main-content">
             <header>
                 <div class="page-title">
@@ -424,7 +432,6 @@
                 <div style="font-weight: 700; color: var(--primary);">مرحباً، المسؤول الأدمن 👋</div>
             </header>
 
-            <!-- كروت الإحصائيات السريعة -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-info">
@@ -442,7 +449,6 @@
                 </div>
             </div>
 
-            <!-- 1. قسم قائمة الحجوزات الآلي -->
             <div id="section-bookings" class="dashboard-section active">
                 
                 <div class="filter-container">
@@ -452,7 +458,6 @@
                     </select>
                 </div>
 
-                <!-- أ: جدول الحجوزات في الانتظار للرحلة المحددة -->
                 <div style="margin-bottom: 40px;">
                     <div class="section-header">
                         <h2>⏳ طلبات الحجوزات (قيد الانتظار)</h2>
@@ -485,7 +490,6 @@
 
                 <hr style="border: 1px dashed #ddd; margin: 30px 0;">
 
-                <!-- ب: جدول الحجوزات المؤكدة والنهائية للرحلة المحددة -->
                 <div>
                     <div class="section-header">
                         <h2>✅ قائمة الحجوزات النهائية (المؤكدة)</h2>
@@ -515,10 +519,8 @@
                         </table>
                     </div>
                 </div>
-
             </div>
 
-            <!-- 2. قسم إدارة الرحلات والعروض المتاحة للزبائن -->
             <div id="section-trips" class="dashboard-section">
                 <div class="section-header">
                     <h2>الرحلات المعروضة على الموقع حالياً</h2>
@@ -547,10 +549,36 @@
                     </table>
                 </div>
             </div>
+
+            <div id="section-settings" class="dashboard-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-key"></i> إعدادات الأمان وتغيير كلمة السر</h2>
+                </div>
+                <div style="max-width: 500px; text-align: right;">
+                    <form onsubmit="handleChangePassword(event)">
+                        <div class="form-group">
+                            <label>كلمة السر الحالية:</label>
+                            <input type="password" id="currentPassword" required class="form-control" placeholder="••••••••">
+                        </div>
+                        <div class="form-group">
+                            <label>كلمة السر الجديدة:</label>
+                            <input type="password" id="newPassword" required class="form-control" placeholder="أدخل 6 أحرف أو رموز على الأقل">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 25px;">
+                            <label>تأكيد كلمة السر الجديدة:</label>
+                            <input type="password" id="confirmPassword" required class="form-control" placeholder="أعد إدخال كلمة السر الجديدة">
+                        </div>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-floppy-disk"></i> حفظ وتحديث كلمة السر
+                        </button>
+                    </form>
+                    <div id="passwordStatusMsg" class="password-msg"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- نافذة إضافة وتعديل رحلة المحدثة -->
     <div id="tripModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTripTitle" style="margin-bottom: 20px; color: var(--primary);">إضافة رحلة جديدة للوكالة</h3>
@@ -621,11 +649,15 @@
         let localTripsCache = {};
         let temporaryUploadedBase64Images = [];
 
-        // --- نظام تسجيل الدخول ---
+        // --- نظام تسجيل الدخول المعدل والمحفوظ سحابياً ومحلياً ---
         const CREDENTIALS = {
-            username: "admin",
-            password: "kimou2026"
+            username: "admin"
         };
+
+        // تعيين كلمة المرور الافتراضية إذا لم تكن موجودة مسبقاً في المتصفح
+        if (!localStorage.getItem('adminPassword')) {
+            localStorage.setItem('adminPassword', 'kimou2026');
+        }
 
         function handleLogin(event) {
             event.preventDefault();
@@ -633,8 +665,10 @@
             const passInp = document.getElementById('loginPass').value;
             const errorDiv = document.getElementById('loginErrorMsg');
 
-            if (userInp === CREDENTIALS.username && passInp === CREDENTIALS.password) {
-                // حفظ حالة الدخول في المتصفح حتى لا يطلبها عند التحديث العادي
+            // جلب كلمة السر النشطة حالياً
+            const currentActivePassword = localStorage.getItem('adminPassword');
+
+            if (userInp === CREDENTIALS.username && passInp === currentActivePassword) {
                 sessionStorage.setItem('isLoggedIn', 'true');
                 showDashboard();
             } else {
@@ -642,10 +676,59 @@
             }
         }
 
+        // --- دالة معالجة وتغيير كلمة السر الجديدة ---
+        function handleChangePassword(event) {
+            event.preventDefault();
+            const currentPwd = document.getElementById('currentPassword').value;
+            const newPwd = document.getElementById('newPassword').value;
+            const confirmPwd = document.getElementById('confirmPassword').value;
+            const msgDiv = document.getElementById('passwordStatusMsg');
+            
+            const savedPwd = localStorage.getItem('adminPassword');
+
+            // التحقق من كلمة السر الحالية
+            if (currentPwd !== savedPwd) {
+                msgDiv.style.display = 'block';
+                msgDiv.style.backgroundColor = '#fce8e6';
+                msgDiv.style.color = 'var(--danger)';
+                msgDiv.innerText = '⚠️ كلمة السر الحالية التي أدخلتها غير صحيحة!';
+                return;
+            }
+
+            // التحقق من تطابق الكلمتين الجديدتين
+            if (newPwd !== confirmPwd) {
+                msgDiv.style.display = 'block';
+                msgDiv.style.backgroundColor = '#fce8e6';
+                msgDiv.style.color = 'var(--danger)';
+                msgDiv.innerText = '⚠️ كلمة السر الجديدة غير متطابقة مع حقل التأكيد!';
+                return;
+            }
+
+            // التحقق من طول كلمة السر
+            if (newPwd.length < 6) {
+                msgDiv.style.display = 'block';
+                msgDiv.style.backgroundColor = '#fce8e6';
+                msgDiv.style.color = 'var(--danger)';
+                msgDiv.innerText = '⚠️ يجب أن تتكون كلمة السر الجديدة من 6 خانات أو أكثر.';
+                return;
+            }
+
+            // حفظ كلمة المرور الجديدة بنجاح
+            localStorage.setItem('adminPassword', newPwd);
+            msgDiv.style.display = 'block';
+            msgDiv.style.backgroundColor = '#dff9fb';
+            msgDiv.style.color = 'var(--success)';
+            msgDiv.innerText = '🎉 تم تحديث كلمة السر الخاصة بالوكالة بنجاح!';
+            
+            // تفريغ الحقول بعد النجاح
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        }
+
         function showDashboard() {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardWrapper').style.display = 'block';
-            // بدء جلب البيانات من Firebase بعد تسجيل الدخول بنجاح فقط
             listenToBookings();
             listenToTrips();
         }
@@ -660,7 +743,10 @@
                 showDashboard();
             }
         }
-        // -------------------------
+        
+        // استدعاء فحص حالة الدخول تلقائياً عند تحميل الصفحة
+        window.onload = checkLoginState;
+        // -----------------------------------------------------
 
         function switchTab(tabName) {
             document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
@@ -671,8 +757,11 @@
 
             if(tabName === 'bookings') {
                 document.getElementById('dashboard-title').innerText = "لوحة الحجوزات الحالية للوكالة";
-            } else {
+            } else if (tabName === 'trips') {
                 document.getElementById('dashboard-title').innerText = "لوحة التحكم وعروض الرحلات";
+            } else {
+                document.getElementById('dashboard-title').innerText = "إعدادات أمان لوحة التحكم";
+                document.getElementById('passwordStatusMsg').style.display = 'none';
             }
         }
 
@@ -698,6 +787,8 @@
             const selectedTripTitle = document.getElementById('tripFilterSelect').value;
             const pendingTbody = document.getElementById('pendingTableBody');
             const confirmedTbody = document.getElementById('confirmedTableBody');
+
+            if(!pendingTbody || !confirmedTbody) return;
 
             pendingTbody.innerHTML = '';
             confirmedTbody.innerHTML = '';
@@ -745,8 +836,40 @@
             }
         }
 
+        function listenToTrips() {
+            db.collection('trips').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+                localTripsCache = {};
+                const tripsTbody = document.getElementById('tripsTableBody');
+                if(tripsTbody) tripsTbody.innerHTML = '';
+                
+                document.getElementById('stat-total-trips').innerText = snapshot.size;
+
+                snapshot.forEach(doc => {
+                    const tripData = doc.data();
+                    localTripsCache[tripData.title] = { id: doc.id, ...tripData };
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><b>${tripData.title}</b></td>
+                        <td><span class="status-badge status-confirmed">${tripData.price} DZD</span></td>
+                        <td>${tripData.duration}</td>
+                        <td>${tripData.departureDate || 'غير محدد'}</td>
+                        <td>${tripData.returnDate || 'غير محدد'}</td>
+                        <td>
+                            <button class="btn btn-info" style="padding: 4px 8px; font-size: 11px;" onclick="editTrip('${doc.id}')"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
+                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteTrip('${doc.id}')"><i class="fa-solid fa-trash"></i> حذف</button>
+                        </td>
+                    `;
+                    if(tripsTbody) tripsTbody.appendChild(tr);
+                });
+
+                updateTripFilterDropdown();
+            });
+        }
+
         function updateTripFilterDropdown() {
             const selectDropdown = document.getElementById('tripFilterSelect');
+            if(!selectDropdown) return;
             const currentSelected = selectDropdown.value;
 
             selectDropdown.innerHTML = '<option value="all">عرض حجوزات كل الرحلات معاً</option>';
@@ -762,6 +885,109 @@
 
             if (localTripsCache[currentSelected] || currentSelected === 'all') {
                 selectDropdown.value = currentSelected;
+            }
+        }
+
+        // باقي دوال إدارة وتأكيد الحجوزات وحذفها وإضافة الرحلات...
+        function confirmBooking(docId) {
+            db.collection('bookings').doc(docId).update({ status: 'confirmed' });
+        }
+        function deleteBooking(docId) {
+            if(confirm("هل أنت متأكد من حذف هذا الحجز نهائياً؟")) {
+                db.collection('bookings').doc(docId).delete();
+            }
+        }
+        function openTripModal() {
+            document.getElementById('tripForm').reset();
+            document.getElementById('tripId').value = '';
+            document.getElementById('imagesPreviewZone').innerHTML = '';
+            temporaryUploadedBase64Images = [];
+            document.getElementById('modalTripTitle').innerText = "إضافة رحلة جديدة للوكالة";
+            document.getElementById('tripModal').style.display = 'flex';
+        }
+        function closeTripModal() {
+            document.getElementById('tripModal').style.display = 'none';
+        }
+        function handleFileSelection(e) {
+            const files = e.target.files;
+            const previewZone = document.getElementById('imagesPreviewZone');
+            
+            for(let i=0; i<files.length; i++) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    temporaryUploadedBase64Images.push(event.target.result);
+                    const wrap = document.createElement('div');
+                    wrap.className = 'preview-img-wrapper';
+                    wrap.innerHTML = `<img src="${event.target.result}">`;
+                    previewZone.appendChild(wrap);
+                }
+                reader.readAsDataURL(files[i]);
+            }
+        }
+        function saveTrip(e) {
+            e.preventDefault();
+            const id = document.getElementById('tripId').value;
+            const tripData = {
+                title: document.getElementById('inputTitle').value,
+                price: document.getElementById('inputPrice').value,
+                duration: document.getElementById('inputDuration').value,
+                departureDate: document.getElementById('inputDepartureDate').value,
+                returnDate: document.getElementById('inputReturnDate').value,
+                description: document.getElementById('inputDetailedDesc').value,
+                images: temporaryUploadedBase64Images,
+                timestamp: new Date().getTime()
+            };
+
+            if(id) {
+                db.collection('trips').doc(id).update(tripData).then(() => closeTripModal());
+            } else {
+                db.collection('trips').add(tripData).then(() => closeTripModal());
+            }
+        }
+        function editTrip(id) {
+            db.collection('trips').doc(id).get().then(doc => {
+                if(doc.exists) {
+                    const data = doc.data();
+                    document.getElementById('tripId').value = id;
+                    document.getElementById('inputTitle').value = data.title;
+                    document.getElementById('inputPrice').value = data.price;
+                    document.getElementById('inputDuration').value = data.duration;
+                    document.getElementById('inputDepartureDate').value = data.departureDate || '';
+                    document.getElementById('inputReturnDate').value = data.returnDate || '';
+                    document.getElementById('inputDetailedDesc').value = data.description;
+                    
+                    const previewZone = document.getElementById('imagesPreviewZone');
+                    previewZone.innerHTML = '';
+                    temporaryUploadedBase64Images = data.images || [];
+                    temporaryUploadedBase64Images.forEach(img => {
+                        const wrap = document.createElement('div');
+                        wrap.className = 'preview-img-wrapper';
+                        wrap.innerHTML = `<img src="${img}">`;
+                        previewZone.appendChild(wrap);
+                    });
+                    
+                    document.getElementById('modalTripTitle').innerText = "تعديل بيانات الرحلة";
+                    document.getElementById('tripModal').style.display = 'flex';
+                }
+            });
+        }
+        function deleteTrip(id) {
+            if(confirm("هل أنت متأكد من حذف هذه الرحلة نهائياً من الموقع؟")) {
+                db.collection('trips').doc(id).delete();
+            }
+        }
+        function clearAllTrips() {
+            if(confirm("⚠️ تحذير: هل أنت متأكد من مسح جميع الرحلات المعروضة نهائياً؟")) {
+                db.collection('trips').get().then(snap => {
+                    snap.forEach(doc => doc.ref.delete());
+                });
+            }
+        }
+        function clearAllBookings(type) {
+            if(confirm(`هل أنت متأكد من حذف جميع حجوزات (${type === 'confirmed' ? 'المؤكدة' : 'الانتظار'})؟`)) {
+                db.collection('bookings').where('status', '==', type).get().then(snap => {
+                    snap.forEach(doc => doc.ref.delete());
+                });
             }
         }
 
@@ -791,7 +1017,7 @@
 
             const printWindow = window.open('', '', 'height=700,width=900');
             printWindow.document.write('<html dir="rtl" lang="ar"><head><title>Kimou Travel - طباعة القائمة</title>');
-            printWindow.document.write('<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">');
+            printWindow.document.write('<link href="https://fonts.googleapis.com/css2?family=Cairo:wght=700&display=swap" rel="stylesheet">');
             printWindow.document.write('<style>');
             printWindow.document.write('body { font-family: "Cairo", sans-serif; padding: 30px; color: #333; }');
             printWindow.document.write('h2 { text-align: center; color: #1e3d59; margin-bottom: 5px; }');
@@ -806,267 +1032,10 @@
             printWindow.document.write('<table>');
             printWindow.document.write('<thead><tr><th>الزبون</th><th>الهاتف</th><th>الرحلة الوجهة</th><th>تاريخ الميلاد</th><th>التاريخ</th><th>حالة الطلب</th></tr></thead>');
             printWindow.document.write(tbodyCopy.outerHTML);
-            printWindow.document.write('</table>');
-            printWindow.document.write('</body></html>');
+            printWindow.document.write('</table></body></html>');
             printWindow.document.close();
-
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
+            printWindow.print();
         }
-
-        function listenToTrips() {
-            db.collection('trips').onSnapshot(snapshot => {
-                const tbody = document.getElementById('tripsTableBody');
-                document.getElementById('stat-total-trips').innerText = snapshot.size;
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #999; padding: 20px;">لا توجد رحلات مضافة.</td></tr>`;
-                    localTripsCache = {};
-                    updateTripFilterDropdown();
-                    return;
-                }
-
-                tbody.innerHTML = '';
-                localTripsCache = {}; 
-
-                snapshot.forEach(doc => {
-                    const trip = doc.data();
-                    const id = doc.id;
-                    localTripsCache[id] = trip; 
-
-                    const dDate = trip.departureDate || trip.startDate || '—';
-                    const rDate = trip.returnDate || trip.endDate || '—';
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><b>${trip.title}</b></td>
-                        <td style="color: var(--secondary); font-weight: bold;">${trip.price} DZD</td>
-                        <td>${trip.duration || 'يوم واحد'}</td>
-                        <td><span style="background: #ebf7ed; padding: 2px 6px; border-radius: 4px; font-size:12px; font-weight:700; color:#28a745;">${dDate}</span></td>
-                        <td><span style="background: #fdf2f2; padding: 2px 6px; border-radius: 4px; font-size:12px; font-weight:700; color:#dc3545;">${rDate}</span></td>
-                        <td>
-                            <button class="btn btn-primary" style="padding: 4px 8px; font-size: 11px; background-color: #00bcd4;" onclick="editTrip('${id}')"><i class="fa-solid fa-pen-to-square"></i> تعديل</button>
-                            <button class="btn btn-danger" style="padding: 4px 8px; font-size: 11px;" onclick="deleteTrip('${id}')"><i class="fa-solid fa-trash"></i> حذف</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                updateTripFilterDropdown();
-            }, error => {
-                console.error("خطأ في جلب الرحلات: ", error);
-            });
-        }
-
-        function handleFileSelection(event) {
-            const files = event.target.files;
-            const previewZone = document.getElementById('imagesPreviewZone');
-            
-            if(!document.getElementById('tripId').value) {
-                previewZone.innerHTML = '';
-                temporaryUploadedBase64Images = [];
-            }
-
-            if (files) {
-                Array.from(files).forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = new Image();
-                        img.onload = function() {
-                            const canvas = document.createElement('canvas');
-                            const MAX_WIDTH = 800;
-                            let width = img.width;
-                            let height = img.height;
-
-                            if (width > MAX_WIDTH) {
-                                height *= MAX_WIDTH / width;
-                                width = MAX_WIDTH;
-                            }
-
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-
-                            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                            temporaryUploadedBase64Images.push(compressedBase64);
-
-                            const wrapper = document.createElement('div');
-                            wrapper.className = 'preview-img-wrapper';
-                            wrapper.innerHTML = `<img src="${compressedBase64}">`;
-                            previewZone.appendChild(wrapper);
-                        };
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
-                });
-            }
-        }
-
-        function openTripModal() {
-            document.getElementById('tripId').value = '';
-            document.getElementById('tripForm').reset();
-            document.getElementById('imagesPreviewZone').innerHTML = '';
-            temporaryUploadedBase64Images = [];
-            document.getElementById('modalTripTitle').innerText = "إضافة رحلة جديدة للوكالة";
-            document.getElementById('tripModal').style.display = 'flex';
-        }
-
-        function closeTripModal() {
-            document.getElementById('tripModal').style.display = 'none';
-        }
-
-        function saveTrip(event) {
-            event.preventDefault();
-
-            const id = document.getElementById('tripId').value;
-            const title = document.getElementById('inputTitle').value;
-            const price = document.getElementById('inputPrice').value;
-            const duration = document.getElementById('inputDuration').value;
-            const departureDate = document.getElementById('inputDepartureDate').value;
-            const returnDate = document.getElementById('inputReturnDate').value;
-            const detailedDesc = document.getElementById('inputDetailedDesc').value;
-
-            const btnSubmit = document.getElementById('submitBtn');
-            btnSubmit.innerText = "جاري رفع البيانات والصور...";
-            btnSubmit.disabled = true;
-
-            const tripData = {
-                title: title,
-                price: price,
-                duration: duration,
-                departureDate: departureDate,
-                returnDate: returnDate,
-                images: temporaryUploadedBase64Images,
-                detailedDesc: detailedDesc,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            if (id) {
-                db.collection('trips').doc(id).update(tripData).then(() => {
-                    alert('تم تحديث الرحلة بنجاح!');
-                    btnSubmit.innerText = "حفظ ونشر العرض السحابي";
-                    btnSubmit.disabled = false;
-                    closeTripModal();
-                });
-            } else {
-                db.collection('trips').add(tripData).then(() => {
-                    alert('تم نشر العرض الجديد بالصور بنجاح!');
-                    btnSubmit.innerText = "حفظ ونشر العرض السحابي";
-                    btnSubmit.disabled = false;
-                    closeTripModal();
-                });
-            }
-        }
-
-        function editTrip(id) {
-            const trip = localTripsCache[id];
-            if(!trip) return;
-
-            document.getElementById('tripId').value = id;
-            document.getElementById('inputTitle').value = trip.title || '';
-            document.getElementById('inputPrice').value = trip.price || '';
-            document.getElementById('inputDuration').value = trip.duration || '';
-            document.getElementById('inputDepartureDate').value = trip.departureDate || trip.startDate || '';
-            document.getElementById('inputReturnDate').value = trip.returnDate || trip.endDate || '';
-            document.getElementById('inputDetailedDesc').value = trip.detailedDesc || '';
-
-            const previewZone = document.getElementById('imagesPreviewZone');
-            previewZone.innerHTML = '';
-            temporaryUploadedBase64Images = trip.images || [];
-
-            temporaryUploadedBase64Images.forEach(imgUrl => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'preview-img-wrapper';
-                wrapper.innerHTML = `<img src="${imgUrl}">`;
-                previewZone.appendChild(wrapper);
-            });
-
-            document.getElementById('modalTripTitle').innerText = "تعديل تفاصيل وتواريخ الرحلة";
-            document.getElementById('tripModal').style.display = 'flex';
-        }
-
-        function confirmBooking(id) {
-            if(confirm('هل تريد تأكيد حجز هذا الزبون ونقله إلى القائمة النهائية؟')) {
-                db.collection('bookings').doc(id).update({ status: 'confirmed' });
-            }
-        }
-
-        function deleteBooking(id) {
-            if(confirm('هل أنت متأكد من حذف هذا الحجز نهائياً؟')) {
-                db.collection('bookings').doc(id).delete();
-            }
-        }
-
-        function deleteTrip(id) {
-            if(confirm('هل أنت متأكد من حذف هذه الرحلة نهائياً؟')) {
-                db.collection('trips').doc(id).delete();
-            }
-        }
-
-        function clearAllBookings(statusType) {
-            const selectedTripTitle = document.getElementById('tripFilterSelect').value;
-            let targetBookings = allBookingsArray.filter(b => b.status === statusType);
-            
-            if (selectedTripTitle !== 'all' && selectedTripTitle !== '') {
-                targetBookings = targetBookings.filter(b => b.tripTitle === selectedTripTitle);
-            }
-
-            if (targetBookings.length === 0) {
-                alert("القائمة فارغة بالفعل ولا توجد بيانات لحذفها!");
-                return;
-            }
-
-            const msg = selectedTripTitle === 'all' 
-                ? `⚠️ تحذير: هل أنت متأكد تماماً من حذف جميع الحجوزات (${statusType === 'confirmed' ? 'المؤكدة' : 'قيد الانتظار'}) لكل رحلات الوكالة؟`
-                : `⚠️ تحذير: هل أنت متأكد من حذف جميع الحجوزات (${statusType === 'confirmed' ? 'المؤكدة' : 'قيد الانتظار'}) الخاصة برحلة "${selectedTripTitle}" فقط؟`;
-
-            if (confirm(msg)) {
-                if (confirm("🔄 تأكيد أخير: لن تتمكن من استرجاع هذه البيانات بعد الحذف السحابي. هل تود المتابعة؟")) {
-                    const batch = db.batch();
-                    targetBookings.forEach(booking => {
-                        const ref = db.collection('bookings').doc(booking.id);
-                        batch.delete(ref);
-                    });
-                    
-                    batch.commit().then(() => {
-                        alert("تم مسح القائمة المحددة بنجاح!");
-                    }).catch(err => {
-                        console.error("خطأ أثناء مسح القائمة: ", err);
-                    });
-                }
-            }
-        }
-
-        function clearAllTrips() {
-            const tripIds = Object.keys(localTripsCache);
-            if (tripIds.length === 0) {
-                alert("لا توجد رحلات معروضة لحذفها!");
-                return;
-            }
-
-            if (confirm("⚠️ تحذير خطير: هل تريد حذف جميع الرحلات المعروضة في الموقع نهائياً؟")) {
-                if (confirm("🔄 تأكيد أخير: سيتم مسح كافة العروض البرمجية والصور المرفقة بها من السيرفر. هل تريد المتابعة?")) {
-                    const batch = db.batch();
-                    tripIds.forEach(id => {
-                        const ref = db.collection('trips').doc(id);
-                        batch.delete(ref);
-                    });
-
-                    batch.commit().then(() => {
-                        alert("تم حذف جميع عروض الرحلات بنجاح!");
-                    }).catch(err => {
-                        console.error("خطأ أثناء حذف الرحلات: ", err);
-                    });
-                }
-            }
-        }
-
-        window.onload = function() {
-            // التحقق مما إذا كان المستخدم مسجلاً دخوله مسبقاً
-            checkLoginState();
-        };
     </script>
 </body>
 </html>
